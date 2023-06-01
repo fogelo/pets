@@ -1,18 +1,44 @@
 const http = require("http");
+const fs = require("fs");
 
-const server = http.createServer((request, response) => {
+const delay = (ms) => {
+  new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve(ms);
+      console.log(ms);
+    }, ms);
+  });
+};
+
+const readFile = (path) => {
+  return new Promise((resolve, reject) => {
+    fs.readFile(path, (err, data) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(data);
+      }
+    });
+  });
+};
+
+const server = http.createServer(async (request, response) => {
   switch (request.url) {
     case "/home": {
-      const start = new Date();
-      while (new Date() - start < 5000) {
-        console.log(new Date() - start < 5000);
+      try {
+        // await delay(5000);
+        const data = await readFile("./pages/home.html");
+        response.write(data);
+        response.end();
+      } catch {
+        response.write("something wrong");
+        response.end();
       }
-      response.write("home page");
-      response.end();
       break;
     }
     case "/about": {
-      response.write("about page");
+      const data = fs.readFileSync("./pages/about.html");
+      response.write(data);
       response.end();
       break;
     }
