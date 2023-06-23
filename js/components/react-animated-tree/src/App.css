@@ -1,0 +1,15 @@
+.anim {
+  background-color: red;
+  padding: 10px;
+
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: all 500ms;
+}
+.anim > div {
+  overflow: hidden;
+}
+
+.anim:hover {
+  grid-template-rows: 1fr;
+}

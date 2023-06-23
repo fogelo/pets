@@ -1,3 +1,4 @@
+import Express from "express";
 const express = require("express");
 
 export const app = express();
@@ -7,7 +8,9 @@ const port = 3000;
 const jsonBodyMiddleWare = express.json();
 app.use(jsonBodyMiddleWare); //появится поле body в стуктуре request
 
-const db = {
+type CourseType = { id: number; title: string };
+
+const db: { courses: CourseType[] } = {
   courses: [
     { id: 1, title: "css" },
     { id: 2, title: "html" },
@@ -15,6 +18,16 @@ const db = {
     { id: 4, title: "ts" },
   ],
 };
+
+export enum HTTP_STATUSES {
+  OK_200 = 200,
+  CREATED_201 = 201,
+  NO_CONTENT_204 = 204,
+
+  BAD_REQUEST_400 = 400,
+  NOT_FOUND_404 = 404,
+}
+
 app.get("/", (req, res) => {
   res.send("Hello world");
 });
@@ -32,43 +45,58 @@ app.get("/status", (req, res) => {
 });
 
 app.get("/code", (req, res) => {
-  res.send(404);
+  res.send(HTTP_STATUSES.NOT_FOUND_404);
 });
 
 // курсы
-app.get("/courses", (req, res) => {
-  let courses = db.courses;
+app.get(
+  "/courses",
+  (
+    req: Express.Request<{}, {}, {}, { title: string }>,
+    res: Express.Response<CourseType[]>
+  ) => {
+    let courses = db.courses;
 
-  if (req.query.title) {
-    courses = courses.filter((c) => c.title.includes(req.query.title));
+    if (req.query.title) {
+      courses = courses.filter((c) => c.title.includes(req.query.title));
+    }
+    res.json(courses);
   }
-  res.json(courses);
-});
+);
 
 app.get("/courses/:id", (req, res) => {
   const course = db.courses.find((c) => c.id === +req.params.id);
   if (!course) {
-    res.sendStatus(404);
+    res.sendStatus(HTTP_STATUSES.NOT_FOUND_404);
   } else {
     res.json(course);
   }
 });
 
 app.post("/courses", (req, res) => {
-  const newCourse = {
-    id: +new Date(),
-    title: req.body.title || "unknown",
-  };
-  db.courses.push(newCourse);
-  res.status(201).json(newCourse);
+  if (!req.body.title) {
+    res.sendStatus(HTTP_STATUSES.BAD_REQUEST_400);
+  } else {
+    const newCourse = {
+      id: +new Date(),
+      title: req.body.title,
+    };
+    db.courses.push(newCourse);
+    res.status(HTTP_STATUSES.CREATED_201).json(newCourse);
+  }
 });
 
 app.delete("/courses/:id", (req, res) => {
   db.courses = db.courses.filter((c) => c.id !== +req.params.id);
-  res.sendStatus(204);
+  res.sendStatus(HTTP_STATUSES.NO_CONTENT_204);
+});
+
+// Для очиски бд
+app.delete("/__test__/data", (req, res) => {
+  db.courses = [];
+  res.sendStatus(HTTP_STATUSES.NO_CONTENT_204);
 });
 
 app.listen(port, () => {
   console.log("Server is working");
 });
-

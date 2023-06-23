@@ -1,0 +1,21 @@
+* {
+  margin: 0;
+  padding: 0;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  font-size: 20px;
+}
+
+.tree {
+  overflow: hidden;
+  transition: all 500ms ease;
+}
+
+.branch {
+  cursor: pointer;
+  height: 30px;
+}
+
+.branch:hover {
+  background-color: aliceblue;
+}
