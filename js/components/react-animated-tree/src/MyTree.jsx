@@ -1,18 +1,38 @@
 import "./MyTree.css";
 import React, { useRef, useEffect, useState } from "react";
-const MyTree = ({ tree, nestingLevel = 0, updateTree, open = true }) => {
-
+const MyTree = ({ tree, nestingLevel = 0, updateTree, open }) => {
   const treeRef = useRef(null);
   const [height, setHeight] = useState("0px");
 
+  // useEffect(() => {
+  //   if (open) {
+  //     // setHeight(treeRef.current.scrollHeight);
+  //     treeRef.current.style.height = `auto`;
+  //   } else {
+  //     treeRef.current.style.height = `0px`;
+  //     // treeRef.current.style.height = `${treeRef.current.scrollHeight}px`;
+  //     // setHeight(0);
+  //   }
+  // }, []);
+console.log(tree);
   useEffect(() => {
-    if (open) {
-      setHeight(treeRef.current.scrollHeight);
-    } else {
-      treeRef.current.style.height = `${treeRef.current.scrollHeight}px`;
-      setHeight(0);
+    if (treeRef.current) {
+      if (open) {
+        setHeight(treeRef.current.scrollHeight);
+      } else {
+        treeRef.current.style.height = `${treeRef.current.scrollHeight}px`;
+        setHeight(0);
+      }
     }
-  }, [open]);
+  }, [open, treeRef]);
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (treeRef.current) {
+        treeRef.current.style.transition = "all 500ms ease";
+      }
+    }, 1);
+  }, [treeRef]);
 
   return (
     <div

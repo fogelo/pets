@@ -1,0 +1,39 @@
+table {
+  border-collapse: collapse;
+  /* width: 2000px; */
+}
+.row:hover {
+  background-color: gray;
+}
+
+td,
+th {
+  border: 1px solid;
+  overflow: auto;
+  /* width: 500px; */
+  position: relative;
+  overflow: visible;
+}
+
+.App {
+  width: fit-content;
+  border: 1px solid;
+  /* padding: 10px; */
+  width: 100%;
+  overflow: auto;
+}
+
+.resizer {
+  width: 35px;
+  height: 100px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 1;
+  background-color: red;
+  cursor: col-resize;
+}
+
+body {
+  overflow: hidden; 
+}
