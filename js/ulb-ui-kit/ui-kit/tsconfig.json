@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "commonjs",
+    "jsx": "react",
+    "strict": true,
+    "esModuleInterop": true,
+    "lib": ["es2015", "dom"],
+    "outDir": "./dis/" /* папка в которую будет компилироваться typescript*/,
+    "sourceMap": true,
+    "declaration": true // генерирует файлы декларации в которых будут описаны все типы, и когда подключим библиотеку
+    // к проекту ts все эти типы подхватит и появится
+  },
+  "include": ["src"], // то что включаем в компиляцию
+  "exclude": ["node_modules", "dist"] // то что выключаем из компиляции
+}
