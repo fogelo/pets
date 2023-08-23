@@ -22,9 +22,13 @@ const Toolbar = () => {
       <button className="toolbar__btn circle">circle</button>
       <button className="toolbar__btn eraser">eraser</button>
       <button className="toolbar__btn line">line</button>
-     
-      <button className="toolbar__btn undo">undo</button>
-      <button className="toolbar__btn redo">redo</button>
+
+      <button className="toolbar__btn undo" onClick={() => canvasState.undo()}>
+        undo
+      </button>
+      <button className="toolbar__btn redo" onClick={() => canvasState.redo()}>
+        redo
+      </button>
       <button className="toolbar__btn save">save</button>
     </div>
   );
