@@ -11,6 +11,10 @@
     width: 100%;
     box-shadow: 0 4px 5px gray;
     z-index: 1;
+
+    &__btn {
+        
+    }
 }
 
 .settingbar {
@@ -23,3 +27,11 @@
     box-shadow: 0 4px 5px gray;
     top: 40px;
 }
+
+.undo {
+    margin-left: auto;
+}
+
+
+
+
