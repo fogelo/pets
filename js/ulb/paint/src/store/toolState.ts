@@ -1,6 +1,6 @@
 // состояние и логика обработки состояния, связанные с инструментами
 
-import { makeAutoObservable } from "mobx"
+import { makeAutoObservable } from "mobx";
 
 /* 
 Чтобы пользоваться состоянием нужно создать класс, в конструкторе которого вызвать функцию makeAutoObservable. 
@@ -8,17 +8,25 @@ import { makeAutoObservable } from "mobx"
 
 */
 class ToolState {
-  tool = null
-  constructor(){
-    makeAutoObservable(this)
+  tool = null;
+  constructor() {
+    makeAutoObservable(this);
   }
   //такие функции называются action(те функции, кторые как-то изменяют состояние)
-  setTool(tool: any){
-    this.tool = tool
+  setTool(tool: any) {
+    this.tool = tool;
+  }
+  setFillColor(color) {
+    this.tool.fillColor = color;
+  }
+  setStrokeColor(color) {
+    this.tool.strokeColor = color;
+  }
+  setLineWidth(width) {
+    this.tool.lineWidth = width;
   }
 }
 
-
 // и по итогу нужно экспортировать объект данного класса
 
-export default new ToolState()
+export default new ToolState();

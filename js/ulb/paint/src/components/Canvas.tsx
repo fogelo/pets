@@ -7,7 +7,6 @@ const Canvas = observer(() => {
   const canvasRef = useRef(null);
   useEffect(() => {
     canvasState.setCanvas(canvasRef.current);
-    
   }, []);
 
   return (
