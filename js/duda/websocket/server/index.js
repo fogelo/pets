@@ -22,11 +22,10 @@ const connections = [];
 io.on("connection", (socket) => {
   console.log("пользователь подключился");
 
-  connections.push(socket);
-
+  console.log(connections);
   socket.on("send mess", (data) => {
     console.log(data);
-    io.sockets.emit("add mess", { msg: data });
+    io.sockets.emit("add mess", { name: data.name, message: data.message });
   });
 
   socket.on("disconnect", (data) => {
