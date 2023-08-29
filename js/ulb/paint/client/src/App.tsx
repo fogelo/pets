@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Canvas from "./components/Canvas";
 import SettingsBar from "./components/SettingsBar";
 import Toolbar from "./components/Toolbar";
@@ -19,16 +20,30 @@ function App() {
 export default App;
 
 const WsTest = () => {
+  const [socket, setSocket] = useState(null);
   return (
-    <button
-      onClick={() => {
-        const socket = new WebSocket("ws://localhost:5001/");
-        socket.onopen = () => {
-          console.log("подключение установлено");
-        };
-      }}
-    >
-      connect
-    </button>
+    <>
+      <button
+        onClick={() => {
+          const socket = new WebSocket("ws://localhost:5001/");
+          setSocket(socket);
+          socket.onopen = () => {
+            console.log("подключение установлено");
+          };
+          socket.onmessage = (event) => {
+            console.log(event.data);
+          };
+        }}
+      >
+        connect
+      </button>
+      <button
+        onClick={() => {
+          socket.send("hello server");
+        }}
+      >
+        send message
+      </button>
+    </>
   );
 };
