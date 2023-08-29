@@ -1,0 +1,14 @@
+#messForm {
+  display: flex;
+  flex-direction: column;
+  width: 500px;
+  gap:10px;
+}
+.wrapper {
+    display: flex;
+    gap: 50px;
+} 
+.btn {
+    width: 150px;
+}
+

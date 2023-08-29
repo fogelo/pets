@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <div class="container wrapper">
+      <form id="messForm">
+        <label for="message"> Message </label>
+        <textarea name="message" id="message" cols="30" rows="10"></textarea>
+        <button id="send" class="btn btn-danger">Отправить</button>
+      </form>
+      <div id="messages"><div>Messages:</div></div>
+    </div>
+  </body>
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io.connect(); // когда пользователь будет открывать страницу нв сервере будет срабатывать событие "connection", когда страницу будет закрыть
+    // сработает событие "dissconnect"
+
+    const form = document.getElementById("messForm");
+    const textarea = document.getElementById("message");
+    const button = document.getElementById("send");
+    const messages = document.getElementById("messages");
+
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      socket.emit("send mess", textarea.value); //emit - функция, которая позволяет вызвать определенное событие в внутри вебсокет соединения
+      textarea.value = "";
+    });
+
+    socket.on("add mess", (data) => {
+      const div = document.createElement("div");
+      div.append(data.msg);
+      messages.appendChild(div);
+    });
+  </script>
+</html>
