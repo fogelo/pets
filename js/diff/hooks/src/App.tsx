@@ -1,11 +1,12 @@
 import "./App.css";
-import UseState from "./components/UseState";
-import UseRef from "./components/UseRef";
-import UseMemo from "./components/UseMemo";
-import UseCallback from "./components/UseCallback";
-import UseContext from "./components/UseContext/UseContext";
-import UseReducer from "./components/UseReducer";
-import UseLayoutEffect from "./components/UseLayoutEffect/UseLayoutEffect";
+import UseState from "./components/hooks/UseState";
+import UseRef from "./components/hooks/UseRef";
+import UseMemo from "./components/hooks/UseMemo";
+import UseCallback from "./components/hooks/UseCallback";
+import UseContext from "./components/hooks/hooks/UseContext/UseContext";
+import UseReducer from "./components/hooks/UseReducer";
+import UseLayoutEffect from "./components/hooks/UseLayoutEffect/UseLayoutEffect";
+import Keys from "./components/Keys";
 
 function App() {
   return (
@@ -23,6 +24,8 @@ function App() {
       <UseReducer /> */}
       <div style={{ borderBottom: "1px solid", margin: "5px 0" }}></div>
       <UseLayoutEffect />
+      <div style={{ borderBottom: "1px solid", margin: "5px 0" }}></div>
+      <Keys />
     </>
   );
 }
