@@ -1,0 +1,15 @@
+.form {
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+}
+
+.dark {
+  background-color: gray;
+}
+
+.white {
+  background-color: white;
+}

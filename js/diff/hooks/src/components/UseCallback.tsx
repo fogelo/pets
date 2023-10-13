@@ -45,7 +45,7 @@ const Items = ({ increment }) => {
     console.log("increment");
   }, [increment]);
 
-  return <div>hello</div>;
+  return <div>items</div>;
 };
 
 export default UseCallback;
