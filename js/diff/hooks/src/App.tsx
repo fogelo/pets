@@ -7,13 +7,14 @@ import UseContext from "./components/hooks/hooks/UseContext/UseContext";
 import UseReducer from "./components/hooks/UseReducer";
 import UseLayoutEffect from "./components/hooks/UseLayoutEffect/UseLayoutEffect";
 import Keys from "./components/Keys";
+import UseDebounce from "./components/customhooks/UseDebounce";
 
 function App() {
   return (
     <>
       {/* <UseState /> */}
       <div style={{ borderBottom: "1px solid", margin: "5px 0" }}></div>
-      <UseRef />
+      {/* <UseRef /> */}
       <div style={{ borderBottom: "1px solid", margin: "5px 0" }}></div>
       {/* <UseMemo /> */}
       <div style={{ borderBottom: "1px solid", margin: "5px 0" }}></div>
@@ -26,6 +27,8 @@ function App() {
       {/* <UseLayoutEffect /> */}
       <div style={{ borderBottom: "1px solid", margin: "5px 0" }}></div>
       {/* <Keys /> */}
+      <div style={{ borderBottom: "1px solid", margin: "5px 0" }}></div>
+      <UseDebounce />
     </>
   );
 }
