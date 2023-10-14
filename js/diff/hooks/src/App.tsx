@@ -11,21 +11,21 @@ import Keys from "./components/Keys";
 function App() {
   return (
     <>
-      {/* <UseState />
+      {/* <UseState /> */}
       <div style={{ borderBottom: "1px solid", margin: "5px 0" }}></div>
       <UseRef />
       <div style={{ borderBottom: "1px solid", margin: "5px 0" }}></div>
-      <UseMemo />
+      {/* <UseMemo /> */}
       <div style={{ borderBottom: "1px solid", margin: "5px 0" }}></div>
-      <UseCallback />
+      {/* <UseCallback /> */}
       <div style={{ borderBottom: "1px solid", margin: "5px 0" }}></div>
-      <UseContext />
+      {/* <UseContext /> */}
       <div style={{ borderBottom: "1px solid", margin: "5px 0" }}></div>
-      <UseReducer /> */}
+      {/* <UseReducer /> */}
       <div style={{ borderBottom: "1px solid", margin: "5px 0" }}></div>
-      <UseLayoutEffect />
+      {/* <UseLayoutEffect /> */}
       <div style={{ borderBottom: "1px solid", margin: "5px 0" }}></div>
-      <Keys />
+      {/* <Keys /> */}
     </>
   );
 }

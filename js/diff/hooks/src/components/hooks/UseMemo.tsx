@@ -13,6 +13,12 @@ import { useEffect, useMemo, useState } from "react";
     предыдущем, если равно, то просто возвращает значение, которое было вычеслено на предыдущем шаге. Если не равно то производит 
     вычисление и возвращает новое значение.
 
+    - метод memo нужен для того чтобы заново не рендерить компонент если его пропсы, сосотояние или конекст не изменились. Этот метод дополняет 
+    useMemo и useCallback
+    const Greeting = memo(function Greeting({ name }) {
+    console.log("Greeting was rendered at", new Date().toLocaleTimeString());
+    return <h3>Hello{name && ', '}{name}!</h3>;
+});
 */
 
 const complexCompute = (value) => {
