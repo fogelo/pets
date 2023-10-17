@@ -8,6 +8,7 @@ import UseReducer from "./components/hooks/UseReducer";
 import UseLayoutEffect from "./components/hooks/UseLayoutEffect/UseLayoutEffect";
 import Keys from "./components/Keys";
 import UseDebounce from "./components/customhooks/UseDebounce";
+import UseSyncExternalStore from "./components/hooks/UseSyncExternalStore/UseSyncExternalStore";
 
 function App() {
   return (
@@ -28,7 +29,9 @@ function App() {
       <div style={{ borderBottom: "1px solid", margin: "5px 0" }}></div>
       {/* <Keys /> */}
       <div style={{ borderBottom: "1px solid", margin: "5px 0" }}></div>
-      <UseDebounce />
+      {/* <UseDebounce /> */}
+      <div style={{ borderBottom: "1px solid", margin: "5px 0" }}></div>
+      <UseSyncExternalStore />
     </>
   );
 }

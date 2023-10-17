@@ -4,9 +4,12 @@ const UseDebounce = () => {
   const [comments, setComments] = useState([]);
   const [search, setSearch] = useState("");
   const debouncedSearch = useDebounce(search, 500);
+
+  //  а вот так с дебанусом
   const [filteredComments, setFilteredComments] = useState([]);
 
-  console.log(filteredComments);
+  //вот так будет без дебануса
+  //   const filteredComments = comments.filter((c) => c.name.includes(search));
 
   useEffect(() => {
     fetch("https://jsonplaceholder.typicode.com/comments")
@@ -14,7 +17,7 @@ const UseDebounce = () => {
         return res.json();
       })
       .then((res) => {
-        setComments(res);
+        setComments([...res, ...res, ...res, ...res, ...res]);
       });
   }, []);
 
@@ -24,15 +27,21 @@ const UseDebounce = () => {
     );
   }, [comments, debouncedSearch]);
 
+  useEffect(() => {
+    window.addEventListener("storage", (e) => {
+      console.log(e);
+    });
+  }, []);
   return (
     <>
       <input
         type="text"
         value={search}
         onChange={(e) => setSearch(e.currentTarget.value)}
+        style={{ position: "fixed", top: 0, left: 0 }}
       />
-      {filteredComments.map((c) => (
-        <div key={c.id}>{c.name}</div>
+      {filteredComments.map((c, i) => (
+        <div key={i}>{c.name}</div>
       ))}
     </>
   );
