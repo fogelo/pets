@@ -3,10 +3,14 @@ import { places } from "../../store/places";
 
 const PlacesTree = () => {
   const [nodes, setNodes] = useState(places);
-  const rootNodeId = nodes[0].id;
+  const rootNode = nodes[0];
   return (
     <>
-      <Tree parentNodeId={rootNodeId} nodes={nodes} />
+      <ol>
+        {rootNode.childIds.map((id) => (
+          <li>{<Tree parentNodeId={id} nodes={nodes} />}</li>
+        ))}
+      </ol>
     </>
   );
 };
