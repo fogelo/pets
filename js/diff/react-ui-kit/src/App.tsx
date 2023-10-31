@@ -1,35 +1,34 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import "./App.css";
+import Tree from "./components/Tree/Tree";
 
-function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+function buildTree(paths) {
+  const tree = {};
+  paths.forEach((path) => {
+    const parts = path.split("/");
+    let current = tree;
+    parts.forEach((part) => {
+      if (!current[part]) {
+        current[part] = {};
+      }
+      current = current[part];
+    });
+  });
+  return tree;
 }
 
-export default App
+const paths = [
+  "folder1/file1.txt",
+  "folder1/folder2/file2.txt",
+  "folder3/file3.txt",
+];
+
+const tree = buildTree(paths);
+function App() {
+  return (
+    <>
+      <Tree tree={tree} />
+    </>
+  );
+}
+
+export default App;
