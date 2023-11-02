@@ -3,6 +3,10 @@ import React, { useEffect, useState } from "react";
 const Print = () => {
   const [isPrinting, setIsPrinting] = useState(false);
 
+  const handlePrintClick = () => {
+    setIsPrinting(true);
+  };
+
   useEffect(() => {
     const mediaQueryList = window.matchMedia("print");
 
@@ -10,29 +14,18 @@ const Print = () => {
       setIsPrinting(event.matches);
     };
 
-    // Используем addEventListener вместо addListener
     mediaQueryList.addEventListener("change", handlePrint);
 
     return () => {
-      // Используем removeEventListener вместо removeListener
       mediaQueryList.removeEventListener("change", handlePrint);
     };
   }, []);
 
-  const [isReadyForPrint, setIsReadyForPrint] = useState(false);
-
   useEffect(() => {
     if (isPrinting) {
-      // Логика для определения, что рендеринг завершён
-      // ...
-      //   setIsReadyForPrint(true);
       window.print();
     }
   }, [isPrinting]);
-
-  const handlePrintClick = () => {
-    setIsPrinting(true);
-  };
 
   return (
     <div>
