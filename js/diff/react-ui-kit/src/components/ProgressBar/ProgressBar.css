@@ -1,0 +1,42 @@
+.wrapper {
+  height: 20px;
+  width: 400px;
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+}
+
+.stripes {
+  height: 100%;
+  position: relative;
+  z-index: 2;
+  background: repeating-linear-gradient(
+    -45deg,
+    /* угол наклона полос */ #E4E4F0,
+    /* начальный цвет полосы */ #E4E4F0 3px,
+    /* конечная точка серой полосы */ transparent 3px,
+    /* начало прозрачного участка */ transparent 15px
+      /* конечная точка прозрачного участка */
+  );
+}
+
+.progress {
+  background: #ccccde;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  border-radius: 8px;
+}
+
+.back {
+  background: #EEEEF6;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  border-radius: 8px;
+}
