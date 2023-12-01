@@ -1,4 +1,5 @@
 import "./App.css";
+import ProgressBar from "./components/ProgressBar/ProgressBar";
 import Tree from "./components/Tree/Tree";
 
 function buildTree(paths) {
@@ -27,6 +28,7 @@ function App() {
   return (
     <>
       <Tree tree={tree} />
+      <ProgressBar progress={70} />
     </>
   );
 }
