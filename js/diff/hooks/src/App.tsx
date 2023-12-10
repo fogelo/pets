@@ -1,4 +1,5 @@
 import "./App.css";
+import {useState} from "react"
 import UseState from "./components/hooks/UseState";
 import UseRef from "./components/hooks/UseRef";
 import UseMemo from "./components/hooks/UseMemo";
@@ -11,6 +12,8 @@ import UseDebounce from "./components/customhooks/UseDebounce";
 import UseSyncExternalStore from "./components/hooks/UseSyncExternalStore/UseSyncExternalStore";
 
 function App() {
+  const [hello, setHello] = useState(false)
+  const [aaa, setAaa] = useState(false)
   return (
     <>
       {/* <UseState /> */}
