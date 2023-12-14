@@ -5,6 +5,7 @@ import PDF from "./components/PDF";
 import A from "./components/A/A";
 import B from "./components/B/B";
 function App() {
+  const vads = "hello"
   return (
     <>
       {/* <Print /> */}
