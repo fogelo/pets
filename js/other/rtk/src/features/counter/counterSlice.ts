@@ -1,5 +1,4 @@
-import { PayloadAction, configureStore, createSlice } from "@reduxjs/toolkit";
-import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface CounterState {
   value: number;
@@ -24,20 +23,9 @@ const counterSlice = createSlice({
   },
 });
 
+// экшны
 export const { incremented, decremented, incrementByAmount } =
   counterSlice.actions;
-
-export const store = configureStore({
-  reducer: {
-    counter: counterSlice.reducer,
-  },
-});
-
-export type AppRootState = ReturnType<typeof store.getState>;
-export type AppDispatch = typeof store.dispatch;
-
-export const useAppDispatch: () => AppDispatch = useDispatch; // полезене при использовании санок
-export const useAppSelector: TypedUseSelectorHook<AppRootState> = useSelector;
 
 // санки
 export const incrementAsync = (amount) => (dispatch) => {
@@ -45,3 +33,5 @@ export const incrementAsync = (amount) => (dispatch) => {
     dispatch(incrementByAmount(amount));
   }, 1000);
 };
+
+export default counterSlice.reducer;

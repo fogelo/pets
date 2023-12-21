@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
+import { useAppSelector } from "../../store/store";
 import {
-  useAppSelector,
   incremented,
   decremented,
   incrementAsync,
-} from "../stroe/store";
+} from "./counterSlice";
 
 const Counter = () => {
   const value = useAppSelector((state) => state.counter.value);
