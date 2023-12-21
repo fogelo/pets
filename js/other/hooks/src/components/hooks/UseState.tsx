@@ -20,7 +20,6 @@ function UseState() {
     setCount(count + 1);
     setCount(count + 1); 
     */
-
     // а вот так уже по 2 значения
     setCount((prevCount) => {
       return prevCount + 1;

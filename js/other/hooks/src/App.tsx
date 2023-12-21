@@ -12,11 +12,11 @@ import UseDebounce from "./components/customhooks/UseDebounce";
 import UseSyncExternalStore from "./components/hooks/UseSyncExternalStore/UseSyncExternalStore";
 
 function App() {
-  const [hello, setHello] = useState(false)
-  const [aaa, setAaa] = useState(false)
+  debugger;
+
   return (
     <>
-      {/* <UseState /> */}
+      <UseState />
       <div style={{ borderBottom: "1px solid", margin: "5px 0" }}></div>
       {/* <UseRef /> */}
       <div style={{ borderBottom: "1px solid", margin: "5px 0" }}></div>
@@ -34,7 +34,7 @@ function App() {
       <div style={{ borderBottom: "1px solid", margin: "5px 0" }}></div>
       {/* <UseDebounce /> */}
       <div style={{ borderBottom: "1px solid", margin: "5px 0" }}></div>
-      <UseSyncExternalStore />
+      {/* <UseSyncExternalStore /> */}
     </>
   );
 }
