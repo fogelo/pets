@@ -1,11 +1,12 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import reactLogo from "./assets/react.svg";
+import viteLogo from "/vite.svg";
+import "./App.css";
+import { useDispatch } from "react-redux";
+import { decremented, incremented, useAppSelector } from "./store/store";
 
 function App() {
-  const [count, setCount] = useState(0)
-
+  const value = useAppSelector((state) => state.counter.value);
+  const dispatch = useDispatch();
   return (
     <>
       <div>
@@ -18,18 +19,16 @@ function App() {
       </div>
       <h1>Vite + React</h1>
       <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
+        <div>count is {value}</div>
+        <button onClick={() => dispatch(incremented({ value: 1 }))}>
+          увеличить на 1
         </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
+        <button onClick={() => dispatch(decremented({ value: 1 }))}>
+          уменьшить на 1
+        </button>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
