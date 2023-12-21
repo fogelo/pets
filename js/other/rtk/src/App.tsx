@@ -2,11 +2,19 @@ import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
 import { useDispatch } from "react-redux";
-import { decremented, incremented, useAppSelector } from "./store/store";
+import {
+  decremented,
+  incrementAsync,
+  incremented,
+  useAppSelector,
+} from "./store/store";
+import { useState } from "react";
 
 function App() {
   const value = useAppSelector((state) => state.counter.value);
   const dispatch = useDispatch();
+
+  const [amount, setAmount] = useState(0);
   return (
     <>
       <div>
@@ -26,6 +34,14 @@ function App() {
         <button onClick={() => dispatch(decremented({ value: 1 }))}>
           уменьшить на 1
         </button>
+        <button onClick={() => dispatch(incrementAsync({ value: amount }))}>
+          увеличить на заданное число
+        </button>
+        <input
+          type="number"
+          value={amount}
+          onChange={(e) => setAmount(+e.target.value)}
+        />
       </div>
     </>
   );

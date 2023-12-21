@@ -18,10 +18,14 @@ const counterSlice = createSlice({
     decremented: (state, action) => {
       state.value = state.value - action.payload.value;
     },
+    incrementByAmount: (state, action) => {
+      state.value = state.value + action.payload.value;
+    },
   },
 });
 
-export const { incremented, decremented } = counterSlice.actions;
+export const { incremented, decremented, incrementByAmount } =
+  counterSlice.actions;
 
 export const store = configureStore({
   reducer: {
@@ -34,3 +38,10 @@ export type AppDispatch = typeof store.dispatch;
 
 export const useAppDispatch: () => AppDispatch = useDispatch; // полезене при использовании санок
 export const useAppSelector: TypedUseSelectorHook<AppRootState> = useSelector;
+
+// санки
+export const incrementAsync = (amount) => (dispatch) => {
+  setTimeout(() => {
+    dispatch(incrementByAmount(amount));
+  }, 1000);
+};
