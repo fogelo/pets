@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { useAppSelector } from "../../store/store";
 
 const PostsList = () => {
@@ -8,6 +9,7 @@ const PostsList = () => {
         <div key={post.id}>
           <h4>{post.title}</h4>
           <p>{post.content}</p>
+          <Link to={`/posts/${post.id}`}>View Post</Link>
         </div>
       ))}
     </>
