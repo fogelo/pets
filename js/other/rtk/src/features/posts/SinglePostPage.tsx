@@ -1,5 +1,6 @@
 import { Link, useParams } from "react-router-dom";
 import { useAppSelector } from "../../store/store";
+import PostAuthor from "./PostAuthor";
 
 const SinglePostPage = () => {
   const { postId } = useParams();
@@ -14,8 +15,11 @@ const SinglePostPage = () => {
   return (
     <div key={post.id}>
       <Link to={`/editPost/${post.id}`}>Edit Post</Link>
-      <h4>{post.title}</h4>
-      <p>{post.content}</p>
+      <h4>Title: {post.title}</h4>
+      <p>
+        Posted By: <PostAuthor userId={post.userId} />
+      </p>
+      <p>Content: {post.content}</p>
     </div>
   );
 };
