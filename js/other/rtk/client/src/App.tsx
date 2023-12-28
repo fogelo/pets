@@ -4,6 +4,9 @@ import PostsList from "./features/posts/PostsList";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import SinglePostPage from "./features/posts/SinglePostPage";
 import EditPostForm from "./features/posts/EditPostForm";
+import { useEffect } from "react";
+import { useAppDispatch } from "./store/store";
+import { fetchUsers } from "./features/users/usersSlice";
 
 const router = createBrowserRouter([
   {
@@ -34,6 +37,10 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(fetchUsers());
+  }, [dispatch]);
   return <RouterProvider router={router} />;
 }
 

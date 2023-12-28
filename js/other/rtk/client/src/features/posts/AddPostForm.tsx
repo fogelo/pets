@@ -1,5 +1,5 @@
 import { ChangeEvent, useState } from "react";
-import { postAdded } from "./postsSlice";
+import { addNewPost, postAdded } from "./postsSlice";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 
 const AddPostForm = () => {
@@ -8,7 +8,7 @@ const AddPostForm = () => {
   const [userId, setUserId] = useState("");
   const dispatch = useAppDispatch();
 
-  const users = useAppSelector((state) => state.users);
+  const { users } = useAppSelector((state) => state.users);
 
   const onTitleChanged = (e: ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
@@ -21,10 +21,12 @@ const AddPostForm = () => {
   };
 
   const onSavePostClicked = () => {
-    if (title && content) {
-      dispatch(postAdded(title, content, userId));
+    if (title && content && userId) {
+      // dispatch(postAdded(title, content, userId));
+      dispatch(addNewPost({ title, content, userId }));
       setTitle("");
       setContent("");
+      setUserId("");
     }
   };
 

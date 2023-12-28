@@ -1,18 +1,18 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { postUpdated, selectPostById } from "./postsSlice";
 import { useAppDispatch, useAppSelector } from "../../store/store";
-import { postUpdated } from "./postsSlice";
 
 const EditPostForm = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { postId } = useParams();
+  /*  */
+  const post = useAppSelector((state) => selectPostById(state, postId));
 
-  const post = useAppSelector((state) =>
-    state.posts.find((post) => post.id === postId)
-  );
   const [title, setTitle] = useState(post?.title);
   const [content, setContent] = useState(post?.content);
+
   const onSavePostClicked = () => {
     if (title && content) {
       dispatch(

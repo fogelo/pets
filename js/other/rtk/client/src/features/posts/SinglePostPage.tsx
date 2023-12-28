@@ -1,12 +1,12 @@
 import { Link, useParams } from "react-router-dom";
 import { useAppSelector } from "../../store/store";
 import PostAuthor from "./PostAuthor";
+import { selectPostById } from "./postsSlice";
+import ReactionButtons from "./ReactionButtons";
 
 const SinglePostPage = () => {
   const { postId } = useParams();
-  const post = useAppSelector((state) =>
-    state.posts.find((post) => post.id === postId)
-  );
+  const post = useAppSelector((state) => selectPostById(state, postId));
 
   if (!post) {
     return <div>Post not found!</div>;
@@ -16,10 +16,13 @@ const SinglePostPage = () => {
     <div key={post.id}>
       <Link to={`/editPost/${post.id}`}>Edit Post</Link>
       <h4>Title: {post.title}</h4>
-      <p>
+      <div>
         Posted By: <PostAuthor userId={post.userId} />
-      </p>
-      <p>Content: {post.content}</p>
+      </div>
+      <div>Content: {post.content}</div>
+      <div>
+        <ReactionButtons post={post} />
+      </div>
     </div>
   );
 };
