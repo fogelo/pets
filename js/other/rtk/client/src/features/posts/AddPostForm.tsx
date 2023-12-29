@@ -6,6 +6,8 @@ const AddPostForm = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [userId, setUserId] = useState("");
+  const [addRequestStatus, setAddRequestStatus] = useState("idle");
+
   const dispatch = useAppDispatch();
 
   const { users } = useAppSelector((state) => state.users);
@@ -20,17 +22,24 @@ const AddPostForm = () => {
     setUserId(e.target.value);
   };
 
-  const onSavePostClicked = () => {
-    if (title && content && userId) {
-      // dispatch(postAdded(title, content, userId));
-      dispatch(addNewPost({ title, content, userId }));
-      setTitle("");
-      setContent("");
-      setUserId("");
+  const canSave =
+    [title, content, userId].every(Boolean) && addRequestStatus === "idle";
+
+  const onSavePostClicked = async () => {
+    if (canSave) {
+      try {
+        setAddRequestStatus("pending");
+        await dispatch(addNewPost({ title, content, userId })).unwrap();
+        setTitle("");
+        setContent("");
+        setUserId("");
+      } catch (err) {
+        console.error("Ошибка при добавлении поста", err);
+      } finally {
+        setAddRequestStatus("idle");
+      }
     }
   };
-
-  const canSave = Boolean(title) && Boolean(content) && Boolean(userId);
 
   return (
     <form>

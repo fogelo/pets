@@ -128,8 +128,6 @@ export const fetchPosts = createAsyncThunk("posts/fetchPosts", async () => {
 export const addNewPost = createAsyncThunk(
   "posts/addNewPost",
   async (newPost: { title: string; content: string; userId: string }) => {
-    console.log(JSON.stringify(newPost));
-
     const response = await fetch("http://localhost:3000/posts", {
       method: "post",
       headers: {
@@ -137,8 +135,8 @@ export const addNewPost = createAsyncThunk(
       },
       body: JSON.stringify(newPost),
     });
-    const data = await response.json();
 
+    const data = await response.json();
     return data;
   }
 );
