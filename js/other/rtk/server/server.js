@@ -73,7 +73,7 @@ app.get("/posts", (req, res) => {
 app.post("/posts", (req, res) => {
   console.log(req.body);
   let newPost = {
-    id: +new Date(),
+    id: new Date(),
     title: req.body.title,
     content: req.body.content,
     date: sub(new Date(), { minutes: 10 }).toISOString(),

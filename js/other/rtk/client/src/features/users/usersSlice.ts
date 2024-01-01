@@ -36,6 +36,10 @@ export const selectUserById = (state: AppRootState, userId: string) => {
   return state.users.users.find((user) => user.id === userId);
 };
 
+export const selectAllUsers = (state: AppRootState) => {
+  return state.users.users;
+};
+
 // санки
 export const fetchUsers = createAsyncThunk("users/fetchUsers", async () => {
   const response = await fetch("http://localhost:3000/users");
