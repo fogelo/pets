@@ -1,6 +1,7 @@
 import {
   PayloadAction,
   createAsyncThunk,
+  createEntityAdapter,
   createSlice,
   nanoid,
 } from "@reduxjs/toolkit";
@@ -28,10 +29,15 @@ export enum RequestStatus {
   Failed = "failed",
 }
 
-const initialState: { posts: IPost[]; status: RequestStatus } = {
-  posts: [],
+const postsAdapter = createEntityAdapter<IPost>({
+  sortComparer: (a, b) =>
+    new Date(b.date).getTime() - new Date(a.date).getTime(),
+});
+
+const initialState = postsAdapter.getInitialState({
   status: RequestStatus.Idle,
-};
+  error: null,
+});
 
 const postsSlice = createSlice({
   name: "posts",
@@ -39,7 +45,7 @@ const postsSlice = createSlice({
   reducers: {
     postAdded: {
       reducer(state, action: PayloadAction<IPost>) {
-        state.posts.push(action.payload);
+        postsAdapter.addOne(state, action.payload);
       },
       // Какая-то предварительная логика подготовки перед добавлением поста
       prepare(title: string, content: string, userId) {
@@ -63,7 +69,7 @@ const postsSlice = createSlice({
     },
     postUpdated(state, action) {
       const { id, title, content } = action.payload;
-      const existingPost = state.posts.find((post) => post.id === id);
+      const existingPost = state.entities[id];
       if (existingPost) {
         existingPost.title = title;
         existingPost.content = content;
@@ -77,9 +83,9 @@ const postsSlice = createSlice({
       }>
     ) {
       const { postId, reaction } = action.payload;
-      const post = state.posts.find((post) => post.id === postId);
-      if (post) {
-        post.reactions[reaction]++;
+      const existingPost = state.entities[postId];
+      if (existingPost) {
+        existingPost.reactions[reaction]++;
       }
     },
   },
@@ -92,18 +98,14 @@ const postsSlice = createSlice({
         fetchPosts.fulfilled,
         (state, action: PayloadAction<IPost[]>) => {
           state.status = RequestStatus.Succeeded;
-          action.payload.forEach((newPost) => {
-            if (!state.posts.find((post) => post.id === newPost.id)) {
-              state.posts.push(newPost);
-            }
-          });
+          postsAdapter.upsertMany(state, action.payload);
         }
       )
       .addCase(fetchPosts.rejected, (state) => {
         state.status = RequestStatus.Failed;
-      }),
-      builder.addCase(addNewPost.fulfilled, (state, action) => {
-        state.posts.push(action.payload);
+      })
+      .addCase(addNewPost.fulfilled, (state, action) => {
+        postsAdapter.addOne(state, action.payload);
       });
   },
 });
@@ -111,10 +113,13 @@ const postsSlice = createSlice({
 export const { postAdded, postUpdated, reactionAdded } = postsSlice.actions;
 export const postsReducer = postsSlice.reducer;
 
-// селекторы
-export const selectAllPosts = (state: AppRootState) => state.posts.posts;
-export const selectPostById = (state: AppRootState, postId: string) =>
-  state.posts.posts.find((post) => post.id === postId);
+export const {
+  selectAll: selectAllPosts,
+  selectById: selectPostById,
+  selectIds: selectPostIds,
+  selectTotal: selectPostTotal,
+  selectEntities: selectPostEntities,
+} = postsAdapter.getSelectors<AppRootState>((state) => state.posts);
 
 // санки
 export const fetchPosts = createAsyncThunk("posts/fetchPosts", async () => {

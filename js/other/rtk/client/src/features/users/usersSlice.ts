@@ -1,4 +1,9 @@
-import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import {
+  PayloadAction,
+  createAsyncThunk,
+  createEntityAdapter,
+  createSlice,
+} from "@reduxjs/toolkit";
 import { AppRootState } from "../../store/store";
 
 interface IUser {
@@ -6,9 +11,8 @@ interface IUser {
   name: string;
 }
 
-const initialState: { users: IUser[] } = {
-  users: [],
-};
+const usersAdapter = createEntityAdapter<IUser>();
+const initialState = usersAdapter.getInitialState();
 
 const usersSlice = createSlice({
   name: "users",
@@ -18,12 +22,7 @@ const usersSlice = createSlice({
     builder.addCase(
       fetchUsers.fulfilled,
       (state, action: PayloadAction<IUser[]>) => {
-        state.users = action.payload;
-        // action.payload.forEach((newUser) => {
-        //   if (!state.users.find((user) => user.id === newUser.id)) {
-        //     state.users.push(newUser);
-        //   }
-        // });
+        usersAdapter.setAll(state, action.payload);
       }
     );
   },
@@ -32,13 +31,8 @@ const usersSlice = createSlice({
 export const usersReducer = usersSlice.reducer;
 
 // селекторы
-export const selectUserById = (state: AppRootState, userId: string) => {
-  return state.users.users.find((user) => user.id === userId);
-};
-
-export const selectAllUsers = (state: AppRootState) => {
-  return state.users.users;
-};
+export const { selectAll: selectAllUsers, selectById: selectUserById } =
+  usersAdapter.getSelectors<AppRootState>((state) => state.users);
 
 // санки
 export const fetchUsers = createAsyncThunk("users/fetchUsers", async () => {

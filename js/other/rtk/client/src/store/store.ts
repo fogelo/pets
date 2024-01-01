@@ -3,12 +3,14 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import counterReducer from "../features/counter/counterSlice";
 import { postsReducer } from "../features/posts/postsSlice";
 import { usersReducer } from "../features/users/usersSlice";
+import { notificationsReducer } from "../features/notificatins/notificationsSlice";
 
 export const store = configureStore({
   reducer: {
     counter: counterReducer,
     posts: postsReducer,
     users: usersReducer,
+    notifications: notificationsReducer,
   },
 });
 

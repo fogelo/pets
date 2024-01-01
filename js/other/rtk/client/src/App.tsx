@@ -5,12 +5,14 @@ import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 import SinglePostPage from "./features/posts/SinglePostPage";
 import EditPostForm from "./features/posts/EditPostForm";
 import { useEffect } from "react";
-import { useAppDispatch } from "./store/store";
+import { useAppDispatch, useAppSelector } from "./store/store";
 import { fetchUsers } from "./features/users/usersSlice";
 import UserList from "./features/users/UsersList";
 import UserPage from "./features/users/UserPage";
 import { fetchPosts } from "./features/posts/postsSlice";
 import Navbar from "./Navbar";
+import { fetchNotifications } from "./features/notificatins/notificationsSlice";
+import NotificationsList from "./features/notificatins/NotificationsList";
 
 const Layout = () => {
   return (
@@ -51,6 +53,10 @@ const router = createBrowserRouter([
         path: "/users/:userId",
         element: <UserPage />,
       },
+      {
+        path: "/notifications",
+        element: <NotificationsList />,
+      },
     ],
   },
   {
@@ -64,6 +70,7 @@ function App() {
   useEffect(() => {
     dispatch(fetchUsers());
     dispatch(fetchPosts());
+    dispatch(fetchNotifications());
   }, [dispatch]);
   return <RouterProvider router={router} />;
 }

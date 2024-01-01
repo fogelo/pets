@@ -54,6 +54,16 @@ const db = {
     { id: "1", name: "Kevin Grant" },
     { id: "2", name: "Madison Price" },
   ],
+  notifications: [
+    {
+      id: new Date().getTime(),
+      message: "hello",
+      date: new Date(),
+      userId: "1",
+      isNew: true,
+      read: false,
+    },
+  ],
 };
 
 const port = 3000;
@@ -98,3 +108,26 @@ app.get("/users", (req, res) => {
   }
   res.json(users);
 });
+app.get("/notifications", (req, res) => {
+  console.log(req.query);
+  let notifications;
+  if (req.query.since) {
+    notifications = db.notifications.filter(
+      (notification) => new Date(notification.date) > new Date(req.query.since)
+    );
+  } else {
+    notifications = db.notifications;
+  }
+  res.json(notifications);
+});
+
+setInterval(() => {
+  db.notifications.push({
+    id: new Date().getTime(),
+    message: "hello" + new Date(),
+    date: new Date(),
+    userId: "1",
+    isNew: true,
+    read: false,
+  });
+}, 10000);

@@ -3,10 +3,16 @@ import { useAppDispatch, useAppSelector } from "../../store/store";
 import PostAuthor from "./PostAuthor";
 import TimeAgo from "./TimeAgo";
 import ReactionButtons from "./ReactionButtons";
-import { IPost, RequestStatus, fetchPosts, selectAllPosts } from "./postsSlice";
+import {
+  RequestStatus,
+  fetchPosts,
+  selectPostById,
+  selectPostIds,
+} from "./postsSlice";
 import { useEffect } from "react";
 
-const PostExcerpt = ({ post }: { post: IPost }) => {
+const PostExcerpt = ({ postId }: { postId: string }) => {
+  const post = useAppSelector((state) => selectPostById(state, postId));
   return (
     <>
       <h4>{post.title}</h4>
@@ -27,11 +33,9 @@ const PostExcerpt = ({ post }: { post: IPost }) => {
 
 const PostsList = () => {
   const dispatch = useAppDispatch();
-  const posts = useAppSelector(selectAllPosts);
+  const orderedPostIds = useAppSelector(selectPostIds);
+
   const postRequestStatus = useAppSelector((state) => state.posts.status);
-  const orderedPosts = posts
-    .slice()
-    .sort((a, b) => b.date.localeCompare(a.date));
 
   useEffect(() => {
     if (postRequestStatus === RequestStatus.Idle) {
@@ -46,9 +50,9 @@ const PostsList = () => {
       ) : postRequestStatus === RequestStatus.Failed ? (
         <div>Some Error</div>
       ) : postRequestStatus === RequestStatus.Succeeded ? (
-        orderedPosts.map((post) => (
-          <div key={post.id}>
-            <PostExcerpt post={post} />
+        orderedPostIds.map((id) => (
+          <div key={id}>
+            <PostExcerpt postId={id} />
           </div>
         ))
       ) : null}
