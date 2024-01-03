@@ -42,7 +42,7 @@ const server2 = http.createServer(async (req, res) => {
   res.setHeader("Content-Type", "text/html; charset=utf-8");
   switch (req.url) {
 
-    
+
     case "/":
     case "/home": {
       //Можно использовать колбеки. Колбэк переданный в readFile вызовется после чтения файла
@@ -62,7 +62,7 @@ const server2 = http.createServer(async (req, res) => {
     case "/posts": {
       // можно обернуть в промис
       try {
-        const data = await readFile("./pags/posts.html");
+        const data = await readFile("./pages/posts.html");
         res.write(data);
         res.end();
       } catch (err) {
