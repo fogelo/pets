@@ -1,11 +1,11 @@
 import express, { Request, Response } from "express";
-const app = express();
+export const app = express();
 app.use(express.json()); // Для разбора JSON тел запросов
 
-const port = 3003;
+const port = 3004;
 
-const HTTP_STATUSES = {
-  OK: 200,
+export const HTTP_STATUSES = {
+  OK_200: 200,
   CREATED_201: 201,
   NO_CONTENT_204: 204,
 
@@ -30,16 +30,10 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 app.get("/courses", (req, res) => {
-  const limit = req.query.limit;
-  if (limit) {
-    if (isNaN(+limit)) {
-      res.sendStatus(HTTP_STATUSES.BAD_REQUEST_400);
-    } else {
-      const courses = db.courses.filter((course, index) => index < +limit);
-      res.json(courses);
-    }
-  }
+  res.status(HTTP_STATUSES.OK_200);
+  res.json(db.courses);
 });
+
 app.get("/courses/:id", (req, res) => {
   const course = db.courses.find((course) => course.id === req.params.id);
   if (course) res.json(course);
@@ -49,9 +43,10 @@ app.get("/courses/:id", (req, res) => {
 // post
 app.post("/courses", (req, res) => {
   const title = req.body.title;
-  debugger;
-  if (title) {
-    const newCourse = { id: new Date(), title };
+  const isTitleCorrect = typeof title === "string";
+  if (isTitleCorrect) {
+    const newCourse = { id: String(new Date()), title };
+    db.courses.push(newCourse);
     res.status(HTTP_STATUSES.CREATED_201);
     res.json(newCourse);
   } else {
@@ -86,6 +81,13 @@ app.put("/courses/:id", (req, res) => {
   }
 });
 
+// для тестов
+app.delete("/__test__/data", (req, res) => {
+  db.courses = [];
+  res.sendStatus(HTTP_STATUSES.NO_CONTENT_204);
+});
+
+// запускаем сервер
 app.listen(port, () => {
   console.log(`Server is running on ${port} port`);
 });
