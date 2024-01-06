@@ -9,3 +9,5 @@ git-submodules
 js/.DS_Store
 js/inc/server08/.DS_Store
 js/inc/.DS_Store
+js/inc/server15/.DS_Store
+js/inc/server15/__tests__/.DS_Store
