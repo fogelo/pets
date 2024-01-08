@@ -29,14 +29,8 @@ export const coursesRepository = {
     const foundCourse: ICourse | null = await coursesCollection.findOne({ id });
     return foundCourse;
   },
-  async createCourse(title: string): Promise<ICourse> {
-    const newCourse = {
-      id: new Date().toString(),
-      title,
-      studentCount: 0,
-    };
-    const result = await coursesCollection.insertOne(newCourse);
-
+  async createCourse(newCourse: ICourse): Promise<ICourse> {
+    await coursesCollection.insertOne(newCourse);
     return newCourse;
   },
   async updateCourse(id: string, title: string): Promise<boolean> {

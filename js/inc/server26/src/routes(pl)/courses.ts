@@ -1,9 +1,6 @@
 import express, { Response } from "express";
 import {
-  body,
-  query,
-  validationResult,
-  ValidationError,
+  body, ValidationError
 } from "express-validator";
 import { CourseViewModel } from "../models/CourseViewModel";
 import { CreateCourseModel } from "../models/CreateCourseModel";
@@ -13,8 +10,6 @@ import { UpdateCourseModel } from "../models/UpdateCourseModel";
 import { HTTP_STATUSES } from "../utils";
 import {
   ICourse,
-  IDb,
-  coursesRepository,
 } from "../db_repositories(dal)/courses_repository";
 import { inputValidationMiddleware } from "../middlewares/inputValidationMiddleware";
 import {
@@ -23,6 +18,7 @@ import {
   RequestWithBody,
   RequestWithParamsAndBody,
 } from "../types";
+import { coursesService } from "../domain(bll)/courses_service";
 
 const getCourseViewModel = (dbCourse: ICourse): CourseViewModel => ({
   id: dbCourse.id,
@@ -46,7 +42,7 @@ export const getCoursesRouter = () => {
       req: RequestWithQuery<QueryCourseModel>,
       res: Response<CourseViewModel[]>
     ) => {
-      const coursesPromise = coursesRepository.findCourses();
+      const coursesPromise = coursesService.findCourses();
       const courses = await coursesPromise;
       res.status(HTTP_STATUSES.OK_200);
       res.json(courses.map(getCourseViewModel));
@@ -59,7 +55,7 @@ export const getCoursesRouter = () => {
       req: RequestWithParams<URIParamsCourseIdModel>,
       res: Response<CourseViewModel>
     ) => {
-      const course = await coursesRepository.findCourseById(req.params.id);
+      const course = await coursesService.findCourseById(req.params.id);
       if (course) res.json({ id: course.id, title: course.title });
       else res.sendStatus(HTTP_STATUSES.NOT_FOUND_404);
     }
@@ -74,7 +70,7 @@ export const getCoursesRouter = () => {
       req: RequestWithBody<CreateCourseModel>,
       res: Response<CourseViewModel | ValidationError[]>
     ) => {
-      const newCourse = await coursesRepository.createCourse(req.body.title);
+      const newCourse = await coursesService.createCourse(req.body.title);
       res.status(HTTP_STATUSES.CREATED_201);
       res.json({
         id: newCourse.id,
@@ -90,7 +86,7 @@ export const getCoursesRouter = () => {
       req: RequestWithParams<URIParamsCourseIdModel>,
       res: Response<CourseViewModel>
     ) => {
-      const isDeleted = await coursesRepository.deleteCourse(req.params.id);
+      const isDeleted = await coursesService.deleteCourse(req.params.id);
       if (isDeleted) {
         res.sendStatus(HTTP_STATUSES.OK_200);
       } else {
@@ -108,12 +104,12 @@ export const getCoursesRouter = () => {
       req: RequestWithParamsAndBody<URIParamsCourseIdModel, UpdateCourseModel>,
       res: Response<CourseViewModel>
     ) => {
-      const isUpdated = await coursesRepository.updateCourse(
+      const isUpdated = await coursesService.updateCourse(
         req.params.id,
         req.body.title
       );
       if (isUpdated) {
-        const updatedCourse = await coursesRepository.findCourseById(
+        const updatedCourse = await coursesService.findCourseById(
           req.params.id
         );
         if (updatedCourse) {
