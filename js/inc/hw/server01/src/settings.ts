@@ -6,6 +6,7 @@ app.use(express.json());
 export enum Status {
   Ok_200 = 200,
   Created_201 = 201,
+  NoContent_204 = 204,
   BadRequest_400 = 400,
   NotFound_404 = 404,
 }
@@ -53,10 +54,20 @@ type Params = {
 };
 
 type RequestWithBody<B> = Request<any, any, B>;
+type RequestWithBodyAndParams<P, B> = Request<P, any, B>;
 
 export type CreateVideoType = {
   title: string;
   author: string;
+  availableResolutions: AvailableResolutions;
+};
+
+export type UpdateVideoType = {
+  title: string;
+  author: string;
+  canBeDownloaded: boolean;
+  minAgeRestriction: number | null;
+  publicationDate: string;
   availableResolutions: AvailableResolutions;
 };
 
@@ -160,9 +171,122 @@ app.post(
       publicationDate,
       availableResolutions,
     };
+    db.videos.push(video);
     res.status(Status.Created_201).json(video);
   }
 );
+
+app.put(
+  "/videos/:id",
+  (req: RequestWithBodyAndParams<Params, UpdateVideoType>, res) => {
+    let existingVideo = db.videos.find((video) => video.id === +req.params.id);
+
+    if (!existingVideo) {
+      res.sendStatus(Status.NotFound_404);
+      return;
+    }
+
+    let {
+      title,
+      author,
+      availableResolutions,
+      canBeDownloaded,
+      minAgeRestriction,
+      publicationDate,
+    } = req.body;
+
+    let error: ErrorType = {
+      errorsMessages: [],
+    };
+
+    if (typeof title !== "string" || title.length > 40) {
+      error.errorsMessages.push({
+        message: "Incorrect title",
+        field: "title",
+      });
+    }
+
+    if (typeof author !== "string" || author.length > 20) {
+      error.errorsMessages.push({
+        message: "Incorrect author",
+        field: "author",
+      });
+    }
+
+    if (Array.isArray(availableResolutions)) {
+      availableResolutions.forEach((availableResolution) => {
+        if (!resolutions.includes(availableResolution)) {
+          error.errorsMessages.push({
+            message: "Incorrect availableResolution",
+            field: "availableResolution",
+          });
+          return;
+        }
+      });
+    } else {
+      availableResolutions = [];
+    }
+
+    if (
+      typeof minAgeRestriction !== "number" &&
+      minAgeRestriction !== null &&
+      !(minAgeRestriction <= 1) &&
+      !(minAgeRestriction >= 18)
+    ) {
+      error.errorsMessages.push({
+        message: "Incorrect minAgeRestriction",
+        field: "minAgeRestriction",
+      });
+    }
+
+    if (typeof canBeDownloaded !== "boolean") {
+      error.errorsMessages.push({
+        message: "Incorrect canBeDownloaded",
+        field: "canBeDownloaded",
+      });
+    }
+
+    if (typeof publicationDate !== "string") {
+      error.errorsMessages.push({
+        message: "Incorrect publicationDate",
+        field: "publicationDate",
+      });
+    }
+
+    if (error.errorsMessages.length > 0) {
+      res.status(Status.BadRequest_400).json(error);
+      return;
+    }
+
+    const updatedVideoData: UpdateVideoType = {
+      title,
+      author,
+      availableResolutions,
+      canBeDownloaded,
+      minAgeRestriction,
+      publicationDate,
+    };
+
+    db.videos = db.videos.map((video) =>
+      video.id === +req.params.id ? { ...video, ...updatedVideoData } : video
+    );
+
+    res.sendStatus(Status.NoContent_204);
+  }
+);
+
+app.delete("/videos/:id", (req, res) => {
+  let existingVideo = db.videos.find((video) => video.id === +req.params.id);
+
+  if (!existingVideo) {
+    res.sendStatus(Status.NotFound_404);
+    return;
+  }
+
+  db.videos = db.videos.filter((video) => video.id !== +req.params.id);
+  db.videos.length = 0;
+  res.sendStatus(Status.Ok_200);
+});
 
 app.delete("/testing/all-data", (req, res) => {
   db.videos.length = 0;
