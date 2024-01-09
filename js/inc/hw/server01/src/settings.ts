@@ -290,5 +290,5 @@ app.delete("/videos/:id", (req, res) => {
 
 app.delete("/testing/all-data", (req, res) => {
   db.videos.length = 0;
-  res.sendStatus(Status.Ok_200);
+  res.sendStatus(Status.NoContent_204);
 });
