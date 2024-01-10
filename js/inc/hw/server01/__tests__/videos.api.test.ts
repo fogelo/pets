@@ -86,7 +86,7 @@ describe("/videos", () => {
     const response1 = await request(app).get("/videos").expect(Status.Ok_200);
     const gotVideo: VideoType = response1.body[0];
 
-    await request(app).delete(`/videos/${gotVideo.id}`).expect(Status.Ok_200);
+    await request(app).delete(`/videos/${gotVideo.id}`).expect(Status.NoContent_204);
     await request(app)
       .get(`/videos/${gotVideo.id}`)
       .expect(Status.NotFound_404);
