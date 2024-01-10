@@ -230,8 +230,8 @@ app.put(
     if (
       typeof minAgeRestriction !== "number" &&
       minAgeRestriction !== null &&
-      !(minAgeRestriction <= 1) &&
-      !(minAgeRestriction >= 18)
+      (minAgeRestriction <= 1) &&
+      (minAgeRestriction >= 18)
     ) {
       error.errorsMessages.push({
         message: "Incorrect minAgeRestriction",
