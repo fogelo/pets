@@ -102,7 +102,6 @@ app.get("/videos", (req: Request, res) => {
 app.get(
   "/videos/:id",
   (req: RequestWithParams<Params>, res: Response<VideoType>) => {
-    debugger;
     const video = db.videos.find((video) => video.id === +req.params.id);
     if (video) {
       res.status(Status.Ok_200).json(video);
