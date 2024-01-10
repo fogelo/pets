@@ -67,7 +67,7 @@ export type UpdateVideoType = {
   author: string;
   canBeDownloaded: boolean;
   minAgeRestriction: number | null;
-  // publicationDate: string;
+  publicationDate: string;
   availableResolutions: AvailableResolutions;
 };
 
@@ -262,7 +262,7 @@ app.put(
       availableResolutions,
       canBeDownloaded,
       minAgeRestriction,
-      // publicationDate,
+      publicationDate,
     };
 
     db.videos = db.videos.map((video) =>
