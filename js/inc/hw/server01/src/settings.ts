@@ -142,8 +142,8 @@ app.post(
       availableResolutions.forEach((availableResolution) => {
         if (!resolutions.includes(availableResolution)) {
           error.errorsMessages.push({
-            message: "Incorrect availableResolution",
-            field: "availableResolution",
+            message: "Incorrect availableResolutions",
+            field: "availableResolutions",
           });
           return;
         }
