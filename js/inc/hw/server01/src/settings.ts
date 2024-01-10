@@ -157,7 +157,7 @@ app.post(
     }
 
     const id = new Date().getTime();
-    const date = new Date().toISOString();
+    const date = new Date();
 
     const video = {
       id,
@@ -165,8 +165,8 @@ app.post(
       author,
       canBeDownloaded: false,
       minAgeRestriction: null,
-      createdAt: date,
-      publicationDate: date,
+      createdAt: date.toISOString(),
+      publicationDate: new Date(date.setDate(date.getDate() + 1)).toISOString(),
       availableResolutions,
     };
     db.videos.push(video);
