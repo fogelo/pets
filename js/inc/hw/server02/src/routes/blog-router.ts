@@ -55,7 +55,7 @@ blogRouter.post(
     };
 
     BlogRepository.createBlog(newBlog);
-    res.sendStatus(Status.Created_201);
+    res.status(Status.Created_201).json(newBlog);
   }
 );
 

@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
+    "test": "jest --detectOpenHandles",
     "watch": "tsc -w",
     "dev": "nodemon --inspect ./dist/index.js"
   },

@@ -1,6 +1,11 @@
 import request from "supertest";
 import { app } from "../src/settings";
 import { IError, Status } from "../src/types";
+import {
+  maxDescLength,
+  maxNameLength,
+  maxWebsiteUrlLength,
+} from "../src/validators/blog-validators";
 
 export const correctBlogData = {
   name: "google",
@@ -8,65 +13,72 @@ export const correctBlogData = {
   websiteUrl: "https://www.google.com",
 };
 
-const updatedCorrectBlogData = {
-  name: "google2",
-  description: "search engine2",
-  websiteUrl: "https://www.google2.com",
-};
+enum Fields {
+  Name = "name",
+  Description = "description",
+  WebsiteUrl = "websiteUrl",
+}
 
-const incorrectBlogData = {
-  name: "google",
-  description: "search engine",
-  websiteUrl: 123,
-};
+const invalidInputTestCases: [string, any, string][] = [
+  [
+    `${Fields.Name}`,
+    123,
+    `Sending a non-string value for ${Fields.Name} should result in an error`,
+  ],
+  [
+    `${Fields.Name}`,
+    "a".repeat(maxNameLength + 1),
+    `Sending a value for ${Fields.Name} longer than ${maxNameLength} characters should result in an error`,
+  ],
+  [
+    `${Fields.Description}`,
+    123,
+    `Sending a non-string value for ${Fields.Description} should result in an error`,
+  ],
+  [
+    `${Fields.Description}`,
+    "a".repeat(maxDescLength + 1),
+    `Sending a value for ${Fields.Description} longer than ${maxDescLength} characters should result in an error`,
+  ],
+  [
+    `${Fields.WebsiteUrl}`,
+    "123",
+    `Sending an incorrectly formatted ${Fields.WebsiteUrl} should result in an error`,
+  ],
+  [
+    `${Fields.WebsiteUrl}`,
+    "a".repeat(maxWebsiteUrlLength + 1),
+    `Sending a value for ${Fields.WebsiteUrl} longer than ${maxWebsiteUrlLength} characters should result in an error`,
+  ],
+];
 
-describe("/blogs", () => {
+describe("/blogs POST", () => {
   beforeAll(async () => {
     await request(app).delete("/testing/all-data").auth("admin", "qwerty");
   });
 
-  it("responds error with description field", async () => {
-    const blog = {
-      name: "google",
-      description: 123,
-      websiteUrl: "https://www.google.com",
-    };
+  invalidInputTestCases.forEach(([field, value, message]) => {
+    it(message, async () => {
+      const testData = { ...correctBlogData, [field]: value };
+      const response = await request(app)
+        .post("/blogs")
+        .auth("admin", "qwerty")
+        .send(testData)
+        .expect(Status.BadRequest_400);
 
-    const expectedError: IError = {
-      errorsMessages: [
-        { field: expect.any(String), message: expect.any(String) },
-      ],
-    };
-
-    const { body: error } = await request(app)
-      .post("/blogs")
-      .auth("admin", "qwerty")
-      .send(blog)
-      .expect(Status.BadRequest_400);
-
-    expect(error).toEqual(expectedError);
+      const error = response.body;
+      const expectedError: IError = {
+        errorsMessages: [{ field, message: expect.any(String) }],
+      };
+      expect(error).toEqual(expectedError);
+    });
   });
 
-  it("the title should not contain more than 15 characters", async () => {
-    const blog = {
-      name: "more than 15 characters",
-      description: "search engine",
-      websiteUrl: "https://www.google.com",
-    };
-
-    const expectedError: IError = {
-      errorsMessages: [
-        { field: expect.any(String), message: expect.any(String) },
-      ],
-    };
-
-    const { body: error } = await request(app)
+  it("should be auth error", async () => {
+    await request(app)
       .post("/blogs")
-      .auth("admin", "qwerty")
-      .send(blog)
-      .expect(Status.BadRequest_400);
-
-    expect(error).toEqual(expectedError);
+      .send(correctBlogData)
+      .expect(Status.Unauthorized_401);
   });
 
   it("the blog must be created", async () => {
@@ -76,73 +88,128 @@ describe("/blogs", () => {
       .send(correctBlogData)
       .expect(Status.Created_201);
   });
+});
 
-  it("all blogs must be received without auth", async () => {
-    const response = await request(app).get("/blogs").expect(Status.Ok_200);
-    const blogs = response.body;
-    expect(blogs).toEqual([{ id: expect.any(String), ...correctBlogData }]);
+describe("/blogs PUT", () => {
+  let blogId: string;
 
-    expect.setState({ blogId: blogs[0]?.id });
-  });
-
-  it("the blog must be received by id without auth", async () => {
-    const { blogId } = expect.getState();
+  beforeAll(async () => {
+    await request(app).delete("/testing/all-data").auth("admin", "qwerty");
     const response = await request(app)
-      .get(`/blogs/${blogId}`)
-      .expect(Status.Ok_200);
-
-    const blog = response.body;
-
-    expect(blog).toEqual({ id: expect.any(String), ...correctBlogData });
+      .post("/blogs")
+      .auth("admin", "qwerty")
+      .send(correctBlogData);
+    blogId = response.body.id;
   });
 
-  it("should be 404 status when there is no blog", async () => {
-    await request(app).get("/blogs/123").expect(Status.NotFound_404);
+  invalidInputTestCases.forEach(([field, value, message]) => {
+    it(message, async () => {
+      const testData = { ...correctBlogData, [field]: value };
+      const response = await request(app)
+        .put(`/blogs/${blogId}`)
+        .auth("admin", "qwerty")
+        .send(testData)
+        .expect(Status.BadRequest_400);
+
+      const error = response.body;
+      const expectedError: IError = {
+        errorsMessages: [{ field, message: expect.any(String) }],
+      };
+      expect(error).toEqual(expectedError);
+    });
   });
 
-  it("the blog must be updated correctly", async () => {
+  it("should be auth error", async () => {
+    await request(app)
+      .put(`/blogs/${blogId}`)
+      .send(correctBlogData)
+      .expect(Status.Unauthorized_401);
+  });
+
+  it("the blog must be updated", async () => {
+    await request(app)
+      .put(`/blogs/${blogId}`)
+      .auth("admin", "qwerty")
+      .send(correctBlogData)
+      .expect(Status.NoContent_204);
+  });
+
+  it("the blog must be updated", async () => {
     await request(app)
       .put("/blogs/123")
       .auth("admin", "qwerty")
       .send(correctBlogData)
       .expect(Status.NotFound_404);
+  });
+});
 
-    const { blogId } = expect.getState();
+describe("/blogs GET", () => {
+  let blogId: string;
+  beforeAll(async () => {
+    await request(app).delete("/testing/all-data").auth("admin", "qwerty");
 
-    await request(app)
-      .put(`/blogs/${blogId}`)
-      .send(correctBlogData)
-      .expect(Status.Unauthorized_401);
-
-    await request(app)
-      .put(`/blogs/${blogId}`)
+    const response = await request(app)
+      .post("/blogs")
       .auth("admin", "qwerty")
-      .send(incorrectBlogData)
-      .expect(Status.BadRequest_400);
+      .send(correctBlogData);
+    blogId = response.body.id;
+  });
 
-    await request(app)
-      .put(`/blogs/${blogId}`)
-      .auth("admin", "qwerty")
-      .send(updatedCorrectBlogData)
-      .expect(Status.NoContent_204);
+  it("all blogs must be received", async () => {
+    const response = await request(app).get("/blogs").expect(Status.Ok_200);
+    const allBlogs = response.body;
+    const expectedAllBlogs = [
+      {
+        id: blogId,
+        ...correctBlogData,
+      },
+    ];
+    expect(allBlogs).toEqual(expectedAllBlogs);
+  });
 
+  it("the blog should be received by id", async () => {
     const response = await request(app)
       .get(`/blogs/${blogId}`)
       .expect(Status.Ok_200);
+
     const blog = response.body;
-    expect(blog).toEqual({ id: blogId, ...updatedCorrectBlogData });
+    const expectedBlog = {
+      id: blogId,
+      ...correctBlogData,
+    };
+
+    expect(blog).toEqual(expectedBlog);
+  });
+});
+
+describe("/blogs DELETE", () => {
+  let blogId: string;
+
+  beforeAll(async () => {
+    await request(app).delete("/testing/all-data").auth("admin", "qwerty");
+
+    const response = await request(app)
+      .post("/blogs")
+      .auth("admin", "qwerty")
+      .send(correctBlogData);
+    blogId = response.body.id;
   });
 
-  it("the blog should be deleted", async () => {
-    await request(app).delete("/blogs/123").expect(Status.Unauthorized_401);
+  it("should be 401 auth error", async () => {
+    await request(app)
+      .delete(`/blogs/${blogId}`)
+      .auth("admin", "qwert1")
+      .expect(Status.Unauthorized_401);
+  });
 
+  it("there should be a 404 status when deleting a non-existent blog", async () => {
     await request(app)
       .delete("/blogs/123")
       .auth("admin", "qwerty")
       .expect(Status.NotFound_404);
+  });
 
-    const { blogId } = expect.getState();
-
+  it("the blog should be deleted", async () => {
     await request(app)
       .delete(`/blogs/${blogId}`)
       .auth("admin", "qwerty")
