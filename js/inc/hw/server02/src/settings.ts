@@ -1,10 +1,13 @@
 import express from "express";
-import { authMiddleware } from "./middlewares/auth-middleware";
+import { blogRouter } from "./routes/blog-router";
+import { testRouter } from "./routes/test-router";
+import { postRouter } from "./routes/post-router";
 export const app = express();
 
-//middlewares
-app.use(authMiddleware);
+// middlewares
+app.use(express.json());
 
-app.get("/", (req, res) => {
-  res.send("Hello World!");
-});
+//routers
+app.use("/blogs", blogRouter);
+app.use("/posts", postRouter);
+app.use("/testing", testRouter);

@@ -11,7 +11,7 @@ export const authMiddleware = (
   next: NextFunction
 ) => {
   const authorization = req.headers.authorization;
-
+  
   /* Простой вариант без декодирования
   if (authorization !== "Basic YWRtaW46cXdlcnR5") {
     res.sendStatus(401);
