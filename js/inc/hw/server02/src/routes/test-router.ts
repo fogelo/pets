@@ -1,7 +1,6 @@
 import { Router, Response } from "express";
 import { db } from "../db/db";
 import { Status } from "../types";
-import { authMiddleware } from "../middlewares/auth-middleware";
 
 export const testRouter = Router();
 

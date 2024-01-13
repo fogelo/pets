@@ -19,21 +19,6 @@ export interface IDb {
 }
 
 export const db: IDb = {
-  blogs: [
-    {
-      id: "1",
-      name: "string",
-      description: "string",
-      websiteUrl: "string",
-    },
-  ],
-  posts: [
-    {
-      id: "string",
-      title: "string",
-      shortDescription: "string",
-      content: "string",
-      blogId: "string",
-    },
-  ],
+  blogs: [],
+  posts: [],
 };
