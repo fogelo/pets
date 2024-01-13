@@ -4,7 +4,9 @@ export const maxNameLength = 15;
 const nameValidation = body("name")
   .isString()
   .withMessage("name must be a string")
-  // .trim()
+  .trim()
+  .isEmpty()
+  .withMessage("name is an empty string")
   .isLength({ max: maxNameLength })
   .withMessage(`name must be no more than ${maxNameLength} chars`);
 
