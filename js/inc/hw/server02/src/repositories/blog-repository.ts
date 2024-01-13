@@ -1,4 +1,5 @@
 import { IBlogDb, IPostDb, db } from "../db/db";
+import { IPostInputModel } from "../types";
 
 export class BlogRepository {
   static getAllBlogs() {
@@ -27,14 +28,14 @@ export class PostRepository {
   }
   static getPostById(id: string) {
     const post = db.posts.find((post) => post.id === id);
-    return post || null;
+    return post;
   }
   static createPost(post: IPostDb) {
     db.posts.push(post);
   }
-  static updatePost(post: IPostDb) {
+  static updatePost(id: string, post: IPostInputModel) {
     db.posts = db.posts.map((dbPost) =>
-      dbPost.id === post.id ? post : dbPost
+      dbPost.id === id ? { ...dbPost, post } : dbPost
     );
   }
   static deletePost(id: string) {

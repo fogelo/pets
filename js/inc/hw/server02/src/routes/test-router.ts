@@ -7,5 +7,6 @@ export const testRouter = Router();
 
 testRouter.delete("/all-data", authMiddleware, (_, res: Response) => {
   db.blogs = [];
+  db.posts = [];
   res.sendStatus(Status.NoContent_204);
 });

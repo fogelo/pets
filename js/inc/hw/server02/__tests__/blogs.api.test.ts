@@ -1,17 +1,12 @@
 import request from "supertest";
 import { app } from "../src/settings";
-import { IError, Status } from "../src/types";
+import { IBlogInputModel, IError, Status } from "../src/types";
 import {
   maxDescLength,
   maxNameLength,
   maxWebsiteUrlLength,
 } from "../src/validators/blog-validators";
-
-export const correctBlogData = {
-  name: "google",
-  description: "search engine",
-  websiteUrl: "https://www.google.com",
-};
+import { correctInputBlogData } from "../__mocks__/commonTestData";
 
 enum Fields {
   Name = "name",
@@ -57,9 +52,16 @@ describe("/blogs POST", () => {
     await request(app).delete("/testing/all-data").auth("admin", "qwerty");
   });
 
+  it("should be auth error", async () => {
+    await request(app)
+      .post("/blogs")
+      .send(correctInputBlogData)
+      .expect(Status.Unauthorized_401);
+  });
+
   invalidInputTestCases.forEach(([field, value, message]) => {
     it(message, async () => {
-      const testData = { ...correctBlogData, [field]: value };
+      const testData = { ...correctInputBlogData, [field]: value };
       const response = await request(app)
         .post("/blogs")
         .auth("admin", "qwerty")
@@ -74,18 +76,11 @@ describe("/blogs POST", () => {
     });
   });
 
-  it("should be auth error", async () => {
-    await request(app)
-      .post("/blogs")
-      .send(correctBlogData)
-      .expect(Status.Unauthorized_401);
-  });
-
   it("the blog must be created", async () => {
     await request(app)
       .post("/blogs")
       .auth("admin", "qwerty")
-      .send(correctBlogData)
+      .send(correctInputBlogData)
       .expect(Status.Created_201);
   });
 });
@@ -98,13 +93,13 @@ describe("/blogs PUT", () => {
     const response = await request(app)
       .post("/blogs")
       .auth("admin", "qwerty")
-      .send(correctBlogData);
+      .send(correctInputBlogData);
     blogId = response.body.id;
   });
 
   invalidInputTestCases.forEach(([field, value, message]) => {
     it(message, async () => {
-      const testData = { ...correctBlogData, [field]: value };
+      const testData = { ...correctInputBlogData, [field]: value };
       const response = await request(app)
         .put(`/blogs/${blogId}`)
         .auth("admin", "qwerty")
@@ -122,7 +117,7 @@ describe("/blogs PUT", () => {
   it("should be auth error", async () => {
     await request(app)
       .put(`/blogs/${blogId}`)
-      .send(correctBlogData)
+      .send(correctInputBlogData)
       .expect(Status.Unauthorized_401);
   });
 
@@ -130,7 +125,7 @@ describe("/blogs PUT", () => {
     await request(app)
       .put(`/blogs/${blogId}`)
       .auth("admin", "qwerty")
-      .send(correctBlogData)
+      .send(correctInputBlogData)
       .expect(Status.NoContent_204);
   });
 
@@ -138,7 +133,7 @@ describe("/blogs PUT", () => {
     await request(app)
       .put("/blogs/123")
       .auth("admin", "qwerty")
-      .send(correctBlogData)
+      .send(correctInputBlogData)
       .expect(Status.NotFound_404);
   });
 });
@@ -151,7 +146,7 @@ describe("/blogs GET", () => {
     const response = await request(app)
       .post("/blogs")
       .auth("admin", "qwerty")
-      .send(correctBlogData);
+      .send(correctInputBlogData);
     blogId = response.body.id;
   });
 
@@ -161,7 +156,7 @@ describe("/blogs GET", () => {
     const expectedAllBlogs = [
       {
         id: blogId,
-        ...correctBlogData,
+        ...correctInputBlogData,
       },
     ];
     expect(allBlogs).toEqual(expectedAllBlogs);
@@ -175,7 +170,7 @@ describe("/blogs GET", () => {
     const blog = response.body;
     const expectedBlog = {
       id: blogId,
-      ...correctBlogData,
+      ...correctInputBlogData,
     };
 
     expect(blog).toEqual(expectedBlog);
@@ -191,7 +186,7 @@ describe("/blogs DELETE", () => {
     const response = await request(app)
       .post("/blogs")
       .auth("admin", "qwerty")
-      .send(correctBlogData);
+      .send(correctInputBlogData);
     blogId = response.body.id;
   });
 
