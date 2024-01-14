@@ -24,7 +24,8 @@ type CreateBlogType = {
 };
 
 blogRouter.get("/", (req: Request, res: Response) => {
-  res.send(db.blogs);
+  const blogs = BlogRepository.getAllBlogs();
+  res.send(blogs);
 });
 
 blogRouter.get(
