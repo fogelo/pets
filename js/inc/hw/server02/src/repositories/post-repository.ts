@@ -1,7 +1,6 @@
 import { db, IPostDb } from "../db/db";
 import { IPostInputModel } from "../types";
 
-
 export class PostRepository {
   static getAllPosts() {
     return db.posts;
@@ -14,7 +13,8 @@ export class PostRepository {
     db.posts.push(post);
   }
   static updatePost(id: string, post: IPostInputModel) {
-    db.posts = db.posts.map((dbPost) => dbPost.id === id ? { ...dbPost, post } : dbPost
+    db.posts = db.posts.map((dbPost) =>
+      dbPost.id === id ? { ...dbPost, ...post } : dbPost
     );
   }
   static deletePost(id: string) {
