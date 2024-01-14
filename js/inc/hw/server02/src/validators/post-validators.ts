@@ -33,13 +33,17 @@ const contentValidator = body("content")
   .isLength({ max: maxContentLength })
   .withMessage(`content max length is ${maxContentLength} chars`);
 
-const blogIdValidator = body("blogId").custom((blogId) => {
-  const existingBlog = BlogRepository.getBlogById(blogId);
-  if (!existingBlog) {
-    throw new Error("icorrect blogId");
-  }
-  return true;
-});
+const blogIdValidator = body("blogId")
+  .isString()
+  .withMessage("content should be a string")
+  .custom((blogId) => {
+    const existingBlog = BlogRepository.getBlogById(blogId);
+    console.log(existingBlog)
+    if (!existingBlog) {
+      throw new Error("incorrect blogId");
+    }
+    return true;
+  });
 
 export const postValidation = () => [
   titleValidator,
