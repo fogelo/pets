@@ -9,8 +9,8 @@ import {
 } from "../types";
 import {
   BlogRepository,
-  PostRepository,
 } from "../repositories/blog-repository";
+import { PostRepository } from "../repositories/post-repository";
 import { authMiddleware } from "../middlewares/auth-middleware";
 import { IPostDb } from "../db/db";
 import { postValidation } from "../validators/post-validators";

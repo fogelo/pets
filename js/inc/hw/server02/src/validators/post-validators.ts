@@ -32,6 +32,7 @@ const blogIdValidator = body("blogId").custom((blogId) => {
   if (!existingBlog) {
     throw new Error("icorrect blogId");
   }
+  return true;
 });
 
 export const postValidation = () => [

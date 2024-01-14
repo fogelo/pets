@@ -1,7 +1,7 @@
 import { body } from "express-validator";
 
 export const maxNameLength = 15;
-const nameValidation = body("name")
+const nameValidator = body("name")
   .isString()
   .withMessage("name must be a string")
   .trim()
@@ -11,7 +11,7 @@ const nameValidation = body("name")
   .withMessage(`name must be no more than ${maxNameLength} chars`);
 
 export const maxDescLength = 500;
-const descriptionValidation = body("description")
+const descriptionValidator = body("description")
   .isString()
   .withMessage("description must be a string")
   // .trim()
@@ -19,7 +19,7 @@ const descriptionValidation = body("description")
   .withMessage(`description must be no more than ${maxDescLength} chars`);
 
 export const maxWebsiteUrlLength = 100;
-const websiteUrlValidation = body("websiteUrl")
+const websiteUrlValidator = body("websiteUrl")
   .isString()
   .withMessage("websiteUrl must be a string")
   // .trim()
@@ -29,7 +29,7 @@ const websiteUrlValidation = body("websiteUrl")
   .withMessage("websiteUrl does not match the pattern");
 
 export const blogValidation = () => [
-  nameValidation,
-  descriptionValidation,
-  websiteUrlValidation,
+  nameValidator,
+  descriptionValidator,
+  websiteUrlValidator,
 ];
