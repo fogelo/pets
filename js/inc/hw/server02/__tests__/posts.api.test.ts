@@ -60,11 +60,11 @@ const invalidInputTestCases: [string, any, string][] = [
     "a".repeat(maxContentLength + 1),
     `Sending a value for ${Fields.Content} longer than ${maxContentLength} characters should result in an error`,
   ],
-  // [
-  //   `${Fields.BlogId}`,
-  //   123,
-  //   `Sending a non-string value for ${Fields.BlogId} should result in an error`,
-  // ],
+  [
+    `${Fields.BlogId}`,
+    123,
+    `Sending a non-string value for ${Fields.BlogId} should result in an error`,
+  ],
 ];
 
 describe("/posts POST", () => {
@@ -90,8 +90,8 @@ describe("/posts POST", () => {
     it(message, async () => {
       const testData = {
         ...correctInputPostData,
-        [field]: value,
         blogId: blog.id,
+        [field]: value,
       };
       const response = await request(app)
         .post("/posts")
@@ -192,20 +192,6 @@ describe("/posts PUT", () => {
       expect(error).toEqual(expectedError);
     });
   });
-
-  // it("the blog should be received by id", async () => {
-  //   const response = await request(app)
-  //     .get(`/posts/${post.id}`)
-  //     .expect(Status.Ok_200);
-
-  //   const blog = response.body;
-  //   const expectedBlog = {
-  //     id: blogId,
-  //     ...correctInputBlogData,
-  //   };
-
-  //   expect(blog).toEqual(expectedBlog);
-  // });
 });
 
 describe("/posts GET", () => {

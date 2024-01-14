@@ -31,7 +31,7 @@ blogRouter.get("/", (req: Request, res: Response) => {
 blogRouter.get(
   "/:id",
   (req: RequestWithParams<Params>, res: Response<IBlogDb>) => {
-    const blog = db.blogs.find((blog) => blog.id === req.params.id);
+    const blog = BlogRepository.getBlogById(req.params.id);
     if (blog) {
       res.status(Status.Ok_200).json(blog);
     } else {
@@ -94,7 +94,7 @@ blogRouter.delete(
     if (!existingBlog) {
       res.sendStatus(Status.NotFound_404);
     }
-
+    BlogRepository.deleteBlog(req.params.id);
     res.sendStatus(Status.NoContent_204);
   }
 );

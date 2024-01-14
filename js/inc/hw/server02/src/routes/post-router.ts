@@ -7,9 +7,7 @@ import {
   RequestWithParams,
   Status,
 } from "../types";
-import {
-  BlogRepository,
-} from "../repositories/blog-repository";
+import { BlogRepository } from "../repositories/blog-repository";
 import { PostRepository } from "../repositories/post-repository";
 import { authMiddleware } from "../middlewares/auth-middleware";
 import { IPostDb } from "../db/db";
@@ -108,7 +106,7 @@ postRouter.put(
       blogName: blog ? blog.name : "",
     };
 
-    res.status(Status.Created_201).json(newPostView);
+    res.status(Status.NoContent_204).json(newPostView);
   }
 );
 

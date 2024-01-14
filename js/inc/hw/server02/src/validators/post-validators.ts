@@ -38,7 +38,6 @@ const blogIdValidator = body("blogId")
   .withMessage("content should be a string")
   .custom((blogId) => {
     const existingBlog = BlogRepository.getBlogById(blogId);
-    console.log(existingBlog)
     if (!existingBlog) {
       throw new Error("incorrect blogId");
     }
