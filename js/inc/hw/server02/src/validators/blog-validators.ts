@@ -14,7 +14,9 @@ export const maxDescLength = 500;
 const descriptionValidator = body("description")
   .isString()
   .withMessage("description must be a string")
-  // .trim()
+  .trim()
+  .notEmpty()
+  .withMessage("description is an empty string")
   .isLength({ max: maxDescLength })
   .withMessage(`description must be no more than ${maxDescLength} chars`);
 
@@ -22,7 +24,6 @@ export const maxWebsiteUrlLength = 100;
 const websiteUrlValidator = body("websiteUrl")
   .isString()
   .withMessage("websiteUrl must be a string")
-  // .trim()
   .isLength({ max: maxWebsiteUrlLength })
   .withMessage(`websiteUrl must be no more than ${maxWebsiteUrlLength} chars`)
   .matches("^https://([a-zA-Z0-9_-]+.)+[a-zA-Z0-9_-]+(/[a-zA-Z0-9_-]+)*/?$")
