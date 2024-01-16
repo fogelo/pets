@@ -5,7 +5,7 @@ import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 import SinglePostPage from "./features/posts/SinglePostPage";
 import EditPostForm from "./features/posts/EditPostForm";
 import { useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "./store/store";
+import { useAppDispatch } from "./store/store";
 import { fetchUsers } from "./features/users/usersSlice";
 import UserList from "./features/users/UsersList";
 import UserPage from "./features/users/UserPage";
