@@ -6,15 +6,23 @@ import {
   selectAllNotifications,
 } from "./notificationsSlice";
 import { useLayoutEffect } from "react";
+import { useGetUsersQuery } from "../api/usersSlice";
 
 const NotificationsList = () => {
   const notifications = useAppSelector(selectAllNotifications);
-  const users = useAppSelector(selectAllUsers);
   const dispatch = useAppDispatch();
+
+  const {
+    data: users,
+    isLoading,
+    isSuccess,
+    isError,
+    error,
+    refetch,
+  } = useGetUsersQuery(null);
 
   useLayoutEffect(() => {
     dispatch(allNotificationsRead());
-    console.log(notifications);
   });
 
   return (

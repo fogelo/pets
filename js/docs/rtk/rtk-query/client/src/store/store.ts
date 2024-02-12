@@ -9,8 +9,8 @@ import { apiSlice } from "../features/api/apiSlice";
 export const store = configureStore({
   reducer: {
     counter: counterReducer,
-    posts: postsReducer,
-    users: usersReducer,
+    // posts: postsReducer,
+    // users: usersReducer,
     notifications: notificationsReducer,
     [apiSlice.reducerPath]: apiSlice.reducer,
   },

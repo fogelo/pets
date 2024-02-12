@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../../store/store";
+// import { useAppDispatch, useAppSelector } from "../../store/store";
 import PostAuthor from "./PostAuthor";
 import TimeAgo from "./TimeAgo";
 import ReactionButtons from "./ReactionButtons";
@@ -12,6 +12,7 @@ import {
 } from "./postsSlice";
 import { useEffect } from "react";
 import { useGetPostsQuery } from "../api/apiSlice";
+import { useSelector } from "react-redux";
 
 const PostExcerpt = ({ post }: { post: IPost }) => {
   return (
@@ -41,9 +42,7 @@ const PostsList = () => {
     isError,
     error,
     refetch,
-  } = useGetPostsQuery(null);
-
-  console.log(posts);
+  } = useGetPostsQuery(undefined);
 
   // То есть useGetPostsQuery заменяет все это
   /*   const dispatch = useAppDispatch();

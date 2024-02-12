@@ -9,9 +9,9 @@ const SinglePostPage = () => {
   const { postId } = useParams();
   const { data: post, isFetching, isSuccess } = useGetPostQuery(postId);
 
-  // if (!post) {
-  //   return <div>Post not found!</div>;
-  // }
+  if (!post) {
+    return <div>Post not found!</div>;
+  }
 
   if (isFetching) {
     return "Загрузка";

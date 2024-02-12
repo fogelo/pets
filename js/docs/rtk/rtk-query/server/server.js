@@ -1,19 +1,24 @@
 // import Express from "express";
 const express = require("express");
 const { sub } = require("date-fns");
+var cors = require("cors");
 
 const app = express();
 //подключение middleware
-app.use((req, res, next) => {
-  // res.header("Access-Control-Allow-Origin", "*"); // Разрешить доступ всем источникам
-  res.header("Access-Control-Allow-Origin", "http://localhost:5173"); // Разрешить запросы с этого источника
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
-  );
-  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-  next();
-});
+// app.use((req, res, next) => {
+//   // res.header("Access-Control-Allow-Origin", "*"); // Разрешить доступ всем источникам
+//   res.header("Access-Control-Allow-Origin", "http://localhost:5173"); // Разрешить запросы с этого источника
+//   res.header(
+//     "Access-Control-Allow-Headers",
+//     "Origin, X-Requested-With, Content-Type, Accept"
+//   );
+//   res.header(
+//     "Access-Control-Allow-Methods",
+//     "GET, POST, PATCH, PUT, DELETE, OPTIONS"
+//   );
+//   next();
+// });
+app.use(cors());
 
 const jsonBodyMiddleWare = express.json();
 app.use(jsonBodyMiddleWare); //появится поле body в стуктуре request
@@ -87,9 +92,8 @@ app.get("/posts/:id", (req, res) => {
 });
 
 app.post("/posts", (req, res) => {
-  console.log(req.body);
   let newPost = {
-    id: new Date(),
+    id: new Date().getTime().toString(),
     title: req.body.title,
     content: req.body.content,
     date: sub(new Date(), { minutes: 10 }).toISOString(),
@@ -106,6 +110,30 @@ app.post("/posts", (req, res) => {
   res.json(newPost);
 });
 
+app.patch("/posts/:id", (req, res) => {
+  db.posts = db.posts.map((post) =>
+    post.id === req.params.id ? { ...post, ...req.body } : post
+  );
+  res.sendStatus(200);
+});
+
+app.post("/posts/:id/reactions", (req, res) => {
+  console.log(req.body);
+  const reactionName = req.body.reactionName;
+  db.posts = db.posts.map((post) =>
+    post.id === req.params.id
+      ? {
+          ...post,
+          reactions: {
+            ...post.reactions,
+            [reactionName]: post.reactions[reactionName] + 1,
+          },
+        }
+      : post
+  );
+  res.sendStatus(200);
+});
+
 // пользователи
 app.get("/users", (req, res) => {
   let users = db.users;
@@ -115,7 +143,6 @@ app.get("/users", (req, res) => {
   res.json(users);
 });
 app.get("/notifications", (req, res) => {
-  console.log(req.query);
   let notifications;
   if (req.query.since) {
     notifications = db.notifications.filter(

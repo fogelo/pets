@@ -2,26 +2,29 @@ import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { postUpdated, selectPostById } from "./postsSlice";
 import { useAppDispatch, useAppSelector } from "../../store/store";
+import { useEditPostMutation, useGetPostQuery } from "../api/apiSlice";
 
 const EditPostForm = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { postId } = useParams();
   /*  */
-  const post = useAppSelector((state) => selectPostById(state, postId));
+  // const post = useAppSelector((state) => selectPostById(state, postId));
+
+  const { data: post, isFetching, isSuccess } = useGetPostQuery(postId);
+  const [updatePost, { isLoading }] = useEditPostMutation();
 
   const [title, setTitle] = useState(post?.title);
   const [content, setContent] = useState(post?.content);
 
-  const onSavePostClicked = () => {
+  const onSavePostClicked = async () => {
     if (title && content) {
-      dispatch(
-        postUpdated({
-          id: postId,
-          title,
-          content,
-        })
-      );
+      await updatePost({
+        id: postId,
+        title,
+        content,
+      });
+
       navigate(`/posts/${postId}`);
     }
   };

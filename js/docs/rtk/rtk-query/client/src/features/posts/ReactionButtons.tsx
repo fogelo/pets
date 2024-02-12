@@ -1,4 +1,5 @@
 import { useAppDispatch } from "../../store/store";
+import { useAddReactionMutation } from "../api/apiSlice";
 import { IPost, reactionAdded } from "./postsSlice";
 
 interface IProps {
@@ -15,14 +16,15 @@ const reactionEmoji = {
 
 const ReactionButtons = ({ post }: IProps) => {
   const dispatch = useAppDispatch();
+
+  const [addReaction, { isLoading }] = useAddReactionMutation();
+
   return (
     <div>
       {Object.entries(reactionEmoji).map(([name, emoji]) => (
         <button
           key={name}
-          onClick={() =>
-            dispatch(reactionAdded({ postId: post.id, reaction: name }))
-          }
+          onClick={() => addReaction({ postId: post.id, reactionName: name })}
         >
           {emoji} {post.reactions[name]}
         </button>

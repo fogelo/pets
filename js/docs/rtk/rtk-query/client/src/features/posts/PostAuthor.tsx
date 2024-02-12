@@ -1,12 +1,19 @@
-import { useAppSelector } from "../../store/store";
-import { selectUserById } from "../users/usersSlice";
+import { useGetUserQuery } from "../api/usersSlice";
 
 interface IProps {
   userId: string;
 }
 
 const PostAuthor = ({ userId }: IProps) => {
-  const author = useAppSelector((state) => selectUserById(state, userId));
+  const {
+    data: author,
+    isLoading,
+    isSuccess,
+    isError,
+    error,
+    refetch,
+  } = useGetUserQuery(userId);
+
   return <span>{author ? author.name : "Unknown author"}</span>;
 };
 

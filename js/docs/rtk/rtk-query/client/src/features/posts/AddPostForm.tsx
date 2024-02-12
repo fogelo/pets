@@ -1,8 +1,6 @@
 import { ChangeEvent, useState } from "react";
-// import { addNewPost, postAdded } from "./postsSlice";
-import { useAppDispatch, useAppSelector } from "../../store/store";
-import { selectAllUsers } from "../users/usersSlice";
 import { useAddNewPostMutation } from "../api/apiSlice";
+import { useGetUsersQuery } from "../api/usersSlice";
 
 const AddPostForm = () => {
   const [title, setTitle] = useState("");
@@ -10,11 +8,18 @@ const AddPostForm = () => {
   const [userId, setUserId] = useState("");
   const [addRequestStatus, setAddRequestStatus] = useState("idle");
 
-  const dispatch = useAppDispatch();
-
   const [addNewPost, { isLoading }] = useAddNewPostMutation();
 
-  const users = useAppSelector(selectAllUsers);
+  const {
+    data: users,
+    isLoading: isLoadingUsers,
+    isSuccess,
+    isError,
+    error,
+    refetch,
+  } = useGetUsersQuery(null);
+
+  console.log(users);
 
   const onTitleChanged = (e: ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
@@ -44,7 +49,9 @@ const AddPostForm = () => {
       }
     }
   };
-
+if(!users) {
+  return <div>users not exist</div>
+}
   return (
     <form>
       <h2>Add a New Post</h2>
