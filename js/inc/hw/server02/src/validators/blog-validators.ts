@@ -33,4 +33,5 @@ export const blogValidation = () => [
   nameValidator,
   descriptionValidator,
   websiteUrlValidator,
+  
 ];
