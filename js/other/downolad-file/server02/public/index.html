@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Загрузка и скачивание файлов</title>
+  </head>
+  <body>
+    <input type="file" id="fileInput" />
+    <button onclick="uploadFile()">Загрузить файл</button>
+    <input
+      type="text"
+      id="downloadInput"
+      placeholder="Имя файла для скачивания"
+    />
+    <button onclick="downloadFile()">Скачать файл</button>
+    <div id="message"></div>
+
+    <script>
+      function uploadFile() {
+        const fileInput = document.getElementById("fileInput");
+        const file = fileInput.files[0];
+        if (!file) {
+          alert("Выберите файл для загрузки");
+          return;
+        }
+
+        const formData = new FormData();
+        formData.append("file", file);
+
+        fetch("/upload", {
+          method: "POST",
+          body: formData,
+        })
+          .then((response) => response.json())
+          .then(
+            (data) =>
+              (document.getElementById("message").innerText = data.message)
+          )
+          .catch((error) => console.error("Ошибка:", error));
+      }
+
+      function downloadFile() {
+        const filename = document.getElementById("downloadInput").value;
+        if (!filename) {
+          alert("Введите имя файла для скачивания");
+          return;
+        }
+
+        window.location.href = `/download/${filename}`;
+      }
+    </script>
+  </body>
+</html>
