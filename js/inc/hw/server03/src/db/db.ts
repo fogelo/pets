@@ -12,6 +12,7 @@ export const client = new MongoClient(uri);
 // Database Name
 const dbName = "inc-hw";
 
+
 export const db = client.db(dbName);
 export const blogsCollection = db.collection("blogs");
 export const postsCollection = db.collection("posts");
