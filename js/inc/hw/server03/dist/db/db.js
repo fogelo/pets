@@ -13,7 +13,11 @@ exports.runDb = exports.postsCollection = exports.blogsCollection = exports.db =
 const mongodb_1 = require("mongodb");
 // Connection URL
 // const url = "mongodb://localhost:27017";
-const uri = "mongodb+srv://admin:admin@cluster0.0xxdbix.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+// const uri = "mongodb+srv://admin:admin@cluster0.0xxdbix.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+const uri = process.env.MONGO_URI;
+if (!uri) {
+    throw new Error("uri is undefined");
+}
 exports.client = new mongodb_1.MongoClient(uri);
 // Database Name
 const dbName = "inc-hw";
