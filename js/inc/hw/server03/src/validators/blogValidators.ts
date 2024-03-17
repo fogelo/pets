@@ -29,8 +29,10 @@ const websiteUrlValidator = body("websiteUrl")
   .matches("^https://([a-zA-Z0-9_-]+.)+[a-zA-Z0-9_-]+(/[a-zA-Z0-9_-]+)*/?$")
   .withMessage("websiteUrl does not match the pattern");
 
+const isMembershipValidator = body("isMembership").isBoolean();
 export const blogValidation = () => [
   nameValidator,
   descriptionValidator,
-  websiteUrlValidator, 
+  websiteUrlValidator,
+  isMembershipValidator,
 ];
