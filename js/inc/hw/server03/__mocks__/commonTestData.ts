@@ -1,6 +1,6 @@
-import { IBlogInputModel } from "../src/types";
+import { CreateBlogModel } from "../src/models/input/blog/create-blog-input-model";
 
-export const correctInputBlogData: IBlogInputModel = {
+export const correctInputBlogData: CreateBlogModel = {
   name: "google",
   description: "search engine",
   websiteUrl: "https://www.google.com",

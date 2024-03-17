@@ -1,12 +1,12 @@
 import request from "supertest";
+import { correctInputBlogData } from "../__mocks__/commonTestData";
 import { app } from "../src/settings";
-import { IBlogInputModel, IError, Status } from "../src/types";
+import { IError, Status } from "../src/types";
 import {
   maxDescLength,
   maxNameLength,
   maxWebsiteUrlLength,
 } from "../src/validators/blog-validators";
-import { correctInputBlogData } from "../__mocks__/commonTestData";
 
 enum Fields {
   Name = "name",

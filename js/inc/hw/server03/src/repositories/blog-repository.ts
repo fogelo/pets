@@ -1,23 +1,41 @@
-import { IBlogDb, db } from "../db/db";
+import { ObjectId } from "mongodb";
+import { blogsCollection } from "../db/db";
+import { BlogDbType } from "../models/db/blog-db";
+import { blogMapper } from "../models/mappers/blog-mapper";
+import { BlogOutputModel } from "../models/output/blog-output-model";
+import { CreateBlogModel } from "../models/input/blog/create-blog-input-model";
 
 export class BlogRepository {
-  static getAllBlogs() {
-    return db.blogs;
+  static async getAllBlogs(): Promise<BlogOutputModel[]> {
+    const blogs = await blogsCollection.find<BlogDbType>({}).toArray();
+    return blogs.map(blogMapper);
   }
-  static getBlogById(id: string) {
-    const blog = db.blogs.find((blog) => blog.id === id);
-    return blog || null;
+  static async getBlogById(id: string) {
+    const blog = await blogsCollection.findOne<BlogDbType>({
+      _id: new ObjectId(id),
+    });
+    if (!blog) return null;
+    return blogMapper(blog);
   }
-  static createBlog(blog: IBlogDb) {
-    db.blogs.push(blog);
+  static async createBlog(blog: CreateBlogModel): Promise<string> {
+    const res = await blogsCollection.insertOne(blog);
+    return res.insertedId.toString();
   }
-  static updateBlog(blog: IBlogDb) {
-    db.blogs = db.blogs.map((dbBlog) =>
-      dbBlog.id === blog.id ? blog : dbBlog
+  static async updateBlog(id: string, blog: CreateBlogModel): Promise<boolean> {
+    const res = await blogsCollection.updateOne(
+      { _id: new ObjectId(id) },
+      {
+        $set: {
+          name: blog.name,
+          description: blog.description,
+          websiteUrl: blog.websiteUrl,
+        },
+      }
     );
+    return !!res.matchedCount;
   }
-  static deleteBlog(id: string) {
-    db.blogs = db.blogs.filter((blog) => blog.id !== id);
+  static async deleteBlog(id: string) {
+    const res = await blogsCollection.deleteOne({ _id: new ObjectId(id) });
+    return !!res.deletedCount;
   }
 }
-

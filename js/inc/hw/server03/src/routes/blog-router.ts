@@ -1,6 +1,5 @@
 import { Router, Request, Response } from "express";
 import { authMiddleware } from "../middlewares/auth-middleware";
-import { IBlogDb, db } from "../db/db";
 import { blogValidation } from "../validators/blog-validators";
 import { inputValidationMiddleware } from "../middlewares/inputValidationMiddleware";
 import { Status } from "../types";
@@ -10,28 +9,32 @@ import {
   RequestWithBody,
   RequestWithBodyAndParams,
 } from "../types";
+import { BlogOutputModel } from "../models/output/blog-output-model";
+import { ObjectId } from "mongodb";
+import { CreateBlogModel } from "../models/input/blog/create-blog-input-model";
+import { UpdateBlogModel } from "../models/input/blog/update-blog-input-model";
 
 export const blogRouter = Router({});
 
-type Params = {
+export type Params = {
   id: string;
 };
 
-type CreateBlogType = {
-  name: string;
-  description: string;
-  websiteUrl: string;
-};
-
-blogRouter.get("/", (req: Request, res: Response) => {
-  const blogs = BlogRepository.getAllBlogs();
+blogRouter.get("/", async (req: Request, res: Response) => {
+  const blogs = await BlogRepository.getAllBlogs();
   res.send(blogs);
 });
 
 blogRouter.get(
   "/:id",
-  (req: RequestWithParams<Params>, res: Response<IBlogDb>) => {
-    const blog = BlogRepository.getBlogById(req.params.id);
+  async (req: RequestWithParams<Params>, res: Response<BlogOutputModel>) => {
+    const id = req.params.id;
+    if (!ObjectId.isValid(id)) {
+      res.sendStatus(Status.NotFound_404);
+      return;
+    }
+
+    const blog = await BlogRepository.getBlogById(id);
     if (blog) {
       res.status(Status.Ok_200).json(blog);
     } else {
@@ -45,18 +48,23 @@ blogRouter.post(
   authMiddleware,
   blogValidation(),
   inputValidationMiddleware,
-  (req: RequestWithBody<CreateBlogType>, res: Response) => {
+  async (req: RequestWithBody<CreateBlogModel>, res: Response) => {
     const { name, description, websiteUrl } = req.body;
 
-    const newBlog = {
-      id: new Date().getTime().toString(),
+    const blogData = {
       name,
       description,
       websiteUrl,
     };
 
-    BlogRepository.createBlog(newBlog);
-    res.status(Status.Created_201).json(newBlog);
+    const blogId = await BlogRepository.createBlog(blogData);
+    const blog = await BlogRepository.getBlogById(blogId);
+    if (!blog) {
+      res.sendStatus(Status.NotFound_404);
+      return;
+    }
+
+    res.status(Status.Created_201).json(blog);
   }
 );
 
@@ -65,23 +73,29 @@ blogRouter.put(
   authMiddleware,
   blogValidation(),
   inputValidationMiddleware,
-  (
-    req: RequestWithBodyAndParams<{ id: string }, CreateBlogType>,
+  async (
+    req: RequestWithBodyAndParams<Params, UpdateBlogModel>,
     res: Response
   ) => {
-    let existingBlog = db.blogs.find((blog) => blog.id === req.params.id);
+    const id = req.params.id;
+    if (!ObjectId.isValid(id)) {
+      res.sendStatus(Status.NotFound_404);
+      return;
+    }
 
+    let existingBlog = await BlogRepository.getBlogById(id);
     if (!existingBlog) {
       res.sendStatus(Status.NotFound_404);
       return;
     }
+
     const { name, description, websiteUrl } = req.body;
-    BlogRepository.updateBlog({
-      id: req.params.id,
+    const blogData = {
       name,
       description,
       websiteUrl,
-    });
+    };
+    await BlogRepository.updateBlog(id, blogData);
     res.sendStatus(Status.NoContent_204);
   }
 );
@@ -89,12 +103,23 @@ blogRouter.put(
 blogRouter.delete(
   "/:id",
   authMiddleware,
-  (req: RequestWithParams<Params>, res: Response) => {
-    const existingBlog = BlogRepository.getBlogById(req.params.id);
+  async (req: RequestWithParams<Params>, res: Response) => {
+    const id = req.params.id;
+
+    if (!ObjectId.isValid(id)) {
+      res.sendStatus(Status.NotFound_404);
+      return;
+    }
+
+    const existingBlog = await BlogRepository.getBlogById(id);
     if (!existingBlog) {
       res.sendStatus(Status.NotFound_404);
     }
-    BlogRepository.deleteBlog(req.params.id);
+    const isDeleted = await BlogRepository.deleteBlog(id);
+    if (!isDeleted) {
+      res.sendStatus(Status.NotFound_404);
+      return;
+    }
     res.sendStatus(Status.NoContent_204);
   }
 );

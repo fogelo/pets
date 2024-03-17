@@ -1,19 +1,18 @@
 import request from "supertest";
 import { app } from "../src/settings";
+import { IError, Status } from "../src/types";
+import { CreatePostInputModel } from "../src/models/input/post/create-post-input-model";
 import {
-  IBlogInputModel,
-  IBlogViewModel,
-  IError,
-  IPostInputModel,
-  IPostViewModel,
-  Status,
-} from "../src/types";
+  EnchancedPostOutputModel,
+  PostOutputModel,
+} from "../src/models/output/post-output-model";
 import {
   maxContentLength,
   maxShortDescriptionLength,
   maxTitleLength,
 } from "../src/validators/post-validators";
 import { correctInputBlogData } from "../__mocks__/commonTestData";
+import { BlogOutputModel } from "../src/models/output/blog-output-model";
 
 const correctInputPostData = {
   title: "string",
@@ -68,7 +67,7 @@ const invalidInputTestCases: [string, any, string][] = [
 ];
 
 describe("/posts POST", () => {
-  let blog: IBlogViewModel;
+  let blog: BlogOutputModel;
   beforeAll(async () => {
     await request(app).delete("/testing/all-data").auth("admin", "qwerty");
 
@@ -108,7 +107,7 @@ describe("/posts POST", () => {
   });
 
   it("should be created post", async () => {
-    const postRequestBody: IPostInputModel = {
+    const postRequestBody: CreatePostInputModel = {
       ...correctInputPostData,
       blogId: blog.id,
     };
@@ -119,9 +118,9 @@ describe("/posts POST", () => {
       .send(postRequestBody)
       .expect(Status.Created_201);
 
-    const postResponseBody: IPostViewModel = postResponse.body;
+    const postResponseBody: PostOutputModel = postResponse.body;
 
-    const expectedPost: IPostViewModel = {
+    const expectedPost: EnchancedPostOutputModel = {
       id: postResponseBody.id,
       ...correctInputPostData,
       blogId: blog.id,
@@ -133,9 +132,9 @@ describe("/posts POST", () => {
 });
 
 describe("/posts PUT", () => {
-  let blog: IBlogViewModel;
-  let post: IPostViewModel;
-  let postRequestBody: IPostInputModel;
+  let blog: BlogOutputModel;
+  let post: EnchancedPostOutputModel;
+  let postRequestBody: CreatePostInputModel;
 
   beforeAll(async () => {
     await request(app).delete("/testing/all-data").auth("admin", "qwerty");
@@ -195,9 +194,9 @@ describe("/posts PUT", () => {
 });
 
 describe("/posts GET", () => {
-  let blog: IBlogViewModel;
-  let post: IPostViewModel;
-  let postRequestBody: IPostInputModel;
+  let blog: BlogOutputModel;
+  let post: PostOutputModel;
+  let postRequestBody: CreatePostInputModel;
 
   beforeAll(async () => {
     await request(app).delete("/testing/all-data").auth("admin", "qwerty");
@@ -226,7 +225,7 @@ describe("/posts GET", () => {
     const response = await request(app).get("/posts").expect(Status.Ok_200);
     const allPosts = response.body;
 
-    const expectedPost: IPostViewModel = {
+    const expectedPost: EnchancedPostOutputModel = {
       id: expect.any(String),
       ...correctInputPostData,
       blogId: blog.id,
@@ -242,7 +241,7 @@ describe("/posts GET", () => {
       .get(`/posts/${post.id}`)
       .expect(Status.Ok_200);
 
-    const expectedPost: IPostViewModel = {
+    const expectedPost: EnchancedPostOutputModel = {
       id: expect.any(String),
       ...correctInputPostData,
       blogId: blog.id,
@@ -254,9 +253,9 @@ describe("/posts GET", () => {
 });
 
 describe("/posts DELETE", () => {
-  let blog: IBlogViewModel;
-  let post: IPostViewModel;
-  let postRequestBody: IPostInputModel;
+  let blog: BlogOutputModel;
+  let post: PostOutputModel;
+  let postRequestBody: CreatePostInputModel;
 
   beforeAll(async () => {
     await request(app).delete("/testing/all-data").auth("admin", "qwerty");
@@ -302,5 +301,3 @@ describe("/posts DELETE", () => {
       .expect(Status.NoContent_204);
   });
 });
-
-

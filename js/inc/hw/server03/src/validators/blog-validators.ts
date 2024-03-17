@@ -32,6 +32,5 @@ const websiteUrlValidator = body("websiteUrl")
 export const blogValidation = () => [
   nameValidator,
   descriptionValidator,
-  websiteUrlValidator,
-  
+  websiteUrlValidator, 
 ];

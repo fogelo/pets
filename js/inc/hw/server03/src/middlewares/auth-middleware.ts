@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from "express";
+import { Status } from "../types";
 
 const user = {
   login: "admin",
@@ -19,14 +20,14 @@ export const authMiddleware = (
 */
 
   if (!authorization) {
-    res.sendStatus(401);
+    res.sendStatus(Status.Unauthorized_401);
     return;
   }
 
   const [basic, token] = authorization?.split(" ");
 
   if (basic !== "Basic") {
-    res.sendStatus(401);
+    res.sendStatus(Status.Unauthorized_401);
     return;
   }
 
@@ -34,7 +35,7 @@ export const authMiddleware = (
   const [login, password] = decodedToken.split(":");
 
   if (login !== user.login || password !== user.password) {
-    res.sendStatus(401);
+    res.sendStatus(Status.Unauthorized_401);
     return;
   }
 

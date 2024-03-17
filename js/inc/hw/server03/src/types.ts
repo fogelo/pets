@@ -17,35 +17,6 @@ export interface IErrorMessage {
   field: string;
 }
 
-// блоги
-export interface IBlogInputModel {
-  name: string;
-  description: string;
-  websiteUrl: string;
-}
-export interface IBlogViewModel {
-  id: string;
-  name: string;
-  description: string;
-  websiteUrl: string;
-}
-
-// посты
-export interface IPostInputModel {
-  title: string;
-  shortDescription: string;
-  content: string;
-  blogId: string;
-}
-export interface IPostViewModel {
-  id: string;
-  title: string;
-  shortDescription: string;
-  content: string;
-  blogId: string;
-  blogName: string;
-}
-
 // Requset
 export type RequestWithBody<B> = Request<{}, {}, B>;
 export type RequestWithParams<P> = Request<P>;
