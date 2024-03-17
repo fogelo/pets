@@ -55,7 +55,7 @@ blogRouter.post(
       name,
       description,
       websiteUrl,
-      isMembership,
+      isMembership: isMembership ?? true,
       createdAt: new Date().toISOString(),
     };
 

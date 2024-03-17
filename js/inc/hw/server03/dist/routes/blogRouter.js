@@ -42,7 +42,7 @@ exports.blogRouter.post("/", authMiddleware_1.authMiddleware, (0, blogValidators
         name,
         description,
         websiteUrl,
-        isMembership,
+        isMembership: isMembership !== null && isMembership !== void 0 ? isMembership : true,
         createdAt: new Date().toISOString(),
     };
     const blogId = yield blogRepository_1.BlogRepository.createBlog(blogData);
