@@ -1,18 +1,22 @@
-import { ObjectId, WithId } from "mongodb";
+import { ObjectId } from "mongodb";
 import { postsCollection } from "../db/db";
-import { PostDbType } from "../models/db/post-db";
-import { CreatePostInputModel } from "../models/input/post/create-post-input-model";
-import { UpdatePostInputModel } from "../models/input/post/update-post-input-model";
-import { postMapper } from "../models/mappers/post-mapper";
-import { PostOutputModel } from "../models/output/post-output-model";
+import { PostDbModel } from "../models/db/postDbModel";
+import { CreatePostInputModel } from "../models/input/post/createPostInputModel";
+import { UpdatePostInputModel } from "../models/input/post/updatePostInputModel";
+import { postMapper } from "../models/mappers/postMapper";
+import { PostOutputModel } from "../models/output/postOutputModel";
 
 export class PostRepository {
-  static async getAllPosts(): Promise<PostOutputModel[]> {
-    const posts = await postsCollection.find<PostDbType>({}).toArray();
+  static async getAllPosts(): Promise<
+    (Omit<PostDbModel, "_id"> & { id: string })[]
+  > {
+    const posts = await postsCollection.find<PostDbModel>({}).toArray();
     return posts.map(postMapper);
   }
-  static async getPostById(id: string): Promise<PostOutputModel | null> {
-    const post = await postsCollection.findOne<PostDbType>({
+  static async getPostById(
+    id: string
+  ): Promise<(Omit<PostDbModel, "_id"> & { id: string }) | null> {
+    const post = await postsCollection.findOne<PostDbModel>({
       _id: new ObjectId(id),
     });
     if (!post) return null;

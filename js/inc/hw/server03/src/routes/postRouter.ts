@@ -1,32 +1,27 @@
-import { Router, Request, Response } from "express";
+import { Request, Response, Router } from "express";
+import { ObjectId } from "mongodb";
+import { authMiddleware } from "../middlewares/authMiddleware";
+import { inputValidationMiddleware } from "../middlewares/inputValidationMiddleware";
+import { CreatePostInputModel } from "../models/input/post/createPostInputModel";
+import { UpdatePostInputModel } from "../models/input/post/updatePostInputModel";
+import { BlogRepository } from "../repositories/blogRepository";
+import { PostRepository } from "../repositories/postRepository";
 import {
   RequestWithBody,
   RequestWithBodyAndParams,
   RequestWithParams,
   Status,
 } from "../types";
-import { CreatePostInputModel } from "../models/input/post/create-post-input-model";
-import {
-  EnchancedPostOutputModel,
-  PostOutputModel,
-} from "../models/output/post-output-model";
-import { BlogRepository } from "../repositories/blog-repository";
-import { PostRepository } from "../repositories/post-repository";
-import { authMiddleware } from "../middlewares/auth-middleware";
-import { PostDbType } from "../models/db/post-db";
-import { postValidation } from "../validators/post-validators";
-import { inputValidationMiddleware } from "../middlewares/inputValidationMiddleware";
-import { Params } from "./blog-router";
-import { ObjectId } from "mongodb";
-import { UpdatePostInputModel } from "../models/input/post/update-post-input-model";
-import { CreateBlogModel } from "../models/input/blog/create-blog-input-model";
+import { postValidation } from "../validators/postValidators";
+import { Params } from "./blogRouter";
+import { PostOutputModel } from "../models/output/postOutputModel";
 
 export const postRouter = Router();
 
 postRouter.get("/", async (req: Request, res: Response) => {
   const dbPosts = await PostRepository.getAllPosts();
   const dbBlogs = await BlogRepository.getAllBlogs();
-  const posts: EnchancedPostOutputModel[] = dbPosts.map((post) => {
+  const posts: PostOutputModel[] = dbPosts.map((post) => {
     const blog = dbBlogs.find((blog) => blog.id.toString() === post.blogId);
     return {
       ...post,
@@ -38,10 +33,7 @@ postRouter.get("/", async (req: Request, res: Response) => {
 
 postRouter.get(
   "/:id",
-  async (
-    req: RequestWithParams<Params>,
-    res: Response<EnchancedPostOutputModel>
-  ) => {
+  async (req: RequestWithParams<Params>, res: Response<PostOutputModel>) => {
     const id = req.params.id;
 
     if (!ObjectId.isValid(id)) {
@@ -87,7 +79,7 @@ postRouter.post(
     }
 
     const blog = await BlogRepository.getBlogById(blogId);
-    const newPostView: EnchancedPostOutputModel = {
+    const newPostView: PostOutputModel = {
       ...post,
       blogName: blog ? blog.name : "",
     };
@@ -130,7 +122,7 @@ postRouter.put(
       return;
     }
 
-    const newPostView: EnchancedPostOutputModel = {
+    const newPostView: PostOutputModel = {
       ...post,
       blogName: blog ? blog.name : "",
     };

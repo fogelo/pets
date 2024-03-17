@@ -1,18 +1,18 @@
 import { Router, Request, Response } from "express";
-import { authMiddleware } from "../middlewares/auth-middleware";
-import { blogValidation } from "../validators/blog-validators";
+import { authMiddleware } from "../middlewares/authMiddleware";
+import { blogValidation } from "../validators/blogValidators";
 import { inputValidationMiddleware } from "../middlewares/inputValidationMiddleware";
 import { Status } from "../types";
-import { BlogRepository } from "../repositories/blog-repository";
+import { BlogRepository } from "../repositories/blogRepository";
 import {
   RequestWithParams,
   RequestWithBody,
   RequestWithBodyAndParams,
 } from "../types";
-import { BlogOutputModel } from "../models/output/blog-output-model";
+import { BlogOutputModel } from "../models/output/blogOutputModel";
 import { ObjectId } from "mongodb";
-import { CreateBlogModel } from "../models/input/blog/create-blog-input-model";
-import { UpdateBlogModel } from "../models/input/blog/update-blog-input-model";
+import { CreateBlogInputModel } from "../models/input/blog/createBlogInputModel";
+import { UpdateBlogInputModel } from "../models/input/blog/updateBlogInputModel";
 
 export const blogRouter = Router({});
 
@@ -48,13 +48,15 @@ blogRouter.post(
   authMiddleware,
   blogValidation(),
   inputValidationMiddleware,
-  async (req: RequestWithBody<CreateBlogModel>, res: Response) => {
-    const { name, description, websiteUrl } = req.body;
+  async (req: RequestWithBody<CreateBlogInputModel>, res: Response) => {
+    const { name, description, websiteUrl, isMembership } = req.body;
 
-    const blogData = {
+    const blogData: CreateBlogInputModel & { createdAt: string } = {
       name,
       description,
       websiteUrl,
+      isMembership,
+      createdAt: new Date().toISOString(),
     };
 
     const blogId = await BlogRepository.createBlog(blogData);
@@ -74,7 +76,7 @@ blogRouter.put(
   blogValidation(),
   inputValidationMiddleware,
   async (
-    req: RequestWithBodyAndParams<Params, UpdateBlogModel>,
+    req: RequestWithBodyAndParams<Params, UpdateBlogInputModel>,
     res: Response
   ) => {
     const id = req.params.id;
@@ -89,11 +91,12 @@ blogRouter.put(
       return;
     }
 
-    const { name, description, websiteUrl } = req.body;
-    const blogData = {
+    const { name, description, websiteUrl, isMembership } = req.body;
+    const blogData: UpdateBlogInputModel = {
       name,
       description,
       websiteUrl,
+      isMembership,
     };
     await BlogRepository.updateBlog(id, blogData);
     res.sendStatus(Status.NoContent_204);

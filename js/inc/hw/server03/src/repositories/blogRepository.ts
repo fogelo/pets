@@ -1,27 +1,27 @@
 import { ObjectId } from "mongodb";
 import { blogsCollection } from "../db/db";
-import { BlogDbType } from "../models/db/blog-db";
-import { blogMapper } from "../models/mappers/blog-mapper";
-import { BlogOutputModel } from "../models/output/blog-output-model";
-import { CreateBlogModel } from "../models/input/blog/create-blog-input-model";
+import { BlogDbModel } from "../models/db/blogDbModel";
+import { blogMapper } from "../models/mappers/blogMapper";
+import { BlogOutputModel } from "../models/output/blogOutputModel";
+import { CreateBlogInputModel } from "../models/input/blog/createBlogInputModel";
 
 export class BlogRepository {
   static async getAllBlogs(): Promise<BlogOutputModel[]> {
-    const blogs = await blogsCollection.find<BlogDbType>({}).toArray();
+    const blogs = await blogsCollection.find<BlogDbModel>({}).toArray();
     return blogs.map(blogMapper);
   }
   static async getBlogById(id: string) {
-    const blog = await blogsCollection.findOne<BlogDbType>({
+    const blog = await blogsCollection.findOne<BlogDbModel>({
       _id: new ObjectId(id),
     });
     if (!blog) return null;
     return blogMapper(blog);
   }
-  static async createBlog(blog: CreateBlogModel): Promise<string> {
+  static async createBlog(blog: CreateBlogInputModel): Promise<string> {
     const res = await blogsCollection.insertOne(blog);
     return res.insertedId.toString();
   }
-  static async updateBlog(id: string, blog: CreateBlogModel): Promise<boolean> {
+  static async updateBlog(id: string, blog: CreateBlogInputModel): Promise<boolean> {
     const res = await blogsCollection.updateOne(
       { _id: new ObjectId(id) },
       {

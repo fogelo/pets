@@ -1,5 +1,5 @@
 import { body } from "express-validator";
-import { BlogRepository } from "../repositories/blog-repository";
+import { BlogRepository } from "../repositories/blogRepository";
 
 export const maxTitleLength = 30;
 const titleValidator = body("title")

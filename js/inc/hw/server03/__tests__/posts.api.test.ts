@@ -1,20 +1,17 @@
 import request from "supertest";
 import { app } from "../src/settings";
 import { IError, Status } from "../src/types";
-import { CreatePostInputModel } from "../src/models/input/post/create-post-input-model";
-import {
-  EnchancedPostOutputModel,
-  PostOutputModel,
-} from "../src/models/output/post-output-model";
+import { CreatePostInputModel } from "../src/models/input/post/createPostInputModel";
 import {
   maxContentLength,
   maxShortDescriptionLength,
   maxTitleLength,
-} from "../src/validators/post-validators";
+} from "../src/validators/postValidators";
 import { correctInputBlogData } from "../__mocks__/commonTestData";
-import { BlogOutputModel } from "../src/models/output/blog-output-model";
+import { BlogOutputModel } from "../src/models/output/blogOutputModel";
+import { PostOutputModel } from "../src/models/output/postOutputModel";
 
-const correctInputPostData = {
+const correctInputPostData: CreatePostInputModel = {
   title: "string",
   shortDescription: "string",
   content: "string",
@@ -120,11 +117,12 @@ describe("/posts POST", () => {
 
     const postResponseBody: PostOutputModel = postResponse.body;
 
-    const expectedPost: EnchancedPostOutputModel = {
+    const expectedPost: PostOutputModel = {
       id: postResponseBody.id,
       ...correctInputPostData,
       blogId: blog.id,
       blogName: blog.name,
+      createdAt: blog.createdAt,
     };
 
     expect(postResponseBody).toEqual(expectedPost);
@@ -133,7 +131,7 @@ describe("/posts POST", () => {
 
 describe("/posts PUT", () => {
   let blog: BlogOutputModel;
-  let post: EnchancedPostOutputModel;
+  let post: PostOutputModel;
   let postRequestBody: CreatePostInputModel;
 
   beforeAll(async () => {
@@ -225,11 +223,12 @@ describe("/posts GET", () => {
     const response = await request(app).get("/posts").expect(Status.Ok_200);
     const allPosts = response.body;
 
-    const expectedPost: EnchancedPostOutputModel = {
+    const expectedPost: PostOutputModel = {
       id: expect.any(String),
       ...correctInputPostData,
       blogId: blog.id,
       blogName: blog.name,
+      createdAt: blog.createdAt,
     };
 
     const expectedAllPosts = [expectedPost];
@@ -241,11 +240,12 @@ describe("/posts GET", () => {
       .get(`/posts/${post.id}`)
       .expect(Status.Ok_200);
 
-    const expectedPost: EnchancedPostOutputModel = {
+    const expectedPost: PostOutputModel = {
       id: expect.any(String),
       ...correctInputPostData,
       blogId: blog.id,
       blogName: blog.name,
+      createdAt: blog.createdAt,
     };
 
     expect(post).toEqual(expectedPost);

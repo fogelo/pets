@@ -6,7 +6,7 @@ import {
   maxDescLength,
   maxNameLength,
   maxWebsiteUrlLength,
-} from "../src/validators/blog-validators";
+} from "../src/validators/blogValidators";
 
 enum Fields {
   Name = "name",
