@@ -75,13 +75,13 @@ postRouter.post(
     const postId = await PostRepository.createPost(newPost);
 
     const post = await PostRepository.getPostById(postId);
+    const blog = await BlogRepository.getBlogById(blogId);
 
-    if (!post) {
+    if (!post || !blog) {
       res.sendStatus(Status.NotFound_404);
       return;
     }
 
-    const blog = await BlogRepository.getBlogById(blogId);
     const newPostView: PostOutputModel = {
       ...post,
       blogName: blog ? blog.name : "",
