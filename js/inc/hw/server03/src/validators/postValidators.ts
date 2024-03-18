@@ -48,5 +48,5 @@ export const postValidation = () => [
   titleValidator,
   shortDescriptionValidator,
   contentValidator,
-  blogIdValidator,
+  // blogIdValidator,
 ];
