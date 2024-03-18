@@ -14,6 +14,10 @@ enum Fields {
   WebsiteUrl = "websiteUrl",
 }
 
+// afterAll(async () => {
+//   await app.close();
+// });
+
 const invalidInputTestCases: [string, any, string][] = [
   [
     `${Fields.Name}`,

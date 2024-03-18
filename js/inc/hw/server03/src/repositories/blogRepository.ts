@@ -21,6 +21,7 @@ export class BlogRepository {
     const res = await blogsCollection.insertOne(blog);
     return res.insertedId.toString();
   }
+  
   static async updateBlog(id: string, blog: CreateBlogInputModel): Promise<boolean> {
     const res = await blogsCollection.updateOne(
       { _id: new ObjectId(id) },
