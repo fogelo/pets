@@ -127,7 +127,7 @@ describe("/posts POST", () => {
       ...correctInputPostData,
       blogId: blog.id,
       blogName: blog.name,
-      createdAt: blog.createdAt,
+      createdAt: expect.any(String)
     };
 
     expect(postResponseBody).toEqual(expectedPost);
@@ -233,7 +233,7 @@ describe("/posts GET", () => {
       ...correctInputPostData,
       blogId: blog.id,
       blogName: blog.name,
-      createdAt: blog.createdAt,
+      createdAt: expect.any(String),
     };
 
     const expectedAllPosts = [expectedPost];
@@ -250,7 +250,7 @@ describe("/posts GET", () => {
       ...correctInputPostData,
       blogId: blog.id,
       blogName: blog.name,
-      createdAt: blog.createdAt,
+      createdAt: expect.any(String),
     };
 
     expect(post).toEqual(expectedPost);

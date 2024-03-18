@@ -13,6 +13,7 @@ enum Fields {
   Name = "name",
   Description = "description",
   WebsiteUrl = "websiteUrl",
+  isMembership = "isMembership",
 }
 
 afterAll(async () => {
@@ -49,6 +50,11 @@ const invalidInputTestCases: [string, any, string][] = [
     `${Fields.WebsiteUrl}`,
     "a".repeat(maxWebsiteUrlLength + 1),
     `Sending a value for ${Fields.WebsiteUrl} longer than ${maxWebsiteUrlLength} characters should result in an error`,
+  ],
+  [
+    `${Fields.isMembership}`,
+    123,
+    `Sending a non-boolean value for ${Fields.isMembership} should result in an error`,
   ],
 ];
 
@@ -162,6 +168,7 @@ describe("/blogs GET", () => {
       {
         id: blogId,
         ...correctInputBlogData,
+        createdAt: expect.any(String),
       },
     ];
     expect(allBlogs).toEqual(expectedAllBlogs);
@@ -176,6 +183,7 @@ describe("/blogs GET", () => {
     const expectedBlog = {
       id: blogId,
       ...correctInputBlogData,
+      createdAt: expect.any(String),
     };
 
     expect(blog).toEqual(expectedBlog);
