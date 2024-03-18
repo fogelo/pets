@@ -64,15 +64,18 @@ postRouter.post(
   ) => {
     const { title, content, shortDescription, blogId } = req.body;
 
-    const newPost: CreatePostInputModel = {
+    const newPost: CreatePostInputModel & { createdAt: string } = {
       title,
       content,
       shortDescription,
       blogId,
+      createdAt: new Date().toISOString(),
     };
 
     const postId = await PostRepository.createPost(newPost);
+
     const post = await PostRepository.getPostById(postId);
+    console.log(post);
     if (!post) {
       res.sendStatus(Status.NotFound_404);
       return;
