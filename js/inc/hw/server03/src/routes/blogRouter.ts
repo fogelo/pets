@@ -99,7 +99,7 @@ blogRouter.put(
       isMembership,
     };
     await BlogRepository.updateBlog(id, blogData);
-    res.sendStatus(Status.NoContent_204);
+   return res.sendStatus(Status.NoContent_204);
   }
 );
 

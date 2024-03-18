@@ -10,6 +10,7 @@ import {
 import { correctInputBlogData } from "../__mocks__/commonTestData";
 import { BlogOutputModel } from "../src/models/output/blogOutputModel";
 import { PostOutputModel } from "../src/models/output/postOutputModel";
+import { client } from "../src/db/db";
 
 const correctInputPostData: CreatePostInputModel = {
   title: "string",
@@ -24,6 +25,10 @@ enum Fields {
   Content = "content",
   BlogId = "blogId",
 }
+
+afterAll(async () => {
+  client.close();
+});
 
 const invalidInputTestCases: [string, any, string][] = [
   [

@@ -116,21 +116,21 @@ postRouter.put(
       blogId,
     };
 
-    await PostRepository.updatePost(id, updatedPost);
     const blog = await BlogRepository.getBlogById(blogId);
+
+    if (!blog) {
+      res.sendStatus(Status.NotFound_404);
+      return;
+    }
     const post = await PostRepository.getPostById(id);
 
-    if (!post || !blog) {
+    if (!post) {
       res.sendStatus(Status.NotFound_404);
       return;
     }
 
-    const newPostView: PostOutputModel = {
-      ...post,
-      blogName: blog ? blog.name : "",
-    };
-
-    res.status(Status.NoContent_204).json(newPostView);
+    await PostRepository.updatePost(id, updatedPost);
+    return res.sendStatus(Status.NoContent_204);
   }
 );
 

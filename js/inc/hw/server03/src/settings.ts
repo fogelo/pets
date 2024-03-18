@@ -1,7 +1,7 @@
 import express from "express";
 import { blogRouter } from "./routes/blogRouter";
-import { testRouter } from "./routes/testRouter";
 import { postRouter } from "./routes/postRouter";
+import { testRouter } from "./routes/test-router";
 export const app = express();
 
 // middlewares

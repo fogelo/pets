@@ -7,6 +7,7 @@ import {
   maxNameLength,
   maxWebsiteUrlLength,
 } from "../src/validators/blogValidators";
+import { client } from "../src/db/db";
 
 enum Fields {
   Name = "name",
@@ -14,9 +15,9 @@ enum Fields {
   WebsiteUrl = "websiteUrl",
 }
 
-// afterAll(async () => {
-//   await app.close();
-// });
+afterAll(async () => {
+  client.close();
+});
 
 const invalidInputTestCases: [string, any, string][] = [
   [
