@@ -116,13 +116,13 @@ blogRouter.delete(
 
     const existingBlog = await BlogRepository.getBlogById(id);
     if (!existingBlog) {
-      res.sendStatus(Status.NotFound_404);
+     return res.sendStatus(Status.NotFound_404);
     }
     const isDeleted = await BlogRepository.deleteBlog(id);
     if (!isDeleted) {
       res.sendStatus(Status.NotFound_404);
       return;
     }
-    res.sendStatus(Status.NoContent_204);
+   return res.sendStatus(Status.NoContent_204);
   }
 );

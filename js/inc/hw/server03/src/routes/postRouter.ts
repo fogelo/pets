@@ -147,7 +147,7 @@ postRouter.delete(
 
     const post = await PostRepository.getPostById(id);
     if (!post) {
-      res.sendStatus(Status.NotFound_404);
+     return res.sendStatus(Status.NotFound_404);
     }
 
     const isDeleted = await PostRepository.deletePost(req.params.id);
@@ -155,6 +155,6 @@ postRouter.delete(
       res.sendStatus(Status.NotFound_404);
       return;
     }
-    res.sendStatus(Status.NoContent_204);
+    return res.sendStatus(Status.NoContent_204);
   }
 );
