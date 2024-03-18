@@ -75,7 +75,7 @@ postRouter.post(
     const postId = await PostRepository.createPost(newPost);
 
     const post = await PostRepository.getPostById(postId);
-    console.log(post);
+
     if (!post) {
       res.sendStatus(Status.NotFound_404);
       return;
@@ -120,7 +120,7 @@ postRouter.put(
     const blog = await BlogRepository.getBlogById(blogId);
     const post = await PostRepository.getPostById(id);
 
-    if (!post) {
+    if (!post || !blog) {
       res.sendStatus(Status.NotFound_404);
       return;
     }
