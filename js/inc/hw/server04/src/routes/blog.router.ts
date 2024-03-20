@@ -58,7 +58,7 @@ blogRouter.get(
       return;
     }
 
-    const blog = BlogQueryRepository.getBlogById(blogId);
+    const blog = await BlogQueryRepository.getBlogById(blogId);
     if (!blog) {
       res.sendStatus(Status.NotFound_404);
       return;
@@ -136,7 +136,7 @@ blogRouter.post(
       res.sendStatus(Status.NotFound_404);
       return;
     }
-    
+
     const postData: PostDbModel = {
       title: req.body.title,
       content: req.body.content,
