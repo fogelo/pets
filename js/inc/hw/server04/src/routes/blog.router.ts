@@ -146,7 +146,7 @@ blogRouter.post(
 
     const post = await BlogService.createPostToBlog(blogId, postData);
     if (!post) {
-      res.sendStatus(Status.BadRequest_400);
+      res.sendStatus(Status.NotFound_404);
       return;
     }
     return res.status(Status.Created_201).json(post);
