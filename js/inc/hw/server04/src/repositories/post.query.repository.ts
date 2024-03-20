@@ -16,7 +16,7 @@ export class PostQueryRepository {
   ): Promise<Pagination<PostOutputModel>> {
     const { searchNameTerm, pageSize, pageNumber, sortBy, sortDirection } =
       sortData;
-
+    debugger;
     const filter: Filter<PostDbModel> = {};
     if (searchNameTerm) {
       filter["title"] = { $regex: searchNameTerm, options: "i" };
@@ -50,6 +50,20 @@ export class PostQueryRepository {
         blogName: blog ? blog.name : "",
       };
     });
+
+    if (sortBy === "blogName") {
+      posts.sort((a, b) => {
+        if (sortDirection === "asc") {
+          return a.blogName
+            .toLowerCase()
+            .localeCompare(b.blogName.toLowerCase());
+        } else {
+          return b.blogName
+            .toLowerCase()
+            .localeCompare(a.blogName.toLowerCase());
+        }
+      });
+    }
 
     const totalCount = await postsCollection.countDocuments(filter);
     const pagesCount = Math.ceil(totalCount / pageSize);
