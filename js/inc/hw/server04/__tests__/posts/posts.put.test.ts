@@ -1,6 +1,6 @@
 import request from "supertest";
 import { correctInputBlogData } from "../../__mocks__/blog.test.data";
-import { postCorrectInputData, postIncorrectInputTestCases } from "../../__mocks__/post.test.data";
+import { correctInputPostData, postIncorrectInputTestCases } from "../../__mocks__/post.test.data";
 import { client } from "../../src/db/db";
 import { IError, Status } from "../../src/models/common";
 import { CreatePostInputModel } from "../../src/models/input/post/create.post.input.model";
@@ -27,7 +27,7 @@ describe("/posts PUT", () => {
 
     blog = blogResponse.body;
     postRequestBody = {
-      ...postCorrectInputData,
+      ...correctInputPostData,
       blogId: blog.id,
     };
 

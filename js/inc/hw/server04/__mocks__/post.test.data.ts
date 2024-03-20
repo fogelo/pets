@@ -50,7 +50,7 @@ export const postIncorrectInputTestCases: [string, any, string][] = [
   ],
 ];
 
-export const postCorrectInputData: CreatePostInputModel = {
+export const correctInputPostData: CreatePostInputModel = {
   title: "string",
   shortDescription: "string",
   content: "string",

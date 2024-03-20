@@ -1,6 +1,6 @@
 import request from "supertest";
 import { correctInputBlogData } from "../../__mocks__/blog.test.data";
-import { postCorrectInputData, postIncorrectInputTestCases } from "../../__mocks__/post.test.data";
+import { correctInputPostData, postIncorrectInputTestCases } from "../../__mocks__/post.test.data";
 import { client } from "../../src/db/db";
 import { IError, Status } from "../../src/models/common";
 import { CreatePostInputModel } from "../../src/models/input/post/create.post.input.model";
@@ -27,14 +27,14 @@ describe("/posts POST", () => {
   it("should be auth error", async () => {
     await request(app)
       .post("/posts")
-      .send(postCorrectInputData)
+      .send(correctInputPostData)
       .expect(Status.Unauthorized_401);
   });
 
   postIncorrectInputTestCases.forEach(([field, value, message]) => {
     it(message, async () => {
       const testData = {
-        ...postCorrectInputData,
+        ...correctInputPostData,
         blogId: blog.id,
         [field]: value,
       };
@@ -54,7 +54,7 @@ describe("/posts POST", () => {
 
   it("should be created post", async () => {
     const postRequestBody: CreatePostInputModel = {
-      ...postCorrectInputData,
+      ...correctInputPostData,
       blogId: blog.id,
     };
 
@@ -68,7 +68,7 @@ describe("/posts POST", () => {
 
     const expectedPost: PostOutputModel = {
       id: postResponseBody.id,
-      ...postCorrectInputData,
+      ...correctInputPostData,
       blogId: blog.id,
       blogName: blog.name,
       createdAt: expect.any(String)

@@ -1,4 +1,4 @@
-import { Request, Response, Router } from "express";
+import { Response, Router } from "express";
 import { ObjectId } from "mongodb";
 import { authMiddleware } from "../middlewares/auth.middleware";
 import { inputValidationMiddleware } from "../middlewares/input.validation.middleware";
@@ -6,9 +6,12 @@ import {
   RequestWithBody,
   RequestWithBodyAndParams,
   RequestWithParams,
+  RequestWithQuery,
   Status,
 } from "../models/common";
+import { PostDbModel } from "../models/db/post.db.model";
 import { CreatePostInputModel } from "../models/input/post/create.post.input.model";
+import { QueryPostInputModel } from "../models/input/post/query.post.input.model";
 import { UpdatePostInputModel } from "../models/input/post/update.post.input.model";
 import { PostOutputModel } from "../models/output/post.output.model";
 import { BlogQueryRepository } from "../repositories/blog.query.repository";
@@ -16,12 +19,18 @@ import { PostQueryRepository } from "../repositories/post.query.repository";
 import { PostRepository } from "../repositories/post.repository";
 import { postValidation } from "../validators/post.validators";
 import { Params } from "./blog.router";
-import { PostDbModel } from "../models/db/post.db.model";
 
 export const postRouter = Router();
 
-postRouter.get("/", async (req: Request, res: Response) => {
-  const posts = await PostQueryRepository.getAllPosts();
+postRouter.get("/", async (req: RequestWithQuery<QueryPostInputModel>, res: Response) => {
+  const sortData: Required<QueryPostInputModel> = {
+    searchNameTerm: req.query.searchNameTerm ?? null,
+    sortBy: req.query.sortBy ?? "createdAt",
+    sortDirection: req.query.sortDirection ?? "asc",
+    pageNumber: req.query.pageNumber ? +req.query.pageNumber : 1,
+    pageSize: req.query.pageSize ? +req.query.pageSize : 10,
+  };
+  const posts = await PostQueryRepository.getAllPosts(sortData);
   res.status(Status.Ok_200).json(posts);
 });
 

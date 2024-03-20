@@ -6,23 +6,12 @@ import { app } from "../../src/settings";
 import { client } from "../../src/db/db";
 import { correctInputBlogData } from "../../__mocks__/blog.test.data";
 import { CreatePostInputModel } from "../../src/models/input/post/create.post.input.model";
-
-const correctBlogItem = {
-  id: expect.any(String),
-  name: expect.any(String),
-  description: expect.any(String),
-  websiteUrl: expect.any(String),
-  createdAt: expect.any(String),
-  isMembership: expect.any(Boolean),
-};
-
-const correctBlogsBody: Pagination<BlogOutputModel> = {
-  pagesCount: expect.any(Number),
-  page: expect.any(Number),
-  pageSize: expect.any(Number),
-  totalCount: expect.any(Number),
-  items: expect.arrayContaining([expect.objectContaining(correctBlogItem)]),
-};
+import { PostOutputModel } from "../../src/models/output/post.output.model";
+import {
+  getCorrectOutputBlogItem,
+  getCorrectOutputBlogsBody,
+  getCorrectOutputPostsBody,
+} from "../../__mocks__/correct.data";
 
 afterAll(async () => {
   await client.close();
@@ -51,11 +40,12 @@ describe("/blogs GET", () => {
     );
   });
 
-  it("должен вернуть все блоги с дефолтными параметрами", async () => {
+  it("должен вернуть блоги с дефолтными параметрами", async () => {
     const response = await request(app).get("/blogs");
     const blogs: Pagination<BlogOutputModel> = response.body;
     expect(response.statusCode).toBe(Status.Ok_200);
-    expect(blogs).toEqual(correctBlogsBody);
+    expect(blogs).toEqual(getCorrectOutputBlogsBody());
+
     const isSortedByCreatedAt = blogs.items.every((item, index, arr) => {
       return (
         index === 0 ||
@@ -70,7 +60,7 @@ describe("/blogs GET", () => {
     const response = await request(app).get("/blogs?searchNameTerm=1");
     const blogs: Pagination<BlogOutputModel> = response.body;
     expect(response.statusCode).toBe(Status.Ok_200);
-    expect(blogs).toEqual(correctBlogsBody);
+    expect(blogs).toEqual(getCorrectOutputBlogsBody());
   });
 
   it("должен вернуть блоги с сортировкой по дате создания desc", async () => {
@@ -79,7 +69,7 @@ describe("/blogs GET", () => {
     );
     const blogs: Pagination<BlogOutputModel> = response.body;
     expect(response.statusCode).toBe(Status.Ok_200);
-    expect(blogs).toEqual(correctBlogsBody);
+    expect(blogs).toEqual(getCorrectOutputBlogsBody());
 
     const isSortedByCreatedAt = blogs.items
       .reverse()
@@ -115,13 +105,11 @@ describe("/blogs GET", () => {
     const blogId = blogs.items[0].id;
     const blogResponse = await request(app).get(`/blogs/${blogId}`);
     expect(blogResponse.statusCode).toBe(Status.Ok_200);
-    expect(blogResponse.body).toEqual(correctBlogItem);
+    expect(blogResponse.body).toEqual(getCorrectOutputBlogItem());
   });
 });
 
-
-// TODO доделываем здесь
-describe("/blogs/:id/posts", () => {
+describe("/blogs/:id/posts GET", () => {
   let blog: BlogOutputModel;
   beforeAll(async () => {
     await request(app).delete("/testing/all-data").auth("admin", "qwerty");
@@ -145,13 +133,25 @@ describe("/blogs/:id/posts", () => {
           blogId: blog.id,
         };
         return request(app)
-          .post(`/blogs/${blog.id}/posts`)
+          .post(`/posts`)
           .auth("admin", "qwerty")
           .send(postCorrectInputData);
       })
     );
   });
 
-  it()
-
+  it("/blogs/:id/posts, должен вернуть посты с дефолтными параметрами", async () => {
+    const response = await request(app).get(`/blogs/${blog.id}/posts`);
+    const posts: Pagination<PostOutputModel> = response.body;
+    expect(response.statusCode).toBe(Status.Ok_200);
+    expect(posts).toEqual(getCorrectOutputPostsBody());
+    const isSortedByCreatedAt = posts.items.every((item, index, arr) => {
+      return (
+        index === 0 ||
+        new Date(item.createdAt).getTime() >=
+          new Date(arr[index - 1].createdAt).getTime()
+      );
+    });
+    expect(isSortedByCreatedAt).toBe(true);
+  });
 });

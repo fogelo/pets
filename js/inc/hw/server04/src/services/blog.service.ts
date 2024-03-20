@@ -1,4 +1,3 @@
-import { Status } from "../models/common";
 import { PostDbModel } from "../models/db/post.db.model";
 import { CreatePostInputModel } from "../models/input/post/create.post.input.model";
 import { PostOutputModel } from "../models/output/post.output.model";
@@ -26,11 +25,12 @@ export class BlogService {
     };
 
     const postId = await PostRepository.createPost(postData);
-    if (postId) {
+    if (!postId) {
       return null;
     }
 
     const post = await PostQueryRepository.getPostById(postId);
+    debugger;
     if (!post) {
       return null;
     }

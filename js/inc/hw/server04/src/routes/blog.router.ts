@@ -6,16 +6,20 @@ import {
   RequestWithBody,
   RequestWithBodyAndParams,
   RequestWithParams,
+  RequestWithParamsAndQuery,
   RequestWithQuery,
   Status,
 } from "../models/common";
 import { PostDbModel } from "../models/db/post.db.model";
 import { CreateBlogInputModel } from "../models/input/blog/create.blog.input.model";
+import { QueryBlogInputModel } from "../models/input/blog/query.blog.input.model";
 import { UpdateBlogInputModel } from "../models/input/blog/update.blog.input.model";
 import { CreatePostInputModel } from "../models/input/post/create.post.input.model";
+import { QueryPostInputModel } from "../models/input/post/query.post.input.model";
 import { BlogOutputModel } from "../models/output/blog.output.model";
 import { BlogQueryRepository } from "../repositories/blog.query.repository";
 import { BlogRepository } from "../repositories/blog.repository";
+import { PostQueryRepository } from "../repositories/post.query.repository";
 import { BlogService } from "../services/blog.service";
 import { blogValidation } from "../validators/blog.validators";
 import { createPostFromBlogValidation } from "../validators/post.validators";
@@ -39,6 +43,37 @@ blogRouter.get(
 
     const blogs = await BlogQueryRepository.getAllBlogs(sortData);
     res.send(blogs);
+  }
+);
+
+blogRouter.get(
+  "/:id/posts",
+  async (
+    req: RequestWithParamsAndQuery<Params, QueryPostInputModel>,
+    res: Response
+  ) => {
+    const blogId = req.params.id;
+    if (!ObjectId.isValid(blogId)) {
+      res.sendStatus(Status.NotFound_404);
+      return;
+    }
+
+    const blog = BlogQueryRepository.getBlogById(blogId);
+    if (!blog) {
+      res.sendStatus(Status.NotFound_404);
+      return;
+    }
+
+    const sortData: Required<QueryPostInputModel> = {
+      searchNameTerm: req.query.searchNameTerm ?? null,
+      sortBy: req.query.sortBy ?? "createdAt",
+      sortDirection: req.query.sortDirection ?? "asc",
+      pageNumber: req.query.pageNumber ? +req.query.pageNumber : 1,
+      pageSize: req.query.pageSize ? +req.query.pageSize : 10,
+    };
+
+    const posts = await PostQueryRepository.getAllPosts(sortData, blogId);
+    res.send(posts);
   }
 );
 

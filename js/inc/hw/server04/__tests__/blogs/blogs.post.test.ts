@@ -8,7 +8,7 @@ import { IError, Pagination, Status } from "../../src/models/common";
 import { app } from "../../src/settings";
 import {
   postIncorrectInputTestCases,
-  postCorrectInputData,
+  correctInputPostData,
 } from "../../__mocks__/post.test.data";
 import { BlogOutputModel } from "../../src/models/output/blog.output.model";
 
@@ -77,7 +77,7 @@ describe("/blogs/:id/posts POST", () => {
   postIncorrectInputTestCases.forEach(([field, value, message]) => {
     it(message, async () => {
       const testData = {
-        ...postCorrectInputData,
+        ...correctInputPostData,
         blogId: blog.id,
         [field]: value,
       };

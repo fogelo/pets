@@ -6,7 +6,7 @@ import { correctInputBlogData } from "../../__mocks__/blog.test.data";
 import { BlogOutputModel } from "../../src/models/output/blog.output.model";
 import { PostOutputModel } from "../../src/models/output/post.output.model";
 import { client } from "../../src/db/db";
-import { postCorrectInputData } from "../../__mocks__/post.test.data";
+import { correctInputPostData } from "../../__mocks__/post.test.data";
 
 afterAll(async () => {
   await client.close();
@@ -27,7 +27,7 @@ describe("/posts DELETE", () => {
 
     blog = blogResponse.body;
     postRequestBody = {
-      ...postCorrectInputData,
+      ...correctInputPostData,
       blogId: blog.id,
     };
 

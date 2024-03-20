@@ -1,15 +1,38 @@
-import { ObjectId } from "mongodb";
+import { Filter, ObjectId } from "mongodb";
 import { blogsCollection, postsCollection } from "../db/db";
 import { PostDbModel } from "../models/db/post.db.model";
 import { blogMapper } from "../models/mappers/blog.mapper";
 import { postMapper } from "../models/mappers/post.mapper";
 import { PostOutputModel } from "../models/output/post.output.model";
+import { QueryPostInputModel } from "../models/input/post/query.post.input.model";
+import { Pagination } from "../models/common";
+
+type SortData = Required<QueryPostInputModel>;
 
 export class PostQueryRepository {
-  static async getAllPosts(): Promise<
-    (Omit<PostDbModel, "_id"> & { id: string })[]
-  > {
-    const dbPosts = await postsCollection.find({}).toArray();
+  static async getAllPosts(
+    sortData: SortData,
+    blogId?: string
+  ): Promise<Pagination<PostOutputModel>> {
+    const { searchNameTerm, pageSize, pageNumber, sortBy, sortDirection } =
+      sortData;
+
+    const filter: Filter<PostDbModel> = {};
+    if (searchNameTerm) {
+      filter["title"] = { $regex: searchNameTerm, options: "i" };
+    }
+
+    if (blogId) {
+      filter["blogId"] = blogId;
+    }
+
+    const dbPosts = await postsCollection
+      .find(filter)
+      .skip((pageNumber - 1) * pageSize)
+      .limit(pageSize)
+      .sort(sortBy, sortDirection)
+      .toArray();
+
     const mappedPosts = dbPosts.map(postMapper);
     const blogObjectIds = [
       ...new Set(dbPosts.map((dbPost) => new ObjectId(dbPost.blogId))),
@@ -28,7 +51,18 @@ export class PostQueryRepository {
       };
     });
 
-    return posts;
+    const totalCount = await postsCollection.countDocuments(filter);
+    const pagesCount = Math.ceil(totalCount / pageSize);
+
+    const result: Pagination<PostOutputModel> = {
+      pagesCount,
+      page: pageNumber,
+      pageSize,
+      totalCount,
+      items: posts,
+    };
+
+    return result;
   }
   static async getPostById(
     id: string

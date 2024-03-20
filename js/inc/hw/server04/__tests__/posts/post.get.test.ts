@@ -1,12 +1,16 @@
 import request from "supertest";
 import { correctInputBlogData } from "../../__mocks__/blog.test.data";
-import { postCorrectInputData } from "../../__mocks__/post.test.data";
+import { correctInputPostData } from "../../__mocks__/post.test.data";
 import { client } from "../../src/db/db";
-import { Status } from "../../src/models/common";
+import { Pagination, Status } from "../../src/models/common";
 import { CreatePostInputModel } from "../../src/models/input/post/create.post.input.model";
 import { BlogOutputModel } from "../../src/models/output/blog.output.model";
 import { PostOutputModel } from "../../src/models/output/post.output.model";
 import { app } from "../../src/settings";
+import {
+  getCorrectOutputPostItem,
+  getCorrectOutputPostsBody,
+} from "../../__mocks__/correct.data";
 
 afterAll(async () => {
   await client.close();
@@ -27,7 +31,7 @@ describe("/posts GET", () => {
 
     blog = blogResponse.body;
     postRequestBody = {
-      ...postCorrectInputData,
+      ...correctInputPostData,
       blogId: blog.id,
     };
 
@@ -42,18 +46,8 @@ describe("/posts GET", () => {
 
   it("all posts must be received", async () => {
     const response = await request(app).get("/posts").expect(Status.Ok_200);
-    const allPosts = response.body;
-
-    const expectedPost: PostOutputModel = {
-      id: expect.any(String),
-      ...postCorrectInputData,
-      blogId: blog.id,
-      blogName: blog.name,
-      createdAt: expect.any(String),
-    };
-
-    const expectedAllPosts = [expectedPost];
-    expect(allPosts).toEqual(expectedAllPosts);
+    const posts: Pagination<PostOutputModel> = response.body;
+    expect(posts).toEqual(getCorrectOutputPostsBody());
   });
 
   it("the post should be received by id", async () => {
@@ -61,14 +55,6 @@ describe("/posts GET", () => {
       .get(`/posts/${post.id}`)
       .expect(Status.Ok_200);
 
-    const expectedPost: PostOutputModel = {
-      id: expect.any(String),
-      ...postCorrectInputData,
-      blogId: blog.id,
-      blogName: blog.name,
-      createdAt: expect.any(String),
-    };
-
-    expect(post).toEqual(expectedPost);
+    expect(response.body).toEqual(getCorrectOutputPostItem());
   });
 });

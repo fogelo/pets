@@ -3,6 +3,7 @@ import { blogsCollection } from "../db/db";
 import { Pagination } from "../models/common";
 import { blogMapper } from "../models/mappers/blog.mapper";
 import { BlogOutputModel } from "../models/output/blog.output.model";
+import { QueryBlogInputModel } from "../models/input/blog/query.blog.input.model";
 
 type SortData = Required<QueryBlogInputModel>;
 
