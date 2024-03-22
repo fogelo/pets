@@ -49,9 +49,9 @@ export class PostQueryRepository {
           },
         },
         { $sort: { [sortBy]: sortDirection === "asc" ? 1 : -1 } },
+        { $skip: (pageNumber - 1) * pageSize },
+        { $limit: pageSize },
       ])
-      .limit(pageSize)
-      .skip((pageNumber - 1) * pageSize)
       .toArray();
 
     const posts = dbPosts.map(postMapper);
