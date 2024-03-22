@@ -50,6 +50,8 @@ export class PostQueryRepository {
         },
         { $sort: { [sortBy]: sortDirection === "asc" ? -1 : 1 } },
       ])
+      .limit(pageSize)
+      .skip((pageNumber - 1) * pageSize)
       .toArray();
 
     const posts = dbPosts.map(postMapper);
