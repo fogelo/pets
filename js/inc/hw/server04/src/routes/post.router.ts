@@ -9,7 +9,6 @@ import {
   RequestWithQuery,
   Status,
 } from "../models/common";
-import { PostDbModel } from "../models/db/post.db.model";
 import { CreatePostInputModel } from "../models/input/post/create.post.input.model";
 import { QueryPostInputModel } from "../models/input/post/query.post.input.model";
 import { UpdatePostInputModel } from "../models/input/post/update.post.input.model";
@@ -22,17 +21,20 @@ import { Params } from "./blog.router";
 
 export const postRouter = Router();
 
-postRouter.get("/", async (req: RequestWithQuery<QueryPostInputModel>, res: Response) => {
-  const sortData: Required<QueryPostInputModel> = {
-    searchNameTerm: req.query.searchNameTerm ?? null,
-    sortBy: req.query.sortBy ?? "createdAt",
-    sortDirection: req.query.sortDirection ?? "desc",
-    pageNumber: req.query.pageNumber ? +req.query.pageNumber : 1,
-    pageSize: req.query.pageSize ? +req.query.pageSize : 10,
-  };
-  const posts = await PostQueryRepository.getAllPosts(sortData);
-  res.status(Status.Ok_200).json(posts);
-});
+postRouter.get(
+  "/",
+  async (req: RequestWithQuery<QueryPostInputModel>, res: Response) => {
+    const sortData: Required<QueryPostInputModel> = {
+      searchNameTerm: req.query.searchNameTerm ?? null,
+      sortBy: req.query.sortBy ?? "createdAt",
+      sortDirection: req.query.sortDirection ?? "desc",
+      pageNumber: req.query.pageNumber ? +req.query.pageNumber : 1,
+      pageSize: req.query.pageSize ? +req.query.pageSize : 10,
+    };
+    const posts = await PostQueryRepository.getAllPosts(sortData);
+    res.status(Status.Ok_200).json(posts);
+  }
+);
 
 postRouter.get(
   "/:id",
@@ -50,9 +52,7 @@ postRouter.get(
       return;
     }
 
-    const blog = await BlogQueryRepository.getBlogById(post.blogId);
-    const viewPost = { ...post, blogName: blog ? blog.name : "" };
-    res.status(Status.Ok_200).json(viewPost);
+    res.status(Status.Ok_200).json(post);
   }
 );
 
@@ -79,7 +79,7 @@ postRouter.post(
       return;
     }
 
-    const newPost: PostDbModel = {
+    const newPost: CreatePostInputModel & { createdAt: string } = {
       title,
       content,
       shortDescription,

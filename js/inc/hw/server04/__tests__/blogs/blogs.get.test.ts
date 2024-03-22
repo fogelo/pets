@@ -40,20 +40,20 @@ describe("/blogs GET", () => {
     );
   });
 
-  it("должен вернуть блоги с дефолтными параметрами", async () => {
+  it("должен вернуть блоги с дефолтными параметрами (desc)", async () => {
     const response = await request(app).get("/blogs");
     const blogs: Pagination<BlogOutputModel> = response.body;
     expect(response.statusCode).toBe(Status.Ok_200);
     expect(blogs).toEqual(getCorrectOutputBlogsBody());
 
-    const isSortedByCreatedAt = blogs.items.every((item, index, arr) => {
+    const isSortedByCreatedAtDesc = blogs.items.every((item, index, arr) => {
       return (
         index === 0 ||
-        new Date(item.createdAt).getTime() >=
+        new Date(item.createdAt).getTime() <=
           new Date(arr[index - 1].createdAt).getTime()
       );
     });
-    expect(isSortedByCreatedAt).toBe(true);
+    expect(isSortedByCreatedAtDesc).toBe(true);
   });
 
   it("должен вернуть блоги отфильтрованные по полю name", async () => {
@@ -63,16 +63,15 @@ describe("/blogs GET", () => {
     expect(blogs).toEqual(getCorrectOutputBlogsBody());
   });
 
-  it("должен вернуть блоги с сортировкой по дате создания desc", async () => {
+  it("должен вернуть блоги с сортировкой по дате создания asc", async () => {
     const response = await request(app).get(
-      "/blogs?sortBy=createdAt&sortDirection=desc"
+      "/blogs?sortBy=createdAt&sortDirection=asc"
     );
     const blogs: Pagination<BlogOutputModel> = response.body;
     expect(response.statusCode).toBe(Status.Ok_200);
     expect(blogs).toEqual(getCorrectOutputBlogsBody());
 
     const isSortedByCreatedAt = blogs.items
-      .reverse()
       .every((item, index, arr) => {
         return (
           index === 0 ||
@@ -148,7 +147,7 @@ describe("/blogs/:id/posts GET", () => {
     const isSortedByCreatedAt = posts.items.every((item, index, arr) => {
       return (
         index === 0 ||
-        new Date(item.createdAt).getTime() >=
+        new Date(item.createdAt).getTime() <=
           new Date(arr[index - 1].createdAt).getTime()
       );
     });

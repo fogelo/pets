@@ -137,7 +137,7 @@ blogRouter.post(
       return;
     }
 
-    const postData: PostDbModel = {
+    const postData: CreatePostInputModel & { createdAt: string } = {
       title: req.body.title,
       content: req.body.content,
       shortDescription: req.body.shortDescription,

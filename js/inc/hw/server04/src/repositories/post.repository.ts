@@ -1,11 +1,16 @@
 import { ObjectId } from "mongodb";
 import { postsCollection } from "../db/db";
-import { PostDbModel } from "../models/db/post.db.model";
+import { CreatePostInputModel } from "../models/input/post/create.post.input.model";
 import { UpdatePostInputModel } from "../models/input/post/update.post.input.model";
 
 export class PostRepository {
-  static async createPost(post: PostDbModel): Promise<string> {
-    const res = await postsCollection.insertOne(post);
+  static async createPost(
+    post: CreatePostInputModel & { createdAt: string }
+  ): Promise<string> {
+    const res = await postsCollection.insertOne({
+      ...post,
+      blogId: new ObjectId(post.blogId),
+    });
     return res.insertedId.toString();
   }
   static async updatePost(
@@ -19,7 +24,7 @@ export class PostRepository {
           title: post.title,
           shortDescription: post.shortDescription,
           content: post.content,
-          blogId: post.blogId,
+          blogId: new ObjectId(post.blogId),
         },
       }
     );

@@ -1,4 +1,3 @@
-import { PostDbModel } from "../models/db/post.db.model";
 import { CreatePostInputModel } from "../models/input/post/create.post.input.model";
 import { PostOutputModel } from "../models/output/post.output.model";
 import { BlogQueryRepository } from "../repositories/blog.query.repository";
@@ -16,7 +15,7 @@ export class BlogService {
     }
 
     const { content, shortDescription, title } = createPostModel;
-    const postData: PostDbModel = {
+    const postData: CreatePostInputModel & { createdAt: string } = {
       title,
       content,
       shortDescription,

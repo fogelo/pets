@@ -1,11 +1,11 @@
-import { Filter, ObjectId } from "mongodb";
-import { blogsCollection, postsCollection } from "../db/db";
+import { Filter, ObjectId, WithId } from "mongodb";
+import { postsCollection } from "../db/db";
+import { Pagination } from "../models/common";
 import { PostDbModel } from "../models/db/post.db.model";
-import { blogMapper } from "../models/mappers/blog.mapper";
+import { QueryPostInputModel } from "../models/input/post/query.post.input.model";
 import { postMapper } from "../models/mappers/post.mapper";
 import { PostOutputModel } from "../models/output/post.output.model";
-import { QueryPostInputModel } from "../models/input/post/query.post.input.model";
-import { Pagination } from "../models/common";
+import { BlogQueryRepository } from "./blog.query.repository";
 
 type SortData = Required<QueryPostInputModel>;
 
@@ -16,54 +16,43 @@ export class PostQueryRepository {
   ): Promise<Pagination<PostOutputModel>> {
     const { searchNameTerm, pageSize, pageNumber, sortBy, sortDirection } =
       sortData;
-    debugger;
     const filter: Filter<PostDbModel> = {};
     if (searchNameTerm) {
       filter["title"] = { $regex: searchNameTerm, options: "i" };
     }
 
     if (blogId) {
-      filter["blogId"] = blogId;
+      filter["blogId"] = new ObjectId(blogId);
     }
 
     const dbPosts = await postsCollection
-      .find(filter)
-      .skip((pageNumber - 1) * pageSize)
-      .limit(pageSize)
-      .sort(sortBy, sortDirection)
+      .aggregate<WithId<PostDbModel & { blogName: "string" }>>([
+        { $match: filter },
+        {
+          $lookup: {
+            from: "blogs",
+            localField: "blogId",
+            foreignField: "_id",
+            as: "blogDetails",
+          },
+        },
+        { $unwind: "$blogDetails" },
+        {
+          $project: {
+            _id: 1,
+            title: 1,
+            shortDescription: 1,
+            content: 1,
+            blogId: 1,
+            createdAt: 1,
+            blogName: "$blogDetails.name",
+          },
+        },
+        { $sort: { [sortBy]: sortDirection === "asc" ? 1 : -1 } },
+      ])
       .toArray();
 
-    const mappedPosts = dbPosts.map(postMapper);
-    const blogObjectIds = [
-      ...new Set(dbPosts.map((dbPost) => new ObjectId(dbPost.blogId))),
-    ];
-    const blogs = await blogsCollection
-      .find({ _id: { $in: blogObjectIds } })
-      .toArray();
-
-    const mappedBlogs = blogs.map(blogMapper);
-
-    const posts: PostOutputModel[] = mappedPosts.map((post) => {
-      const blog = mappedBlogs.find((blog) => blog.id === post.blogId);
-      return {
-        ...post,
-        blogName: blog ? blog.name : "",
-      };
-    });
-
-    if (sortBy === "blogName") {
-      posts.sort((a, b) => {
-        if (sortDirection === "asc") {
-          return a.blogName
-            .toLowerCase()
-            .localeCompare(b.blogName.toLowerCase());
-        } else {
-          return b.blogName
-            .toLowerCase()
-            .localeCompare(a.blogName.toLowerCase());
-        }
-      });
-    }
+    const posts = dbPosts.map(postMapper);
 
     const totalCount = await postsCollection.countDocuments(filter);
     const pagesCount = Math.ceil(totalCount / pageSize);
@@ -78,13 +67,23 @@ export class PostQueryRepository {
 
     return result;
   }
-  static async getPostById(
-    id: string
-  ): Promise<(Omit<PostDbModel, "_id"> & { id: string }) | null> {
-    const post = await postsCollection.findOne({
+  static async getPostById(id: string): Promise<
+    | (Omit<PostDbModel, "_id" | "blogId"> & {
+        id: string;
+        blogId: string;
+        blogName: string;
+      })
+    | null
+  > {
+    const dbPost = await postsCollection.findOne({
       _id: new ObjectId(id),
     });
-    if (!post) return null;
-    return postMapper(post);
+    if (!dbPost) return null;
+
+    const blog = await BlogQueryRepository.getBlogById(
+      dbPost.blogId.toString()
+    );
+    if (!blog) return null;
+    return postMapper({ ...dbPost, blogName: blog.name });
   }
 }
