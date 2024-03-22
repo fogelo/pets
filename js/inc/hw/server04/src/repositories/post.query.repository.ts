@@ -48,7 +48,7 @@ export class PostQueryRepository {
             blogName: "$blogDetails.name",
           },
         },
-        { $sort: { [sortBy]: sortDirection === "asc" ? 1 : -1 } },
+        { $sort: { [sortBy]: sortDirection === "asc" ? -1 : 1 } },
       ])
       .toArray();
 
