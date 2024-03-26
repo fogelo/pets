@@ -2,7 +2,8 @@ import { body } from "express-validator";
 
 export const maxLoginLength = 20;
 export const minLoginLength = 3;
-export const loginPattern = /^[a-zA-Z0-9_-]*$/;
+// const loginPattern = /^[a-zA-Z0-9_-]*$/; // из swagger
+const loginPattern = /^(?=.*[a-zA-Z_-])[a-zA-Z0-9_-]*$/; //чтобы исключить логин только из цифр
 const loginValidator = body("login")
   .isString()
   .withMessage("login must be a string")
@@ -14,7 +15,7 @@ const loginValidator = body("login")
     `login must be no more than ${maxLoginLength} and no less than ${minLoginLength} chars`
   )
   .matches(loginPattern)
-  .withMessage("login does not match the pattern");
+  .withMessage("login does not match the pattern")
 
 export const maxPasswordLength = 20;
 export const minPasswordLength = 6;
