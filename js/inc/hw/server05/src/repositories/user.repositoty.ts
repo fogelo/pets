@@ -20,17 +20,18 @@ export class UserRepository {
     } = sortData;
 
     const filter: Filter<UserDbModel> = {};
+    const filters = [];
+
     if (searchEmailTerm) {
-      filter.email = {
-        $regex: searchEmailTerm,
-        $options: "i",
-      };
+      filters.push({ email: { $regex: searchEmailTerm, $options: "i" } });
     }
+
     if (searchLoginTerm) {
-      filter.login = {
-        $regex: searchLoginTerm,
-        $options: "i",
-      };
+      filters.push({ login: { $regex: searchLoginTerm, $options: "i" } });
+    }
+
+    if (filters.length > 0) {
+      filter.$and = filters;
     }
 
     const users = await usersCollection
