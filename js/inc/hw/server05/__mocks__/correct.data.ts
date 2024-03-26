@@ -1,6 +1,7 @@
 import { Pagination } from "../src/models/common";
 import { BlogOutputModel } from "../src/models/output/blog.output.model";
 import { PostOutputModel } from "../src/models/output/post.output.model";
+import { UserOutputModel } from "../src/models/output/user.output.model";
 
 export const getCorrectOutputBlogItem = (): BlogOutputModel => {
   return {
@@ -42,6 +43,25 @@ export const getCorrectOutputPostsBody = (): Pagination<PostOutputModel> => {
     totalCount: expect.any(Number),
     items: expect.arrayContaining([
       expect.objectContaining(getCorrectOutputPostItem()),
+    ]),
+  };
+};
+export const getCorrectOutputUserItem = (): UserOutputModel => {
+  return {
+    id: expect.any(String),
+    login: expect.any(String),
+    email: expect.any(String),
+    createdAt: expect.any(String),
+  };
+};
+export const getCorrectOutputUsersBody = (): Pagination<UserOutputModel> => {
+  return {
+    pagesCount: expect.any(Number),
+    page: expect.any(Number),
+    pageSize: expect.any(Number),
+    totalCount: expect.any(Number),
+    items: expect.arrayContaining([
+      expect.objectContaining(getCorrectOutputUserItem()),
     ]),
   };
 };

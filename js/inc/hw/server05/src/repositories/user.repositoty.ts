@@ -18,13 +18,21 @@ export class UserRepository {
       sortBy,
       sortDirection,
     } = sortData;
+
     const filter: Filter<UserDbModel> = {};
     if (searchEmailTerm) {
-      filter.searchEmailTerm = searchEmailTerm;
+      filter.email = {
+        $regex: searchEmailTerm,
+        $options: "i",
+      };
     }
     if (searchLoginTerm) {
-      filter.searchLoginTerm = searchLoginTerm;
+      filter.login = {
+        $regex: searchLoginTerm,
+        $options: "i",
+      };
     }
+
     const users = await usersCollection
       .find(filter)
       .sort(sortBy, sortDirection)
@@ -32,8 +40,8 @@ export class UserRepository {
       .limit(pageSize)
       .toArray();
 
-    const totalCount = await usersCollection.countDocuments();
-    const pagesCount = totalCount / pageSize;
+    const totalCount = await usersCollection.countDocuments(filter);
+    const pagesCount = Math.ceil(totalCount / pageSize);
 
     const result: Pagination<UserOutputModel> = {
       pagesCount,

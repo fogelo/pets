@@ -27,14 +27,34 @@ userRouter.get(
     const sortData: Required<QueryUserInputModel> = {
       searchEmailTerm: req.query.searchEmailTerm || null,
       searchLoginTerm: req.query.searchLoginTerm || null,
-      pageNumber: req.query.pageNumber || 1,
-      pageSize: req.query.pageSize || 10,
+      pageNumber: req.query.pageNumber ? +req.query.pageNumber : 1,
+      pageSize: req.query.pageSize ? +req.query.pageSize : 10,
       sortBy: req.query.sortBy || "createdAt",
       sortDirection: req.query.sortDirection || "desc",
     };
 
     const users = await UserRepository.getUsers(sortData);
     return res.status(Status.Ok_200).json(users);
+  }
+);
+
+userRouter.get(
+  "/:id",
+  async (
+    req: RequestWithParams<{ id: string }>,
+    res: Response<UserOutputModel>
+  ) => {
+    const id = req.params.id;
+    if (!ObjectId.isValid(id)) {
+      res.sendStatus(Status.NotFound_404);
+      return;
+    }
+    const user = await UserRepository.getUserById(id);
+    if (user) {
+      res.status(Status.Ok_200).json(user);
+    } else {
+      res.sendStatus(Status.NotFound_404);
+    }
   }
 );
 
