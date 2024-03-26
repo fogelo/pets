@@ -31,7 +31,7 @@ export class UserRepository {
     }
 
     if (filters.length > 0) {
-      filter.$and = filters;
+      filter.$or = filters;
     }
 
     const users = await usersCollection
