@@ -30,6 +30,8 @@ export class UserRepository {
       filters.push({ login: { $regex: searchLoginTerm, $options: "i" } });
     }
 
+
+    
     if (filters.length > 0) {
       filter.$or = filters;
     }
