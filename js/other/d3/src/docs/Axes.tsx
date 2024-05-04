@@ -47,7 +47,7 @@ const Axes = ({width = 400, height = 300}) => {
             // .tickSizeInner(20) // задает размер внутренних тиков (кроме первого и последнего)
             // .tickSizeOuter(20) // задает размер внешних тиков (первого и последнего)
             .tickPadding(10) // задает отступ значения от тика
-        //.offset(-10) // задает отступ для всей шкалы (как по горизонтали, так и по вертикали)
+            //.offset(-10) // задает отступ для всей шкалы (как по горизонтали, так и по вертикали)
 
 
         /*
@@ -69,13 +69,17 @@ const Axes = ({width = 400, height = 300}) => {
 
     }, []);
     return <div style={{display: "flex", gap: 20}}>
-        <div style={{width: 400, height: 300}}>
+        <div>
             <h2>Оси</h2>
-            <svg ref={baseSvgRef} width={"100%"} height={"100%"}/>
+            <div style={{width: 400, height: 300}}>
+                <svg ref={baseSvgRef} width={"100%"} height={"100%"}/>
+            </div>
         </div>
-        <div style={{width: 400, height: 300}}>
-            <h2>Оси</h2>
-            <svg ref={ticksSvgRef} width={"100%"} height={"100%"}/>
+        <div>
+            <h2>Тики</h2>
+            <div style={{width: 400, height: 300}}>
+                <svg ref={ticksSvgRef} width={"100%"} height={"100%"}/>
+            </div>
         </div>
     </div>
 }
