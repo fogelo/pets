@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="VcsDirectoryMappings">
-    <mapping directory="" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/js/editor/ckeditor5-demos" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/js/git-submodules/libs/lib1" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/js/git-submodules/projects/app1" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/js/git-submodules/projects/app1/lib1" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$" vcs="Git" />
   </component>
 </project>
