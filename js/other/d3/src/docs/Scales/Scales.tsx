@@ -13,8 +13,6 @@ function Scales() {
                 <ScaleBand/>
             </div>
         </div>
-
-
     )
 }
 

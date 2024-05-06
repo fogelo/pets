@@ -28,7 +28,9 @@ const ScaleOrdinal
             .join("g")
             .attr("class", "country-group")
             .attr("transform", (d, i) => `translate(${i * 60}, 30)`)
-            .call(d => console.log(d))
+            .call(d => {
+                //console.log(d)
+            })
 
         // Добавление прямоугольников в каждую группу
         groups.append("rect")

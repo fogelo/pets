@@ -47,7 +47,7 @@ const Axes = ({width = 400, height = 300}) => {
             // .tickSizeInner(20) // задает размер внутренних тиков (кроме первого и последнего)
             // .tickSizeOuter(20) // задает размер внешних тиков (первого и последнего)
             .tickPadding(10) // задает отступ значения от тика
-            //.offset(-10) // задает отступ для всей шкалы (как по горизонтали, так и по вертикали)
+        //.offset(-10) // задает отступ для всей шкалы (как по горизонтали, так и по вертикали)
 
 
         /*
@@ -56,7 +56,13 @@ const Axes = ({width = 400, height = 300}) => {
         * axis.tickFormat(d3.format(",.0f"));
         * axis.ticks(10, ",f");
         *
+        *
+        *
         * */
+
+        // console.log(d3.tickStep(1, 9, 5)) // возвращает какой шаг будет между тиками
+        // console.log(d3.range(4)) // возвращает массив [0,1,2,3], можно еще и так использовать range(start, stop, step)
+
 
         ticksSvg.append("g").call(xAxisBottom).attr("transform", `translate(${margin.left},${innerHeight + margin.top})`)
 

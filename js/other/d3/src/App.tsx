@@ -6,8 +6,10 @@ import {signalData} from "../data.ts";
 import D3RealTimeLineChart from "./components/D3RealTimeLineChart.tsx";
 import D3DraggableLineChart from "./components/D3DraggableLineChart.tsx";
 import D3GradientLineChart from "./components/D3GradientLineChart.tsx";
-import {Axes, ScaleLinear} from "./docs";
+import {ArrayData, Axes, Interactions, ScaleLinear, Selection} from "./docs";
 import Scales from "./docs/Scales/Scales.tsx";
+import D3ZoomableLineChart from "./components/D3ZoomableLineChart.tsx";
+import ReactZoomableLineChart from "./components/ReactZoomableLineChart.tsx";
 
 
 const staticData = [...signalData.values.map((value, i) => ({y: value, x: signalData.times[i]}))]
@@ -32,13 +34,18 @@ function App() {
             {/*<D3RealTimeLineChart data={data}/>*/}
             {/*<D3DraggableLineChart data={data}/>*/}
             {/*<D3GradientLineChart/>*/}
-            <svg>
-                <line x1="0" y1="20" x2="200" y2="20" stroke="black" strokeDasharray="200 200" strokeDashoffset="200"/>
-                <line x1="0" y1="40" x2="200" y2="40" stroke="black"/>
-            </svg>
+            <D3ZoomableLineChart data={staticData}/>
+            <ReactZoomableLineChart data={staticData}/>
+            {/*<svg>*/}
+            {/*    <line x1="0" y1="20" x2="200" y2="20" stroke="black" strokeDasharray="200 200" strokeDashoffset="200"/>*/}
+            {/*    <line x1="0" y1="40" x2="200" y2="40" stroke="black"/>*/}
+            {/*</svg>*/}
 
             <Axes/>
             <Scales/>
+            {/*<Selection/>*/}
+            <ArrayData/>
+            {/*<Interactions/>*/}
         </>
     )
 }
