@@ -63,6 +63,23 @@ const D3ZoomableLineChart: React.FC<LineChartProps> = ({data, width = 800, heigh
                 });
 
             svg.call(zoom);
+
+
+            //Доп
+            svg.on("click", (event) => {
+                svg.transition()
+                .duration(750)
+                .call(zoom.transform, d3.zoomIdentity) //возвращает в исходное положение с плавным переходом, zoomIdentity - это event.transform
+
+                //.call(zoom.translateBy, 100, 50) перемещает согласно zoom.translateBy(selection, x, y)
+                //.call(zoom.translateTo, dataX, dataY, [centerX, centerY]) // Фокусировка на конкретной точке данных, точка данных (dataX, dataY) оказалась в заданном центре [centerX, centerY] за 750 миллисекунд.
+                //.call(zoom.scaleTo, 2); // устанавливает масштаб в 2 раза больше
+
+
+                // Способы как можно создать объект transform
+                // console.log(d3.zoomIdentity.translate(0, 0).scale(3))
+                // console.log(new d3.ZoomTransform(3, 0, 0))
+            })
         }
     }, [data, width, height]);
 

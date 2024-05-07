@@ -1,5 +1,6 @@
 import React, {useRef, useEffect, useState, useCallback} from "react";
 import * as d3 from "d3";
+import dayjs from "dayjs";
 
 interface LineChartProps {
     data: { x: number; y: number }[];
@@ -40,39 +41,62 @@ const ReactZoomableLineChart: React.FC<LineChartProps> = ({data, width = 800, he
         svg.call(zoom)
 
 
-        //Доп
-        svg.on("click", (event) => {
-
-
-            //svg.transition()
-                //.duration(750)
-                //.call(zoom.transform, d3.zoomIdentity) //возвращает в исходное положение с плавным переходом, zoomIdentity - это event.transform
-            //.call(zoom.translateBy, 100, 50) перемещает согласно zoom.translateBy(selection, x, y)
-            //.call(zoom.translateTo, dataX, dataY, [centerX, centerY]) // Фокусировка на конкретной точке данных, точка данных (dataX, dataY) оказалась в заданном центре [centerX, centerY] за 750 миллисекунд.
-            //.call(zoom.scaleTo, 2); // устанавливает масштаб в 2 раза больше
-
-
-            // Способы как можно создать объект transform
-            // console.log(d3.zoomIdentity.translate(0, 0).scale(3))
-            // console.log(new d3.ZoomTransform(3, 0, 0))
-
-        })
+        // //Доп
+        // svg.on("click", (event) => {
+        //     setTransform(d3.zoomIdentity)
+        // })
     }, []);
 
     const transformedLine = d3.line<{ x: number; y: number }>()
         .x(d => transform.rescaleX(xScale)(d.x))
         .y(d => transform.rescaleY(yScale)(d.y));
 
+
+    const handleClick = () => {
+        animateTransform(d3.zoomIdentity, 750);
+        // setTransform(d3.zoomIdentity)
+    };
+
+    const animateTransform = (targetTransform, duration) => {
+        const interpolate = d3.interpolate(transform, targetTransform);
+        const startTime = Date.now();
+
+        const animate = () => {
+            const currentTime = Date.now();
+            const elapsedTime = currentTime - startTime;
+            if (elapsedTime < duration) {
+                const t = elapsedTime / duration;
+                const {x, y, k} = interpolate(t); // Интерполированные значения
+
+                // Применяем интерполированные значения к новому объекту zoomIdentity
+                const currentTransform = d3.zoomIdentity.translate(x, y).scale(k);
+                setTransform(currentTransform);
+                requestAnimationFrame(animate);
+            } else {
+                setTransform(targetTransform);
+            }
+        };
+
+        requestAnimationFrame(animate);
+    };
+
     return (
         <div style={{width, height}}>
-            <svg ref={ref} width="100%" height="100%">
+            <svg ref={ref} width="100%" height="100%"
+                 onClick={handleClick}
+            >
                 <g transform={`translate(${margin.left},${margin.top})`}>
                     <path d={transformedLine(data)} fill="none" stroke="blue" strokeWidth="2"/>
                     <g transform={`translate(${0},${innerHeight})`}>
                         <line x2={innerWidth} stroke={"black"}/>
-                        {/*{transform.rescaleX(xScale).ticks().map(tick=>)}*/}
+                        {transform.rescaleX(xScale).ticks(5).map((tick, i) => <g
+                            key={i}
+                            transform={`translate(${transform.rescaleX(xScale)(tick)},0)`}>
+                            <line y2={10} stroke={"black"}></line>
+                            <text y={25} textAnchor={"middle"} fontSize={"12px"}
+                            >{dayjs(tick).format("DD.MM.YYYY")}</text>
+                        </g>)}
 
-                        //TODO добавить тики и попробовать сделать zoomIdentity через react с анимацией
                     </g>
                 </g>
             </svg>
