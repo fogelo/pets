@@ -1,17 +1,16 @@
-import D3ZoomableLineChart from "./D3ZoomableLineChart.tsx";
+import D3BrushLineChart from "./D3BrushLineChart.tsx";
 import {signalData} from "../../../data.ts";
 import ReactZoomableLineChart from "./ReactZoomableLineChart.tsx";
 
 const staticData = [...signalData.values.map((value, i) => ({y: value, x: signalData.times[i]}))]
 
-const ZoomableLineCharts = () => {
+const BrushLineCharts = () => {
     return <div>
-        <h2>Zoom</h2>
+        <h2>Brush</h2>
         <div style={{display: "flex", flexDirection: "column"}}>
-            <D3ZoomableLineChart data={staticData}/>
-            <ReactZoomableLineChart data={staticData}/>
+            <D3BrushLineChart data={staticData}/>
         </div>
     </div>
 }
 
-export default ZoomableLineCharts
+export default BrushLineCharts

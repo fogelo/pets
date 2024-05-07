@@ -1,4 +1,4 @@
-import React, {useRef, useEffect} from "react";
+import React, {useRef, useEffect, useCallback} from "react";
 import * as d3 from "d3";
 
 interface LineChartProps {
@@ -11,6 +11,32 @@ const margin = {top: 20, right: 30, bottom: 40, left: 50};
 
 const D3ZoomableLineChart: React.FC<LineChartProps> = ({data, width = 800, height = 300}) => {
     const ref = useRef<SVGSVGElement>(null);
+
+
+    // Создание функции debounce
+    const debounce = (func, wait) => {
+        let timeout: number | undefined;
+
+        return function executedFunction(...args) {
+            const later = () => {
+                clearTimeout(timeout);
+                func(...args);
+            };
+
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+        };
+    };
+
+    // Функция для запроса данных, которая будет вызываться по завершению зума
+    const fetchData = () => {
+        console.log("Fetching data after zoom...");
+        // Тут ваш код для загрузки данных или других действий
+    };
+
+    // Обертка fetchData с помощью debounce
+    const debouncedFetchData = useCallback(debounce(fetchData, 1000), []);
+
 
     useEffect(() => {
         if (ref.current) {
@@ -60,6 +86,9 @@ const D3ZoomableLineChart: React.FC<LineChartProps> = ({data, width = 800, heigh
                     gx.call(xAxis.scale(newXScale));
                     gy.call(yAxis.scale(newYScale));
                     path.attr("d", line.x(d => newXScale(d.x)).y(d => newYScale(d.y)));
+                })
+                .on("end", (event) => {
+                    debouncedFetchData()
                 });
 
             svg.call(zoom);
@@ -68,8 +97,8 @@ const D3ZoomableLineChart: React.FC<LineChartProps> = ({data, width = 800, heigh
             //Доп
             svg.on("click", (event) => {
                 svg.transition()
-                .duration(750)
-                .call(zoom.transform, d3.zoomIdentity) //возвращает в исходное положение с плавным переходом, zoomIdentity - это event.transform
+                    .duration(750)
+                    .call(zoom.transform, d3.zoomIdentity) //возвращает в исходное положение с плавным переходом, zoomIdentity - это event.transform
 
                 //.call(zoom.translateBy, 100, 50) перемещает согласно zoom.translateBy(selection, x, y)
                 //.call(zoom.translateTo, dataX, dataY, [centerX, centerY]) // Фокусировка на конкретной точке данных, точка данных (dataX, dataY) оказалась в заданном центре [centerX, centerY] за 750 миллисекунд.
@@ -81,7 +110,7 @@ const D3ZoomableLineChart: React.FC<LineChartProps> = ({data, width = 800, heigh
                 // console.log(new d3.ZoomTransform(3, 0, 0))
             })
         }
-    }, [data, width, height]);
+    }, [data, width, height, debouncedFetchData]);
 
     return <div style={{width, height}}>
         <svg ref={ref} width={"100%"} height={"100%"}/>

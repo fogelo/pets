@@ -12,6 +12,8 @@ import D3ZoomableLineChart from "./components/zoom/D3ZoomableLineChart.tsx";
 import ReactZoomableLineChart from "./components/zoom/ReactZoomableLineChart.tsx";
 import ZoomableLineCharts from "./components/zoom/ZoomableLineCharts.tsx";
 import Animation from "./components/Animation.tsx";
+import BrushLineCharts from "./components/brush/BrushLineCharts.tsx";
+import OtherLineCharts from "./components/other/OtherLineCharts.tsx";
 
 
 const staticData = [...signalData.values.map((value, i) => ({y: value, x: signalData.times[i]}))]
@@ -44,6 +46,9 @@ function App() {
 
             <Animation/>
             <ZoomableLineCharts/>
+            <BrushLineCharts/>
+
+            <OtherLineCharts/>
 
             <Axes/>
             <Scales/>

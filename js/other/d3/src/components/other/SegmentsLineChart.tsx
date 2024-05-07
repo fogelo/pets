@@ -10,19 +10,20 @@ interface LineChartProps {
 
 const margin = {top: 20, right: 30, bottom: 40, left: 50};
 
-const ReactZoomableLineChart: React.FC<LineChartProps> = ({data, width = 800, height = 300}) => {
+const SegmentsLineChart: React.FC<LineChartProps> = ({data, width = 800, height = 300}) => {
     const ref = useRef<SVGSVGElement>(null);
+
     const [transform, setTransform] = useState(d3.zoomIdentity);
 
     const innerWidth = width - margin.left - margin.right;
     const innerHeight = height - margin.top - margin.bottom;
 
     const xScale = d3.scaleLinear()
-        .domain(d3.extent(data, d => d.x) as [number, number])
+        .domain(d3.extent(data.flat(), d => d.x) as [number, number])
         .range([0, innerWidth]);
 
     const yScale = d3.scaleLinear()
-        .domain(d3.extent(data, d => d.y) as [number, number])
+        .domain(d3.extent(data.flat(), d => d.y) as [number, number])
         .range([innerHeight, 0]);
 
     useEffect(() => {
@@ -55,41 +56,14 @@ const ReactZoomableLineChart: React.FC<LineChartProps> = ({data, width = 800, he
         .y(d => transform.rescaleY(yScale)(d.y));
 
 
-    const handleClick = () => {
-        animateTransform(d3.zoomIdentity, 750);
-        // setTransform(d3.zoomIdentity)
-    };
-
-    const animateTransform = (targetTransform, duration) => {
-        const interpolate = d3.interpolate(transform, targetTransform);
-        const startTime = Date.now();
-
-        const animate = () => {
-            const currentTime = Date.now();
-            const elapsedTime = currentTime - startTime;
-            if (elapsedTime < duration) {
-                const t = elapsedTime / duration;
-                const {x, y, k} = interpolate(t); // Интерполированные значения
-
-                // Применяем интерполированные значения к новому объекту zoomIdentity
-                const currentTransform = d3.zoomIdentity.translate(x, y).scale(k);
-                setTransform(currentTransform);
-                requestAnimationFrame(animate);
-            } else {
-                setTransform(targetTransform);
-            }
-        };
-
-        requestAnimationFrame(animate);
-    };
-
     return (
         <div style={{width, height}}>
-            <svg ref={ref} width="100%" height="100%"
-                // onClick={handleClick}
-            >
+            <svg ref={ref} width="100%" height="100%">
                 <g transform={`translate(${margin.left},${margin.top})`}>
-                    <path d={transformedLine(data)} fill="none" stroke="blue" strokeWidth="2"/>
+                    {data.map((d, i) => {
+                        return <path d={transformedLine(d)} fill="none" stroke={i === 0 ? "green" : "blue"}
+                                     strokeWidth="2"/>
+                    })}
                     <g transform={`translate(${0},${innerHeight})`}>
                         <line x2={innerWidth} stroke={"black"}/>
                         {transform.rescaleX(xScale).ticks(5).map((tick, i) => <g
@@ -99,7 +73,6 @@ const ReactZoomableLineChart: React.FC<LineChartProps> = ({data, width = 800, he
                             <text y={25} textAnchor={"middle"} fontSize={"12px"}
                             >{dayjs(tick).format("DD.MM.YYYY")}</text>
                         </g>)}
-
                     </g>
                 </g>
             </svg>
@@ -107,4 +80,4 @@ const ReactZoomableLineChart: React.FC<LineChartProps> = ({data, width = 800, he
     );
 }
 
-export default ReactZoomableLineChart;
+export default SegmentsLineChart;
