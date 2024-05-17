@@ -27,7 +27,7 @@ const D3ZoomableLineChart: React.FC<LineChartProps> = ({data, width = 800, heigh
             timeout = setTimeout(later, wait);
         };
     };
-
+    const lastKref = useRef(1)
     // Функция для запроса данных, которая будет вызываться по завершению зума
     const fetchData = () => {
         console.log("Fetching data after zoom...");
@@ -37,6 +37,9 @@ const D3ZoomableLineChart: React.FC<LineChartProps> = ({data, width = 800, heigh
     // Обертка fetchData с помощью debounce
     const debouncedFetchData = useCallback(debounce(fetchData, 1000), []);
 
+    useEffect(() => {
+        console.log(111)
+    }, [lastKref.current]);
 
     useEffect(() => {
         if (ref.current) {
@@ -83,12 +86,20 @@ const D3ZoomableLineChart: React.FC<LineChartProps> = ({data, width = 800, heigh
                 .on("zoom", (event) => {
                     const newXScale = event.transform.rescaleX(xScale);
                     const newYScale = event.transform.rescaleY(yScale);
-                    gx.call(xAxis.scale(newXScale));
-                    gy.call(yAxis.scale(newYScale));
-                    path.attr("d", line.x(d => newXScale(d.x)).y(d => newYScale(d.y)));
+
+                    if (event.transform.k !== lastKref.current) {
+                        gx.transition().duration(200).call(xAxis.scale(newXScale));
+                        gy.transition().duration(200).call(yAxis.scale(newYScale));
+                        path.transition().duration(200).attr("d", line.x(d => newXScale(d.x)).y(d => newYScale(d.y)));
+                    } else {
+                        gx.call(xAxis.scale(newXScale));
+                        gy.call(yAxis.scale(newYScale));
+                        path.attr("d", line.x(d => newXScale(d.x)).y(d => newYScale(d.y)));
+                    }
+                    lastKref.current = event.transform.k
                 })
                 .on("end", (event) => {
-                    debouncedFetchData()
+                    // debouncedFetchData()
                 });
 
             svg.call(zoom);
@@ -96,7 +107,8 @@ const D3ZoomableLineChart: React.FC<LineChartProps> = ({data, width = 800, heigh
 
             //Доп
             svg.on("click", (event) => {
-                svg.transition()
+                svg
+                    .transition()
                     .duration(750)
                     .call(zoom.transform, d3.zoomIdentity) //возвращает в исходное положение с плавным переходом, zoomIdentity - это event.transform
 

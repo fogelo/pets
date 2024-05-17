@@ -14,6 +14,8 @@ import ZoomableLineCharts from "./components/zoom/ZoomableLineCharts.tsx";
 import Animation from "./components/Animation.tsx";
 import BrushLineCharts from "./components/brush/BrushLineCharts.tsx";
 import OtherLineCharts from "./components/other/OtherLineCharts.tsx";
+import D3Area2 from "./components/D3Area2.tsx";
+import AnimatedPath from "./components/spring/Spring.tsx";
 
 
 const staticData = [...signalData.values.map((value, i) => ({y: value, x: signalData.times[i]}))]
@@ -30,7 +32,7 @@ function App() {
     //     return () => clearTimeout(timeoutId)
     // }, [data]);
 
-
+data.
     return (
         <>
             {/*<LineChart data={data} width={800} height={500}/>*/}
@@ -43,6 +45,9 @@ function App() {
             {/*    <line x1="0" y1="40" x2="200" y2="40" stroke="black"/>*/}
             {/*</svg>*/}
 
+            <AnimatedPath/>
+
+            <D3Area2/>
 
             <Animation/>
             <ZoomableLineCharts/>
@@ -55,6 +60,8 @@ function App() {
             {/*<Selection/>*/}
             <ArrayData/>
             {/*<Interactions/>*/}
+
+
         </>
     )
 }

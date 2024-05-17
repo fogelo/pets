@@ -31,6 +31,7 @@ const SegmentsLineChart: React.FC<LineChartProps> = ({data, width = 800, height 
         const zoom = d3.zoom<SVGSVGElement, unknown>()
             // .scaleExtent([1, 10])
             .filter(event => {
+                console.log(event)
                 // Разрешить zoom при использовании колесика мыши и зажатом ctrl
                 if (event.type === "wheel" && event.ctrlKey) return true;
                 // Разрешить panning только при использовании средней кнопки мыши
