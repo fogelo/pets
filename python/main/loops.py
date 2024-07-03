@@ -23,23 +23,24 @@ import array
 Операторы циклов:
 1) break - выход из цикла
 2) continue - переход к следующей итерации цикла
+
+Генератор (generator) - это последовательность элементов. К элементам генератора нельзя получить доступ по индексу, но можно произвести итерацию.
+Преимущесто генараторов - это его размер, итерация выполняется быстрее для больших последовательностей 
 """
 
+
+# @ Примеры переборов последовательностей c помощью for in
+
 # * Коллекции
-
-
 my_list = [1, 2, 3, "apple", True, 2]
 my_dict = {"name": "anton", "height": 180, "age": 33}
 my_set = {1, 2, 3, "apple", True}
 my_tuple = (1, 2, 3, "apple", True, 2)
 my_str = "apple python"
-my_range = range(5)
+my_range = range(10)
 my_array = array.array(
     "i", [1, 2, 3, 4, 5]
 )  # отличается от list тем, что позволяет хранить элементы только одного типа (в данном случае i - целые числа со знаком)
-
-
-# @ Примеры переборов последовательностей c помощью for in
 
 # * list
 for item in my_list:
@@ -76,11 +77,35 @@ for item in my_array:
     print(item)
 
 # @ Примеры возможных применений сокращенного for in
-# * получение новой последовательности на базе существующей
-my_list2 = [str(item) for item in my_list]
-my_dict2 = [my_dict[key] for key in my_dict]
 
-# * фильтрация
-my_list3 = [item>]
+# * создание списка(кортежа, набора) квадратов чисел
+squares1 = [number**2 for number in range(10)]
+squares2 = {number**2 for number in range(10)}
+squares3 = (number**2 for number in range(10))  # получим экземпляр класса generator
+
+
+# * фильтрация списка
+even_numbers = [number for number in range(10) if number % 2 == 0]
+
+# * преобразование списка строк
+words = ["hello", "world", "python", "is", "awesome"]
+upper_words = [word.upper() for word in words]
+
+# * создание словаря из списков
+keys = ["name", "age", "gender"]
+values = ["anton", 33, "male"]
+my_dict = {keys[i]: values[i] for i in range(len(keys))}
+
+# * создание списка кортежей
+pairs = [(number, number**2) for number in range(10)]
+
+# * преобразование в плоский список
+matrix = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+flat_list = [num for row in matrix for num in row]
+
+# * замена символов в строке
+sentence = "The quick brown fox"
+vowels = "aeiou"
+filtered_sentence = ''.join([char for char in sentence if char not in vowels])
 
 # @ Примеры переборов последовательностей c помощью while
