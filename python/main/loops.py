@@ -106,6 +106,28 @@ flat_list = [num for row in matrix for num in row]
 # * замена символов в строке
 sentence = "The quick brown fox"
 vowels = "aeiou"
-filtered_sentence = ''.join([char for char in sentence if char not in vowels])
+filtered_sentence = "".join([char for char in sentence if char not in vowels])
 
 # @ Примеры переборов последовательностей c помощью while
+
+# * Простой пример
+
+i = 1
+while i <= 5:
+    print(i)
+    i += 1
+
+# * Бесконечный цикл c полем ввода
+
+# while True:
+#     user_input = input("Введите stop, чтобы остановить: ")
+#     if user_input == "stop":
+#         break
+#     print("Вы ввели: ", user_input)
+
+# * Обработка элементов списка
+fruits = ["apple", "orange", "banana"]
+index = 0
+while len(fruits) > index:
+    print(fruits[index])
+    index += 1
