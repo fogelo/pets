@@ -67,7 +67,9 @@ myListLt = myList.__lt__([1, 2]) # myList < [1, 2] - проверяет, мен�
 
 
 myListSize = myList.__sizeof__() # возвращает размер списка в байтах
-#myList.__subclasshook__
+myList.__init__() # вызывается при создании экземпляра класса
+myList.__subclasshook__(list, dict) # используется для проверки, является ли класс подклассом другого класса (возможны значения: True, False, NotImplemented)
+
 #myList.__setattr__
 #myList.__reduce__
 #myList.__reduce_ex__
@@ -78,14 +80,14 @@ myListSize = myList.__sizeof__() # возвращает размер списк�
 #myList.__hash__
 #myList.__getattribute__
 #myList.__init_subclass__
-#myList.__init__
 #myList.__format__
 #myList.__dict__
 #myList.__doc__
 #myList.__annotations__
-#myList.__setattr__
 #myList.__dir__
 #myList.__delattr__
+#myList.__class_getitem__
+
 
 
 # *
