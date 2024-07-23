@@ -56,7 +56,7 @@ const aaa = {
 
 const templateMarkup = {
     templateId: 1,
-    templateFormat: "ods",
+    templateFormat: "odt",
     insertionElements: [
       {
         type: "value",

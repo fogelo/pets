@@ -42,7 +42,7 @@ ord('a') # Output: 97
 print("Hello, {}!".format("World"))  # Output: Hello, World!
 
 # repr(): Возвращает строковое представление объекта.
-print(repr([1, 2, 3]))  # Output: '[1, 2, 3]'
+repr([1, 2, 3])  # Output: '[1, 2, 3]'
 
 #@ Функции для работы с итераторами и итерируемыми объектами
 # iter() - возвращает итератор для итерируемого объекта.
@@ -51,8 +51,6 @@ it = iter([1, 2, 3]) # Output: <list_iterator object at 0x104f879d0>
 next(it)  # Output: 1
 next(it)  # Output: 2
 
-
-
 # all(): Возвращает True, если все элементы итерируемого объекта истинны.
 all([True, False, True])  # Output: False
 
@@ -60,6 +58,7 @@ all([True, False, True])  # Output: False
 any([False, False, True])  # Output: True
 
 # sum(): Возвращает сумму элементов итерируемого объекта.
+sum((1, 2, 3))  # Output: 6
 
 # max() - возвращает наибольший элемент итерируемого объекта.
 max(1, 2, 3)  # Output: 3
@@ -74,7 +73,9 @@ def is_even(n):
 list(filter(is_even, [1, 2, 3, 4, 5]))  # [2, 4]
 
 # map(): Применяет функцию к каждому элементу итерируемого объекта.
-
+my_tuple = (1, 2, 3)
+squared = map(lambda x: x**2, my_tuple)
+print(tuple(squared))  # Output: (1, 4, 9)
 
 # sorted(): Возвращает отсортированный список элементов.
 sorted([3, 1, 2])  # Output: [1, 2, 3]
@@ -96,7 +97,7 @@ l = list((1, 2, 3))
 print(l)  # Output: [1, 2, 3]
 
 # str(): Преобразует объект в строку.
-print(str(123))  # Output: '123'
+str(123)  # Output: '123'
 
 # tuple(): Создает новый кортеж.
 t = tuple([1, 2, 3])
@@ -119,8 +120,14 @@ r = range(5)
 print(list(r))  # Output: [0, 1, 2, 3, 4]
 
 
-# enumerate(): Возвращает объект перечисления.
-
+# enumerate(): Возвращает итератор, генерирующий пары (индекс, значение).
+my_tuple = ('a', 'b', 'c')
+for index, value in enumerate(my_tuple):
+    print(index, value)
+# Output:
+# 0 a
+# 1 b
+# 2 c
 
 # int() - преобразует строку или число в целое число.
 int('42')  # Output: 42
@@ -129,26 +136,28 @@ int('42')  # Output: 42
 float('3.14')  # Output: 3.14
 
 # bool(): Преобразует значение в логическое значение True или False.
+print(bool(1))  # Output: True
+print(bool(0))  # Output: False
 
 # slice(): Возвращает объект среза.
 s = slice(1, 5, 2)
 print([0, 1, 2, 3, 4, 5][s])  # Output: [1, 3]
 
-# bytearray(): Возвращает объект bytearray.
+#! bytearray(): Возвращает объект bytearray.
 b = bytearray([65, 66, 67])
 print(b)  # Output: bytearray(b'ABC')
 
-# bytes(): Возвращает объект bytes.
+#! bytes(): Возвращает объект bytes.
 b = bytes([65, 66, 67])
 print(b)  # Output: b'ABC'
+
+#! memoryview(): Возвращает объект memoryview.
+m = memoryview(bytes([1, 2, 3]))
+print(m.tolist())  # Output: [1, 2, 3]
 
 # frozenset(): Возвращает неизменяемое множество.
 fs = frozenset([1, 2, 3])
 print(fs)  # Output: frozenset({1, 2, 3})
-
-# memoryview(): Возвращает объект memoryview.
-m = memoryview(bytes([1, 2, 3]))
-print(m.tolist())  # Output: [1, 2, 3]
 
 # property(): Возвращает объект свойства.
 class MyClass:
@@ -292,23 +301,23 @@ print(issubclass(Parent, Child))  # Output: False
 
 #@ Функции для выполнения кода и помощи
 
-# compile(): Компилирует исходный код в объект кода.
+#! compile(): Компилирует исходный код в объект кода.
 code = "print('Hello, World!')"
 compiled_code = compile(code, '<string>', 'exec')
 exec(compiled_code)  # Output: Hello, World!
 
-# breakpoint(): Останавливает выполнение программы и запускает отладчик.
+#! breakpoint(): Останавливает выполнение программы и запускает отладчик.
 print("Before breakpoint")
 breakpoint()  # Запускает отладчик
 print("After breakpoint")
 
 
-# eval(): Выполняет выражение Python из строки.
+#! eval(): Выполняет выражение Python из строки.
 expression = "1 + 2 * 3"
 result = eval(expression)
 print(result)  # Output: 7
 
-# exec(): Выполняет динамически созданный программный код.
+#! exec(): Выполняет динамически созданный программный код.
 code = """
 for i in range(5):
     print(i)
