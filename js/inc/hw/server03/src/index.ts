@@ -1,7 +1,7 @@
 import { runDb } from "./db/db";
 import { app } from "./settings";
 
-const port = 3000;
+const port = 3001;
 
 app.listen(port, async () => {
   await runDb();
