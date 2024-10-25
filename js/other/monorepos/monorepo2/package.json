@@ -1,0 +1,17 @@
+{
+  "name": "monorepo2",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "npm run build --workspaces",
+    "start": "concurrently \"npm run dev --workspace shared-components\" \"npm run start --workspace admin\" \"npm run start --workspace main\"",
+    "lint": "eslint . --ext .ts,.tsx",
+    "format": "prettier --write \"packages/**/*.{ts,tsx,js,jsx,css,scss,md}\""
+  },
+  "devDependencies": {
+    "prettier": "3.3.3"
+  }
+}

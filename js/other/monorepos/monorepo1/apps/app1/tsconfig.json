@@ -1,0 +1,8 @@
+{
+  "extends": "../../packages/config/tsconfig/base.tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "jsx": "react" // Добавляем поддержку JSX
+  },
+  "include": ["src/**/*"]
+}
