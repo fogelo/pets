@@ -6,8 +6,8 @@
   "scripts": {
     "test": "jest --detectOpenHandles",
     "watch": "tsc -w --project tsconfig.build.json",
-    "dev": "nodemon --inspect ./dist/index.js",
-    "build": "tsc --project tsconfig.build.json"
+    "build": "tsc --project tsconfig.build.json",
+    "start": "nodemon ./dist/index.js"
   },
   "keywords": [],
   "author": "",
