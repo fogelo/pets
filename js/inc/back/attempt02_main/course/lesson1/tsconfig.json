@@ -1,0 +1,31 @@
+{
+  "compilerOptions": {
+    "target": "es2016", // версия JavaScript, в которую будет транслироваться TypeScript-код
+    "module": "commonjs", // определяет систему модулей для выходных файлов
+    "outDir": "./dist", // папка, в которую компилятор будет класть сгенерированные .js-файлы (и сопутствующие .d.ts, если они есть).
+    "strict": true,
+    /* 
+    "strict": true,
+    Включает сразу набор «строгих» проверок:
+     - noImplicitAny (запрещает неявный тип any),
+     - strictNullChecks (строгая проверка null/undefined),
+     - strictFunctionTypes, strictBindCallApply, strictPropertyInitialization и др.
+    Обеспечивает максимальную типовую безопасность.
+    */
+
+    "noImplicitReturns": true, //Генерирует ошибку, если в функции есть путь выполнения без return (или с возвращением разного типа). Помогает ловить незавершённые ветки.
+    "esModuleInterop": true,
+    /* 
+    "esModuleInterop": true,
+    TypeScript добавляет в сгенерированный JavaScript два вспомогательных хелпера:
+      - __importDefault — обёртка вокруг require, которая гарантирует, что при импорте CommonJS-модуля вы получите его «default» экспорт в виде свойства .default.
+      - __importStar — аналогично оборачивает require, чтобы вы могли делать именованный импорт всего содержимого модуля.
+    */
+
+    "allowSyntheticDefaultImports": true, //Разрешает писать import foo from 'bar' для модулей, у которых нет экспорта по умолчанию. Не меняет сам выходной код, но упрощает работу с некоторыми библиотеками.
+    "skipLibCheck": true, //Пропускает проверку типов в файлах объявлений (.d.ts), что ускоряет компиляцию, но может скрыть ошибки в сторонних типах.
+    "forceConsistentCasingInFileNames": true //Требует единообразного использования регистра в путях при импортах. Помогает избежать проблем на файловых системах с разной чувствительностью к регистру (Windows vs. Linux)
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "**/*.test.ts"]
+}
