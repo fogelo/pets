@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="c04549c1-574b-48e7-b03e-15aae3e801c3" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../../course/lesson1/package.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../course/lesson1/src/index.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../course/lesson1/tsconfig.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../course/lesson1/yarn.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../python/bogdan/built-in_modules/re.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../python/bogdan/errors.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../python/bogdan/int_float.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../python/bogdan/loops.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../python/bogdan/main.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../python/bogdan/str.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../python/main/built-it_function.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../python/main/class.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../python/main/common.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../python/main/dict.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../python/main/example.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../python/main/files.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../python/main/function.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../python/main/int.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../python/main/list.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../python/main/loops.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../python/main/other.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../python/main/sandbox.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../python/main/set.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../python/main/str.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../python/main/tuple.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../python/projects/test_pipenv/Pipfile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../python/projects/test_pipenv/Pipfile.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../../python/projects/test_pipenv/conv.py" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../../../../../.." />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 7
+}]]></component>
+  <component name="ProjectId" id="2wOevjKMP50uxb64ddi9cArDuVD" />
+  <component name="ProjectViewState">
+    <option name="autoscrollFromSource" value="true" />
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "master",
+    "js.last.introduce.type": "CONST",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "pnpm",
+    "ts.external.directory.path": "/Users/antor/Desktop/learn2/pets/js/inc/back/attempt02_main/lessons/ls02/node_modules/typescript/lib",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-e768b9ed790e-JavaScript-WS-243.21565.180" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="c04549c1-574b-48e7-b03e-15aae3e801c3" name="Changes" comment="" />
+      <created>1745917279726</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1745917279726</updated>
+      <workItem from="1745917280909" duration="2115000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>

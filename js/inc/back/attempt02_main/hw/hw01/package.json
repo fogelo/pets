@@ -1,0 +1,21 @@
+{
+  "name": "lesson1",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc",
+    "dev": "nodemon --inspect dist/index.js",
+    "watch": "tsc -w"
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "nodemon": "^3.1.10"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.1",
+    "@types/node": "^22.15.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
+  }
+}
