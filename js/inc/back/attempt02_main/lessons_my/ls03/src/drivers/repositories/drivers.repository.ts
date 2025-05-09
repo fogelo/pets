@@ -7,7 +7,7 @@ export const driversRepository = {
   async findAll(): Promise<WithId<Driver>[]> {
     return driverCollection.find().toArray();
   },
-  async findById(id: string): Promise<WithId<Driver> | null> {
+  async findById(id: ): Promise<WithId<Driver> | null> {
     return driverCollection.findOne({ _id: new ObjectId(id) });
   },
   async create(newDriver: Driver): Promise<WithId<Driver>> {

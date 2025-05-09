@@ -1,0 +1,14 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "composite": true,
+    "module": "commonjs",
+    "types": ["jest", "node"],
+    "rootDir": ".",
+    "esModuleInterop": true,
+    "inlineSources": true,
+    "sourceMap": true
+  },
+  "include": ["__tests__/**/*.ts"],
+  "references": [{ "path": "./tsconfig.json" }]
+}

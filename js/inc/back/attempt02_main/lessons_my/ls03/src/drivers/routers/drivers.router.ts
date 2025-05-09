@@ -11,34 +11,29 @@ import { inputValidationResultMiddleware } from "../../core/middlewares/validati
 import { driverInputDtoValidation } from "../validation/driver.input-dto.validation-middlewares";
 import { superAdminGuardMiddleware } from "../../auth/middlewares/super-admin.guard-middleware";
 
-export const driversRouter = Router({});
+export const driversRouter: Router = Router({});
 
 driversRouter
-  .get("", (req: Request, res: Response) => {
-    // возвращаем всех водителей
-    res.status(HttpStatus.Ok).send(db.drivers);
-  })
-
   .get("", getDriverListHandler)
-  .get("/:id", idValidation, inputValidationResultMiddleware, getDriverHandler)
-  .post(
-    "",
-    superAdminGuardMiddleware, // Проверка авторизации
-    driverInputDtoValidation, // Валидация данных
-    inputValidationResultMiddleware, // Проверка результата валидации
-    createDriverHandler // Обработчик запроса
-  )
-  .put(
-    "/:id",
-    superAdminGuardMiddleware, // Проверка авторизации
-    idValidation,
-    driverInputDtoValidation,
-    inputValidationResultMiddleware,
-    updateDriverHandler
-  )
-  .delete(
-    "/:id",
-    idValidation,
-    inputValidationResultMiddleware,
-    deleteDriverHandler
-  );
+  .get("/:id", idValidation, inputValidationResultMiddleware, getDriverHandler);
+// .post(
+//   "",
+//   superAdminGuardMiddleware, // Проверка авторизации
+//   driverInputDtoValidation, // Валидация данных
+//   inputValidationResultMiddleware, // Проверка результата валидации
+//   createDriverHandler // Обработчик запроса
+// )
+// .put(
+//   "/:id",
+//   superAdminGuardMiddleware, // Проверка авторизации
+//   idValidation,
+//   driverInputDtoValidation,
+//   inputValidationResultMiddleware,
+//   updateDriverHandler
+// )
+// .delete(
+//   "/:id",
+//   idValidation,
+//   inputValidationResultMiddleware,
+//   deleteDriverHandler
+// );

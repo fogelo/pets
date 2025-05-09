@@ -4,11 +4,14 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc",
-    "dev": "nodemon --inspect dist/index.js",
+    "dev-old": "nodemon --inspect dist/index.js",
     "watch": "tsc -w",
     "jest": "jest -i",
     "lint": "eslint --fix .",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "start": "ts-node index.ts",
+    "dev": "nodemon",
+    "test": "jest"
   },
   "keywords": [],
   "author": "",
@@ -19,7 +22,8 @@
     "express-validator": "^7.2.1",
     "mongodb": "^6.16.0",
     "swagger-jsdoc": "^6.2.8",
-    "swagger-ui-express": "^5.0.1"
+    "swagger-ui-express": "^5.0.1",
+    "ts-node": "^10.9.2"
   },
   "devDependencies": {
     "@types/express": "^5.0.1",

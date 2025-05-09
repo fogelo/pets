@@ -4,19 +4,16 @@ import { SETTINGS } from "./core/settings/settings";
 import { runDB } from "./db/mongo.db";
 
 const bootstrap = async () => {
-  // создание экземпляра приложения
-  const app = express();
-  setupApp(app);
+  const app = express(); // создание экземпляра приложения
+  setupApp(app); // настройка роутов
 
-  // порт приложения
   const PORT = SETTINGS.PORT;
 
-  // подключение к БД
-  await runDB(SETTINGS.MONGO_URL);
+  await runDB(SETTINGS.MONGO_URL); // подключение к БД
 
   // запуск приложения
   app.listen(PORT, () => {
-    console.log(`Example app listening on port ${PORT}`);
+    console.log(`Сервер запущен на порту: ${PORT}`);
   });
   return app;
 };
