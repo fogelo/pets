@@ -4,3 +4,4 @@ export type PostCreateInput = {
   content: string;
   blogId: string;
 };
+

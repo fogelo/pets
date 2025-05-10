@@ -5,7 +5,9 @@ import { UserQueryInput } from "../routes/input/user-query.input";
 import { UserAttributes } from "./dtos/user.attributes";
 
 export const usersService = {
-  async findMany(queryDto: UserQueryInput): Promise<WithId<User>[]> {
+  async findMany(
+    queryDto: UserQueryInput
+  ): Promise<{ items: WithId<User>[]; totalCount: number }> {
     const users = userRepository.findMany(queryDto);
     return users;
   },

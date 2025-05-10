@@ -6,17 +6,29 @@ import { UserQueryInput } from "../routes/input/user-query.input";
 import { UserAttributes } from "../application/dtos/user.attributes";
 
 export const userRepository = {
-  async findMany(queryDto: UserQueryInput): Promise<WithId<User>[]> {
-    const { ids } = queryDto;
+  async findMany(
+    queryDto: UserQueryInput
+  ): Promise<{ items: WithId<User>[]; totalCount: number }> {
+    const { pageNumber, pageSize, sortBy, sortDirection, searchNameTerm } =
+      queryDto;
+
+    const skip = (pageNumber - 1) * pageSize;
     const filter: any = {};
 
-    if (ids && ids.length) {
-      const objectIds = ids.map((id) => new ObjectId(id));
-      filter._id = { $in: objectIds };
+    if (searchNameTerm) {
+      filter.name = { $regex: searchNameTerm, $options: "i" };
     }
 
-    const result = await usersCollection.find(filter).toArray();
-    return result;
+    const items = await usersCollection
+      .find(filter)
+      .sort({ [sortBy]: sortDirection })
+      .skip(skip)
+      .limit(pageSize)
+      .toArray();
+
+    const totalCount = await usersCollection.countDocuments(filter);
+
+    return { items, totalCount };
   },
   async findByIdOrFail(id: string): Promise<WithId<User>> {
     const user = await usersCollection.findOne({ _id: new ObjectId(id) });

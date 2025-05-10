@@ -9,5 +9,6 @@ export const mapToBlogOutput = (blog: WithId<Blog>): BlogOutput => {
     description: blog.description,
     websiteUrl: blog.websiteUrl,
     createdAt: blog.createdAt,
+    isMembership: true,
   };
 };

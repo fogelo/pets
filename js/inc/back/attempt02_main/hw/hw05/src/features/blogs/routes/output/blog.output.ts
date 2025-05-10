@@ -4,5 +4,5 @@ export type BlogOutput = {
   description: string;
   websiteUrl: string;
   createdAt: Date;
-  //   isMembership: boolean;
+  isMembership: boolean;
 };

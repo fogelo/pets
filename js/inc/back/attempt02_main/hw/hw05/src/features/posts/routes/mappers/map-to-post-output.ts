@@ -9,11 +9,11 @@ export const mapToPostOutput = (
 ): PostOutput => {
   return {
     id: post._id.toString(),
+    title: post.title,
+    shortDescription: post.shortDescription,
+    content: post.content,
     blogId: blog._id.toString(),
     blogName: blog.name,
-    content: post.content,
     createdAt: post.createdAt,
-    shortDescription: post.shortDescription,
-    title: post.title,
   };
 };

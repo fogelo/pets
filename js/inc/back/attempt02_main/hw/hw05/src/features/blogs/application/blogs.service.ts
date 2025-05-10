@@ -5,11 +5,17 @@ import { BlogQueryInput } from "../routes/input/blog-query.input";
 import { BlogAttributes } from "./dtos/blog.attributes";
 
 export const blogsService = {
-  async findMany(queryDto: BlogQueryInput): Promise<WithId<Blog>[]> {
-    return blogRepository.findMany(queryDto);
+  async findMany(
+    queryDto: BlogQueryInput
+  ): Promise<{ items: WithId<Blog>[]; totalCount: number }> {
+    const result = blogRepository.findMany(queryDto);
+    return result;
   },
   async findByIdOrFail(id: string): Promise<WithId<Blog>> {
     return blogRepository.findByIdOrFail(id);
+  },
+  async findByIdsOrFail(ids: string[]): Promise<WithId<Blog>[]> {
+    return blogRepository.findByIdsOrFail(ids);
   },
   async create(dto: BlogAttributes): Promise<string> {
     const newBlog = {

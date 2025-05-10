@@ -11,8 +11,8 @@ export function errorsHandler(error: unknown, res: Response): void {
     res.status(httpStatus).send(
       createErrorMessages([
         {
-          status: httpStatus,
-          detail: error.message,
+          //   status: httpStatus,
+          message: error.message,
         },
       ])
     );
@@ -26,10 +26,10 @@ export function errorsHandler(error: unknown, res: Response): void {
     res.status(httpStatus).send(
       createErrorMessages([
         {
-          status: httpStatus,
-          source: error.source,
-          detail: error.message,
-          code: error.code,
+          //   status: httpStatus,
+          //   source: error.source,
+          message: error.message,
+          //   code: error.code,
         },
       ])
     );

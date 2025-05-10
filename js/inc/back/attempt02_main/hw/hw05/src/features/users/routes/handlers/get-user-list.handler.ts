@@ -1,14 +1,20 @@
 import express from "express";
 import { UserQueryInput } from "../input/user-query.input";
 import { usersService } from "../../application/users.service";
-import { mapToUserOutput } from "../mappers/map-to-user-output";
+import { setDefaultSortAndPaginationIfNotExist } from "../../../../core/helpers/set-default-sort-and-pagination";
+import { mapToUserListPaginatedOutput } from "../mappers/map-to-post-list-paginated-output";
+import { HttpStatus } from "../../../../core/types/http-statuses";
 
 export const getUserListHandler = async (
   req: express.Request<{}, {}, {}, UserQueryInput>,
   res: express.Response
 ) => {
-  const queryInput = req.query;
-  const users = await usersService.findMany(queryInput);  
-  const usersOutput = users.map(mapToUserOutput);
-  res.status(201).json(usersOutput);
+  const queryInput = setDefaultSortAndPaginationIfNotExist(req.query);
+  const { items, totalCount } = await usersService.findMany(queryInput);
+  const userListOutput = mapToUserListPaginatedOutput(items, {
+    pageNumber: queryInput.pageNumber,
+    pageSize: queryInput.pageSize,
+    totalCount,
+  });
+  res.status(HttpStatus.Ok).json(userListOutput);
 };
