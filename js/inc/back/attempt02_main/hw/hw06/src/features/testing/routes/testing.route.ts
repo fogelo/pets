@@ -16,4 +16,5 @@ testingRouter.delete("/all-data", async (req: Request, res: Response) => {
     postsCollection.deleteMany(),
   ]);
   res.sendStatus(HttpStatus.NoContent);
+  return;
 });

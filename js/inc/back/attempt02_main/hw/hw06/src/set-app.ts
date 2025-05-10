@@ -14,6 +14,6 @@ export const setApp = (app: express.Express) => {
   app.use(TESTING_PATH, testingRouter);
 
   app.get(`${MAIN_PATH}`, (req: express.Request, res: express.Response) => {
-    res.send("Hello Worldd!");
+    res.send("Hello World1!");
   });
 };

@@ -24,7 +24,7 @@ export async function runDB(url: string): Promise<void> {
   try {
     await client.connect();
     await db.command({ ping: 1 });
-    console.log(`✅ Подключено к базе данных установлено: ${url}`);
+    console.log(`✅ Подключение к базе данных установлено: ${url}`);
   } catch (e) {
     await client.close();
     throw new Error(`❌ Нет подключения к базе банных: ${e}`);
