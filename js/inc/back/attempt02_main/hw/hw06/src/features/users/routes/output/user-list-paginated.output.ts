@@ -1,7 +1,7 @@
 import { UserOutput } from "./user.output";
 
 export type UserListPaginatedOutput = {
-  pageCount: number;
+  pagesCount: number;
   page: number;
   pageSize: number;
   totalCount: number;

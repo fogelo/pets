@@ -1,7 +1,7 @@
 import { PostOutput } from "./post.output";
 
 export type PostListPaginatedOutput = {
-  pageCount: number;
+  pagesCount: number;
   page: number;
   pageSize: number;
   totalCount: number;

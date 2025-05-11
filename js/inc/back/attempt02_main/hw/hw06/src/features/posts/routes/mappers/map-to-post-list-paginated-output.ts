@@ -14,7 +14,7 @@ export function mapToPostListPaginatedOutput(
     return mapToPostOutput(post, blog);
   });
   return {
-    pageCount: Math.ceil(meta.totalCount / meta.pageSize),
+    pagesCount: Math.ceil(meta.totalCount / meta.pageSize),
     page: meta.pageNumber,
     pageSize: meta.pageSize,
     totalCount: meta.totalCount,
