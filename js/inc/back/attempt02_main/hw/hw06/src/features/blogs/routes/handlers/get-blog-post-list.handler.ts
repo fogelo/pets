@@ -29,8 +29,7 @@ export const getBlogPostListHandler = async (
       totalCount,
     });
     res.status(HttpStatus.Ok).json(postListOutput);
-
-    res.status(HttpStatus.Ok).json(posts);
+    return;
   } catch (err: unknown) {
     errorsHandler(err, res);
   }
