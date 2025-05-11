@@ -13,6 +13,7 @@ export const getBlogPostListHandler = async (
 ) => {
   try {
     const blogId = req.params.id;
+    const blog = await blogsService.findByIdOrFail(blogId);
     const queryInput = setDefaultSortAndPaginationIfNotExist(req.query);
     const { items: posts, totalCount } = await postsService.findMany({
       ...queryInput,

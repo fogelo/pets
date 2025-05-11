@@ -10,6 +10,11 @@ export const postsService = {
     items: WithId<Post & { blogName: string }>[];
     totalCount: number;
   }> {
+    if (dto.blogId) {
+      //если blogId указан, но блога нет,то вернет ошибку
+      await blogRepository.findByIdOrFail(dto.blogId);
+    }
+
     const result = await postRepository.findMany(dto);
     return result;
   },
