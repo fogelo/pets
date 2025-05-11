@@ -11,7 +11,8 @@ export const deletePostHandler = async (
     const id = req.params.id;
     await postsService.delete(id);
     res.sendStatus(HttpStatus.NoContent);
+    return;
   } catch (err: unknown) {
-    errorsHandler(err, res)
+    errorsHandler(err, res);
   }
 };

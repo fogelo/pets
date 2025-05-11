@@ -11,7 +11,8 @@ export const deleteBlogHandler = async (
     const id = req.params.id;
     await blogsService.delete(id);
     res.sendStatus(HttpStatus.NoContent);
+    return;
   } catch (err: unknown) {
-    errorsHandler(err, res)
+    errorsHandler(err, res);
   }
 };

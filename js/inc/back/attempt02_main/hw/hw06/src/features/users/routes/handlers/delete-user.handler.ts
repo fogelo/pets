@@ -11,7 +11,8 @@ export const deleteUserHandler = async (
     const id = req.params.id;
     await usersService.delete(id);
     res.sendStatus(HttpStatus.NoContent);
+    return;
   } catch (err: unknown) {
-    errorsHandler(err, res)
+    errorsHandler(err, res);
   }
 };

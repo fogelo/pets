@@ -19,6 +19,7 @@ export const getUserListHandler = async (
       totalCount,
     });
     res.status(HttpStatus.Ok).json(userListOutput);
+    return;
   } catch (err) {
     errorsHandler(err, res);
   }

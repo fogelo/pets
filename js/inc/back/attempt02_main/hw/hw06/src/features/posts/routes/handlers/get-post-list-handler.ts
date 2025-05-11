@@ -27,6 +27,7 @@ export const getPostListHandler = async (
       totalCount,
     });
     res.status(HttpStatus.Ok).json(postListOutput);
+    return;
   } catch (err: unknown) {
     errorsHandler(err, res);
   }
