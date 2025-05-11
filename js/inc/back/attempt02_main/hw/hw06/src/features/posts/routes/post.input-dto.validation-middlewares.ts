@@ -1,7 +1,7 @@
 import { body } from "express-validator";
 import { blogRepository } from "../../blogs/repositories/blogs.repository";
 
-export const maxTitleLength = 30;
+export const maxTitleLength = 31;
 const titleValidator = body("title")
   .exists({ checkFalsy: true })
   .withMessage("content is required")

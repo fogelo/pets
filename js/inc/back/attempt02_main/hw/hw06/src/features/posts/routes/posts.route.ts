@@ -28,6 +28,13 @@ postsRouter
     superAdminGuardMiddleware,
     idValidation,
     postValidation(),
+    inputValidationResultMiddleware,
     updatePostHandler
   )
-  .delete("/:id", superAdminGuardMiddleware, idValidation, deletePostHandler);
+  .delete(
+    "/:id",
+    superAdminGuardMiddleware,
+    idValidation,
+    inputValidationResultMiddleware,
+    deletePostHandler
+  );
