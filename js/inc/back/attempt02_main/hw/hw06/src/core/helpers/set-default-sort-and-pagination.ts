@@ -4,15 +4,16 @@ import { PaginationAndSorting } from "../types/pagination-and-sorting";
 export function setDefaultSortAndPaginationIfNotExist<S = string>(
   query: Partial<PaginationAndSorting<S>>
 ): PaginationAndSorting<S> {
-  return {
+  const defaultSortAndPagination = {
     pageNumber: query.pageNumber
       ? Number(query.pageNumber)
       : paginationAndSortingDefault.pageNumber,
-    pageSize: query.pageNumber
-      ? Number(query.pageNumber)
-      : paginationAndSortingDefault.pageNumber,
+    pageSize: query.pageSize
+      ? Number(query.pageSize)
+      : paginationAndSortingDefault.pageSize,
     sortDirection:
       query.sortDirection ?? paginationAndSortingDefault.sortDirection,
     sortBy: (query.sortBy ?? paginationAndSortingDefault.sortBy) as S,
   };
+  return defaultSortAndPagination;
 }

@@ -2,7 +2,7 @@ import express from "express";
 import { UserQueryInput } from "../input/user-query.input";
 import { usersService } from "../../application/users.service";
 import { setDefaultSortAndPaginationIfNotExist } from "../../../../core/helpers/set-default-sort-and-pagination";
-import { mapToUserListPaginatedOutput } from "../mappers/map-to-post-list-paginated-output";
+import { mapToUserListPaginatedOutput } from "../mappers/map-to-user-list-paginated-output";
 import { HttpStatus } from "../../../../core/types/http-statuses";
 import { errorsHandler } from "../../../../core/errors/errors.handler";
 
