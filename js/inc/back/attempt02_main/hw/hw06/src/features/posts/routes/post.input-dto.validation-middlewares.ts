@@ -3,6 +3,8 @@ import { blogRepository } from "../../blogs/repositories/blogs.repository";
 
 export const maxTitleLength = 30;
 const titleValidator = body("title")
+  .exists({ checkFalsy: true })
+  .withMessage("content is required")
   .isString()
   .withMessage("title should be a string")
   .trim()
@@ -13,6 +15,8 @@ const titleValidator = body("title")
 
 export const maxShortDescriptionLength = 100;
 const shortDescriptionValidator = body("shortDescription")
+  .exists({ checkFalsy: true })
+  .withMessage("content is required")
   .isString()
   .withMessage("shortDescription should be a string")
   .trim()
@@ -25,6 +29,8 @@ const shortDescriptionValidator = body("shortDescription")
 
 export const maxContentLength = 1000;
 const contentValidator = body("content")
+  .exists({ checkFalsy: true })
+  .withMessage("content is required")
   .isString()
   .withMessage("content should be a string")
   .trim()
@@ -34,6 +40,8 @@ const contentValidator = body("content")
   .withMessage(`content max length is ${maxContentLength} chars`);
 
 const blogIdValidator = body("blogId")
+  .exists({ checkFalsy: true })
+  .withMessage("content is required")
   .isString()
   .withMessage("content should be a string")
   .custom(async (blogId) => {
