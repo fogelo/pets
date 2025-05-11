@@ -5,13 +5,16 @@ import { PostQueryInput } from "../routes/input/post-query.input";
 import { PostAttributes } from "./dtos/post.attributes";
 
 export const postsService = {
-  async findMany(
-    dto: PostQueryInput & { blogId?: string }
-  ): Promise<{ items: WithId<Post>[]; totalCount: number }> {
-    const result = postRepository.findMany(dto);
+  async findMany(dto: PostQueryInput & { blogId?: string }): Promise<{
+    items: WithId<Post & { blogName: string }>[];
+    totalCount: number;
+  }> {
+    const result = await postRepository.findMany(dto);
     return result;
   },
-  async findByIdOrFail(id: string): Promise<WithId<Post>> {
+  async findByIdOrFail(
+    id: string
+  ): Promise<WithId<Post & { blogName: string }>> {
     return postRepository.findByIdOrFail(id);
   },
   async create(dto: PostAttributes): Promise<string> {

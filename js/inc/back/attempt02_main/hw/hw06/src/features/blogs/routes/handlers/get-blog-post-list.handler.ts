@@ -18,12 +18,8 @@ export const getBlogPostListHandler = async (
       ...queryInput,
       blogId,
     });
-    const blog = await blogsService.findByIdOrFail(blogId);
-    const blogDict = {
-      [blog._id.toString()]: blog,
-    };
 
-    const postListOutput = mapToPostListPaginatedOutput(posts, blogDict, {
+    const postListOutput = mapToPostListPaginatedOutput(posts, {
       pageNumber: queryInput.pageNumber,
       pageSize: queryInput.pageSize,
       totalCount,

@@ -5,19 +5,14 @@ import { mapToPostOutput } from "./map-to-post-output";
 import { Blog } from "../../../blogs/domain/blog";
 
 export function mapToPostListPaginatedOutput(
-  posts: WithId<Post>[],
-  blogDict: { [k: string]: WithId<Blog> },
+  posts: WithId<Post & { blogName: string }>[],
   meta: { pageNumber: number; pageSize: number; totalCount: number }
 ): PostListPaginatedOutput {
-  const postsOutput = posts.map((post) => {
-    const blog = blogDict[post.blogId];
-    return mapToPostOutput(post, blog);
-  });
   return {
     pagesCount: Math.ceil(meta.totalCount / meta.pageSize),
     page: meta.pageNumber,
     pageSize: meta.pageSize,
     totalCount: meta.totalCount,
-    items: postsOutput,
+    items: posts.map(mapToPostOutput),
   };
 }

@@ -4,7 +4,6 @@ import { postsService } from "../../application/posts.service";
 import { setDefaultSortAndPaginationIfNotExist } from "../../../../core/helpers/set-default-sort-and-pagination";
 import { mapToPostListPaginatedOutput } from "../mappers/map-to-post-list-paginated-output";
 import { HttpStatus } from "../../../../core/types/http-statuses";
-import { blogsService } from "../../../blogs/application/blogs.service";
 import { errorsHandler } from "../../../../core/errors/errors.handler";
 
 export const getPostListHandler = async (
@@ -16,16 +15,13 @@ export const getPostListHandler = async (
     const { items: posts, totalCount } = await postsService.findMany(
       queryInput
     );
-    const blogIds = [...new Set(posts.map((p) => p.blogId))];
-    const blogs = await blogsService.findByIdsOrFail(blogIds);
-    const blogDict = Object.fromEntries(
-      blogs.map((blog) => [blog._id.toString(), blog])
-    );
-    const postListOutput = mapToPostListPaginatedOutput(posts, blogDict, {
+
+    const postListOutput = mapToPostListPaginatedOutput(posts, {
       pageNumber: queryInput.pageNumber,
       pageSize: queryInput.pageSize,
       totalCount,
     });
+
     res.status(HttpStatus.Ok).json(postListOutput);
     return;
   } catch (err: unknown) {

@@ -16,8 +16,7 @@ export const createBlogPostHandler = async (
     const dto = { ...body, blogId };
     const createdPostId = await postsService.create(dto);
     const createdPost = await postsService.findByIdOrFail(createdPostId);
-    const blog = await blogsService.findByIdOrFail(blogId);
-    const postOutput = mapToPostOutput(createdPost, blog);
+    const postOutput = mapToPostOutput(createdPost);
     res.status(HttpStatus.Created).json(postOutput);
     return;
   } catch (err) {
