@@ -3,6 +3,7 @@ import { Post } from "../domain/post";
 import { postRepository } from "../repositories/posts.repository";
 import { PostQueryInput } from "../routes/input/post-query.input";
 import { PostAttributes } from "./dtos/post.attributes";
+import { blogRepository } from "../../blogs/repositories/blogs.repository";
 
 export const postsService = {
   async findMany(dto: PostQueryInput & { blogId?: string }): Promise<{
@@ -18,6 +19,9 @@ export const postsService = {
     return postRepository.findByIdOrFail(id);
   },
   async create(dto: PostAttributes): Promise<string> {
+    //проверить,что блог существует перед созданием поста
+    await blogRepository.findByIdOrFail(dto.blogId);
+
     const newPost = {
       title: dto.title,
       shortDescription: dto.shortDescription,

@@ -3,7 +3,6 @@ import { postsService } from "../../../posts/application/posts.service";
 import { HttpStatus } from "../../../../core/types/http-statuses";
 import { PostCreateInput } from "../../../posts/routes/input/post-create.input";
 import { mapToPostOutput } from "../../../posts/routes/mappers/map-to-post-output";
-import { blogsService } from "../../application/blogs.service";
 import { errorsHandler } from "../../../../core/errors/errors.handler";
 
 export const createBlogPostHandler = async (

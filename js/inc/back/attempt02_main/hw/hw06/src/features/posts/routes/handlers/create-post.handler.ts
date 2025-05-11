@@ -4,7 +4,6 @@ import { HttpStatus } from "../../../../core/types/http-statuses";
 import { errorsHandler } from "../../../../core/errors/errors.handler";
 import { postsService } from "../../application/posts.service";
 import { mapToPostOutput } from "../mappers/map-to-post-output";
-import { blogsService } from "../../../blogs/application/blogs.service";
 
 export const createPostHandler = async (
   req: express.Request<{}, {}, PostCreateInput>,
