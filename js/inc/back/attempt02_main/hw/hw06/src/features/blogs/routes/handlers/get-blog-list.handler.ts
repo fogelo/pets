@@ -4,17 +4,22 @@ import { blogsService } from "../../application/blogs.service";
 import { HttpStatus } from "../../../../core/types/http-statuses";
 import { setDefaultSortAndPaginationIfNotExist } from "../../../../core/helpers/set-default-sort-and-pagination";
 import { mapToBlogListPaginatedOutput } from "../mappers/map-to-blog-list-paginated-output";
+import { errorsHandler } from "../../../../core/errors/errors.handler";
 
 export const getBlogListHandler = async (
   req: express.Request<{}, {}, {}, BlogQueryInput>,
   res: express.Response
 ) => {
-  const queryInput = setDefaultSortAndPaginationIfNotExist(req.query);
-  const { items, totalCount } = await blogsService.findMany(queryInput);
-  const blogListOutput = mapToBlogListPaginatedOutput(items, {
-    pageNumber: queryInput.pageNumber,
-    pageSize: queryInput.pageSize,
-    totalCount,
-  });
-  res.status(HttpStatus.Ok).json(blogListOutput);
+  try {
+    const queryInput = setDefaultSortAndPaginationIfNotExist(req.query);
+    const { items, totalCount } = await blogsService.findMany(queryInput);
+    const blogListOutput = mapToBlogListPaginatedOutput(items, {
+      pageNumber: queryInput.pageNumber,
+      pageSize: queryInput.pageSize,
+      totalCount,
+    });
+    res.status(HttpStatus.Ok).json(blogListOutput);
+  } catch (err: unknown) {
+    errorsHandler(err, res);
+  }
 };
