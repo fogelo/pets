@@ -9,14 +9,24 @@ export const userRepository = {
   async findMany(
     queryDto: UserQueryInput
   ): Promise<{ items: WithId<User>[]; totalCount: number }> {
-    const { pageNumber, pageSize, sortBy, sortDirection, searchLoginTerm } =
-      queryDto;
+    const {
+      pageNumber,
+      pageSize,
+      sortBy,
+      sortDirection,
+      searchLoginTerm,
+      searchEmailTerm,
+    } = queryDto;
 
     const skip = (pageNumber - 1) * pageSize;
     const filter: any = {};
 
     if (searchLoginTerm) {
-      filter.name = { $regex: searchLoginTerm, $options: "i" };
+      filter.login = { $regex: searchLoginTerm, $options: "i" };
+    }
+
+    if (searchEmailTerm) {
+      filter.email = { $regex: searchEmailTerm, $options: "i" };
     }
 
     const items = await usersCollection
