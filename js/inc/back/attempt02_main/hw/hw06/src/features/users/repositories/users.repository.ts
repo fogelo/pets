@@ -21,7 +21,7 @@ export const userRepository = {
 
     const items = await usersCollection
       .find(filter)
-      .sort({ [sortBy]: sortDirection })
+      .sort({ [sortBy]: sortDirection === "asc" ? 1 : -1 })
       .skip(skip)
       .limit(pageSize)
       .toArray();
