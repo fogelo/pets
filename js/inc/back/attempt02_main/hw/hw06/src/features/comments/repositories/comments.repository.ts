@@ -8,14 +8,24 @@ export const commentRepository = {
   async findMany(
     queryDto: any
   ): Promise<{ items: WithId<Comment>[]; totalCount: number }> {
-    const { pageNumber, pageSize, sortBy, sortDirection, searchNameTerm } =
-      queryDto;
+    const {
+      pageNumber,
+      pageSize,
+      sortBy,
+      sortDirection,
+      searchNameTerm,
+      postId,
+    } = queryDto;
 
     const skip = (pageNumber - 1) * pageSize;
     const filter: any = {};
 
     if (searchNameTerm) {
       filter.name = { $regex: searchNameTerm, $options: "i" };
+    }
+
+    if (postId) {
+      filter.postId = postId;
     }
 
     const items = await commentsCollection
@@ -68,7 +78,12 @@ export const commentRepository = {
     const insertResult = await commentsCollection.insertOne(newComment);
     return insertResult.insertedId.toString();
   },
-  async update(id: string, dto: CommentAttributes): Promise<void> {
+  async update(
+    id: string,
+    dto: {
+      content: string;
+    }
+  ): Promise<void> {
     const updateResult = await commentsCollection.updateOne(
       { _id: new ObjectId(id) },
       { $set: dto }

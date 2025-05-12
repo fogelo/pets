@@ -14,7 +14,7 @@ export const createPostCommentHandler = async (
     const userId = req.user!.id;
     const body = req.body;
     const dto = { ...body, postId, userId };
-    const createdCommentId = await commentsService.create(dto, userId);
+    const createdCommentId = await commentsService.create(dto);
     const createdComment = await commentsService.findByIdOrFail(
       createdCommentId
     );

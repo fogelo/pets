@@ -16,16 +16,22 @@ export const commentsService = {
   async findByIdsOrFail(ids: string[]): Promise<WithId<Comment>[]> {
     return commentRepository.findByIdsOrFail(ids);
   },
-  async create(dto: CommentAttributes, userId: string): Promise<string> {
+  async create(dto: CommentAttributes): Promise<string> {
     const newComment = {
       content: dto.content,
       createdAt: new Date(),
-      userId,
+      userId: dto.userId,
+      postId: dto.postId,
     };
     const createdCommentId = commentRepository.create(newComment);
     return createdCommentId;
   },
-  async update(id: string, dto: CommentAttributes): Promise<void> {
+  async update(
+    id: string,
+    dto: {
+      content: string;
+    }
+  ): Promise<void> {
     await commentRepository.update(id, dto);
     return;
   },
