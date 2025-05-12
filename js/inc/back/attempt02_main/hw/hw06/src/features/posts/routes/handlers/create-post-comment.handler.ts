@@ -4,6 +4,7 @@ import { errorsHandler } from "../../../../core/errors/errors.handler";
 import { commentsService } from "../../../comments/application/comment.service";
 import { mapToCommentOutput } from "../../../comments/routes/mappers/map-to-comment-output";
 import { CommentCreateInput } from "../../../comments/routes/input/comment-update.input";
+import { postsService } from "../../application/posts.service";
 
 export const createPostCommentHandler = async (
   req: express.Request<{ id: string }, {}, CommentCreateInput>,
@@ -11,6 +12,9 @@ export const createPostCommentHandler = async (
 ) => {
   try {
     const postId = req.params.id;
+    //проверит есть ли пост
+    await postsService.findByIdOrFail(postId);
+
     const userId = req.user!.id;
     const body = req.body;
     const dto = { ...body, postId, userId };
