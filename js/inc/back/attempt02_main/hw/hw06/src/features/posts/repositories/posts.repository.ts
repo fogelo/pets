@@ -136,6 +136,10 @@ export const postRepository = {
     }
     return post;
   },
+  async findById(id: string): Promise<WithId<Post> | null> {
+    const post = await postsCollection.findOne({ _id: new ObjectId(id) });
+    return post;
+  },
   async create(newPost: Post): Promise<string> {
     const insertResult = await postsCollection.insertOne(newPost);
     return insertResult.insertedId.toString();

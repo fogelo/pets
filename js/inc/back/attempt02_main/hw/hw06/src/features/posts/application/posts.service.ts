@@ -23,6 +23,9 @@ export const postsService = {
   ): Promise<WithId<Post & { blogName: string }>> {
     return postRepository.findByIdOrFail(id);
   },
+  async findById(id: string): Promise<WithId<Post> | null> {
+    return postRepository.findById(id);
+  },
   async create(dto: PostAttributes): Promise<string> {
     //проверить,что блог существует перед созданием поста
     await blogRepository.findByIdOrFail(dto.blogId);

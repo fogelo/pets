@@ -12,8 +12,12 @@ export const createPostCommentHandler = async (
 ) => {
   try {
     const postId = req.params.id;
+    
     //проверит есть ли пост
-    await postsService.findByIdOrFail(postId);
+    const post = await postsService.findById(postId);
+    if (!post) {
+      res.sendStatus(HttpStatus.NotFound);
+    }
 
     const userId = req.user!.id;
     const body = req.body;
