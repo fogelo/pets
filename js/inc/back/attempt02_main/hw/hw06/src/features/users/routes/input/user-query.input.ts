@@ -1,6 +1,6 @@
 import { PaginationAndSorting } from "../../../../core/types/pagination-and-sorting";
-import { UserSortField } from "./user-sort-field";
+import { UserSortFieldEnum } from "./user-sort-field";
 
-export type UserQueryInput = PaginationAndSorting<UserSortField> & {
-  searchNameTerm?: string;
+export type UserQueryInput = PaginationAndSorting<UserSortFieldEnum> & {
+  searchLoginTerm?: string;
 };
