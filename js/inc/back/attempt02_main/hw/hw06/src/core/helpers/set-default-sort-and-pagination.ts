@@ -5,6 +5,7 @@ export function setDefaultSortAndPaginationIfNotExist<S = string>(
   query: Partial<PaginationAndSorting<S>>
 ): PaginationAndSorting<S> {
   const defaultSortAndPagination = {
+    ...query,
     pageNumber: query.pageNumber
       ? Number(query.pageNumber)
       : paginationAndSortingDefault.pageNumber,
