@@ -14,10 +14,14 @@ export const usersService = {
   async findByIdOrFail(id: string): Promise<WithId<User>> {
     return userRepository.findByIdOrFail(id);
   },
+  async findById(id: string): Promise<WithId<User> | null> {
+    return userRepository.findById(id);
+  },
   async create(dto: UserAttributes): Promise<string> {
     const newUser = {
       login: dto.login,
       email: dto.email,
+      password: dto.password,
       createdAt: new Date(),
     };
     const createdUserId = userRepository.create(newUser);
@@ -29,5 +33,11 @@ export const usersService = {
   },
   async delete(id: string): Promise<void> {
     return userRepository.delete(id);
+  },
+  async checkCredentials(
+    login: string,
+    password: string
+  ): Promise<WithId<User> | null> {
+    return userRepository.findByLoginAndPassword(login, password);
   },
 };

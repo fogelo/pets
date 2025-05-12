@@ -37,6 +37,17 @@ export const userRepository = {
     }
     return user;
   },
+  async findById(id: string): Promise<WithId<User> | null> {
+    const user = await usersCollection.findOne({ _id: new ObjectId(id) });
+    return user;
+  },
+  async findByLoginAndPassword(
+    login: string,
+    password: string
+  ): Promise<WithId<User> | null> {
+    const user = await usersCollection.findOne({ login, password });
+    return user;
+  },
   async create(newUser: User): Promise<string> {
     const insertResult = await usersCollection.insertOne(newUser);
     return insertResult.insertedId.toString();

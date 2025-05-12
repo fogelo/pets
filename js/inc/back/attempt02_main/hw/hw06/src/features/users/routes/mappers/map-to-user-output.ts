@@ -8,5 +8,6 @@ export const mapToUserOutput = (user: WithId<User>): UserOutput => {
     login: user.login,
     email: user.email,
     createdAt: user.createdAt,
+    // password: user.password
   };
 };

@@ -3,4 +3,5 @@ export type UserOutput = {
   login: string;
   email: string;
   createdAt: Date;
+  password?: string;
 };
