@@ -14,12 +14,19 @@ import { idValidation } from "../../../core/middlewares/params-id.validation-mid
 import { PostSortField } from "../../posts/routes/input/post-sort-field";
 import { createPostFromBlogValidation } from "../../posts/routes/post.input-dto.validation-middlewares";
 import { superAdminGuardMiddleware } from "../../../core/middlewares/super-admin.guard-middleware";
+import { query } from "express-validator";
 
 export const blogsRouter: Router = Router({});
+
+export const blogQueryValidation = [
+  query("searchNameTerm").optional().isString(),
+  // ... ваше paginationAndSortingValidation()
+];
 
 blogsRouter
   .get(
     "",
+    blogQueryValidation,
     paginationAndSortingValidation(BlogSortField),
     inputValidationResultMiddleware,
     getBlogListHandler
