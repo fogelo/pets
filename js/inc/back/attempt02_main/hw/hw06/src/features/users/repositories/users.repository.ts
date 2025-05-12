@@ -20,13 +20,18 @@ export const userRepository = {
 
     const skip = (pageNumber - 1) * pageSize;
     const filter: any = {};
-
+    
+    // Собираем условия поиска
+    const orConditions = [];
     if (searchLoginTerm) {
-      filter.login = { $regex: searchLoginTerm, $options: "i" };
+      orConditions.push({ login: { $regex: searchLoginTerm, $options: "i" } });
     }
-
     if (searchEmailTerm) {
-      filter.email = { $regex: searchEmailTerm, $options: "i" };
+      orConditions.push({ email: { $regex: searchEmailTerm, $options: "i" } });
+    }
+    if (orConditions.length > 0) {
+      // Объединяем с помощью $or
+      filter.$or = orConditions;
     }
 
     const items = await usersCollection
