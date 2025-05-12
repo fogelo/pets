@@ -22,7 +22,9 @@ authRouter
     );
     if (user) {
       const token = await jwtService.createJWT(user);
-      res.status(HttpStatus.Created).send(token);
+      res.status(HttpStatus.Created).send({
+        accessToken: token,
+      });
     } else {
       res.sendStatus(HttpStatus.Unauthorized);
     }
