@@ -17,7 +17,7 @@ authRouter
   })
   .post("/login", async (req, res) => {
     const user = await usersService.checkCredentials(
-      req.body.login,
+      req.body.loginOrEmail,
       req.body.password
     );
     if (user) {

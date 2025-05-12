@@ -35,9 +35,9 @@ export const usersService = {
     return userRepository.delete(id);
   },
   async checkCredentials(
-    login: string,
+    loginOrEmail: string,
     password: string
   ): Promise<WithId<User> | null> {
-    return userRepository.findByLoginAndPassword(login, password);
+    return userRepository.findByLoginOrEmailAndPassword(loginOrEmail, password);
   },
 };
