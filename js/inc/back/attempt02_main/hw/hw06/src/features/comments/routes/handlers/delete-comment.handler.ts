@@ -2,6 +2,7 @@ import express from "express";
 import { HttpStatus } from "../../../../core/types/http-statuses";
 import { errorsHandler } from "../../../../core/errors/errors.handler";
 import { commentsService } from "../../application/comment.service";
+import { mapToCommentOutput } from "../mappers/map-to-comment-output";
 
 export const deleteCommentHandler = async (
   req: express.Request<{ id: string }>,
@@ -9,6 +10,16 @@ export const deleteCommentHandler = async (
 ) => {
   try {
     const id = req.params.id;
+    const user = req.user;
+    const comment = await commentsService.findByIdOrFail(id);
+    const commentOutput = await mapToCommentOutput(comment);
+    
+    // запрещаем удалять не свои комментарии
+    if (user?.id !== commentOutput.commentatorInfo.userId) {
+      res.sendStatus(HttpStatus.Forbidden);
+      return;
+    }
+
     await commentsService.delete(id);
     res.sendStatus(HttpStatus.NoContent);
     return;
