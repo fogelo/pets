@@ -35,13 +35,13 @@ export function paginationAndSortingValidation<T extends string>(
         .withMessage('Page size must be between 1 and 100')
         .toInt(),
   
-      query('sortBy')
-        .optional()
-        .default(Object.values(sortFieldsEnum)[0]) // Первое значение enum как дефолтное
-        .isIn(allowedSortFields)
-        .withMessage(
-          `Invalid sort field. Allowed values: ${allowedSortFields.join(', ')}`,
-        ),
+      // query('sortBy')
+      //   .optional()
+      //   .default(Object.values(sortFieldsEnum)[0]) // Первое значение enum как дефолтное
+      //   .isIn(allowedSortFields)
+      //   .withMessage(
+      //     `Invalid sort field. Allowed values: ${allowedSortFields.join(', ')}`,
+      //   ),
   
       query('sortDirection')
         .optional()

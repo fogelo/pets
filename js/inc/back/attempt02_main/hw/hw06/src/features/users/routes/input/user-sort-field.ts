@@ -1,4 +1,3 @@
-export enum UserSortField {
-    CreatedAt = "createdAt",
-  }
-  
+export const UserSortField = {
+  CreatedAt: "createdAt",
+};
