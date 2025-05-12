@@ -5,6 +5,7 @@ import { setDefaultSortAndPaginationIfNotExist } from "../../../../core/helpers/
 import { errorsHandler } from "../../../../core/errors/errors.handler";
 import { commentsService } from "../../../comments/application/comment.service";
 import { mapToCommentListPaginatedOutput } from "../../../comments/routes/mappers/map-to-comments-list-paginated-output";
+import { postsService } from "../../application/posts.service";
 
 export const getPostCommentListHandler = async (
   req: express.Request<{ id: string }, {}, {}, PostQueryInput>,
@@ -12,6 +13,10 @@ export const getPostCommentListHandler = async (
 ) => {
   try {
     const postId = req.params.id;
+    const post = await postsService.findById(postId);
+    if (!post) {
+      res.sendStatus(HttpStatus.NotFound);
+    }
     const queryInput = setDefaultSortAndPaginationIfNotExist(req.query);
     const { items: comments, totalCount } = await commentsService.findMany({
       ...queryInput,
