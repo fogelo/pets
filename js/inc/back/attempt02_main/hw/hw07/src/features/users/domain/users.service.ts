@@ -52,9 +52,12 @@ export const usersService = {
   ): Promise<WithId<User> | null> {
     return userRepository.findByLoginOrEmailAndPassword(loginOrEmail, password);
   },
-  async findByEmail(
-    email: string,
-  ): Promise<WithId<User> | null> {
+  async findByEmail(email: string): Promise<WithId<User> | null> {
     return userRepository.findByEmail(email);
+  },
+  async findByLogin(
+    login: string
+  ): Promise<WithId<User> | null> {
+    return userRepository.findByLogin(login);
   },
 };

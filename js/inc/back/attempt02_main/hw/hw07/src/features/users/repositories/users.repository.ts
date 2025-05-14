@@ -72,6 +72,15 @@ export const userRepository = {
     });
     return user;
   },
+  async findByEmailOrLogin(
+    email: string,
+    login: string
+  ): Promise<WithId<User> | null> {
+    const user = await usersCollection.findOne({
+      $or: [{ "accountData.login": login }, { "accountData.email": email }],
+    });
+    return user;
+  },
   async findByCode(code: string): Promise<WithId<User> | null> {
     const user = await usersCollection.findOne({
       "emailConfirmation.confirmationCode": code,
@@ -81,6 +90,12 @@ export const userRepository = {
   async findByEmail(email: string): Promise<WithId<User> | null> {
     const user = await usersCollection.findOne({
       "accountData.email": email,
+    });
+    return user;
+  },
+  async findByLogin(login: string): Promise<WithId<User> | null> {
+    const user = await usersCollection.findOne({
+      "accountData.login": login,
     });
     return user;
   },

@@ -9,8 +9,9 @@ export const registrationHandler = async (
   req: RequestWithBody<CreateUserRequestDTO>,
   res: Response
 ) => {
-  const existedUser = await usersService.findByEmail(req.body.email);
-  if (existedUser) {
+  const existedUserByEmail = await usersService.findByEmail(req.body.email);
+  const existedUserByLogin = await usersService.findByLogin(req.body.login);
+  if (existedUserByEmail) {
     const error = {
       errorsMessages: [
         {
@@ -23,10 +24,23 @@ export const registrationHandler = async (
     return;
   }
 
+  if (existedUserByLogin) {
+    const error = {
+      errorsMessages: [
+        {
+          message: "Пользователь с такими email уже существует",
+          field: "login",
+        },
+      ],
+    };
+    res.status(HttpStatus.BadRequest).json(error);
+    return;
+  }
+
   const { hash, salt } = await authService._generateHashAndSalt(
     req.body.password
   );
-  
+
   const user = await authService.createUser({
     login: req.body.login,
     email: req.body.email,
