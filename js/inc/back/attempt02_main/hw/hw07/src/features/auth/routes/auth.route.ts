@@ -2,7 +2,8 @@ import { Router } from "express";
 import { authMiddleware } from "../auth.middleware";
 import {
   emailValidator,
-  loginValidation,
+  loginOrEmailValidator,
+  passwordValidator,
   registrationValidation,
 } from "./auth.input-dto.validation-middlewares";
 import { confirmEmailHandler } from "./handlers/confirm-email.handler";
@@ -17,7 +18,8 @@ authRouter
   .get("/me", authMiddleware)
   .post(
     "/login",
-    loginValidation(),
+    loginOrEmailValidator,
+    passwordValidator,
     inputValidationResultMiddleware,
     loginHandler
   )
@@ -27,10 +29,7 @@ authRouter
     inputValidationResultMiddleware,
     registrationHandler
   )
-  .post(
-    "/registration-confirmation",
-    confirmEmailHandler
-  )
+  .post("/registration-confirmation", confirmEmailHandler)
   .post(
     "/registration-email-resending",
     emailValidator,

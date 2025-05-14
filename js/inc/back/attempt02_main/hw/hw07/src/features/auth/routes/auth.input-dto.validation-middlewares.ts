@@ -17,7 +17,7 @@ const loginValidator = body("login")
 
 export const minPasswordLength = 6;
 export const maxPasswordLength = 20;
-const passwordValidator = body("password")
+export const passwordValidator = body("password")
   .isString()
   .withMessage("password must be a string")
   .trim()
@@ -38,14 +38,15 @@ export const emailValidator = body("email")
   )
   .matches(/^[\w.-]+@([\w-]+\.)+[\w-]{2,4}$/)
   .withMessage(
-    "email does not match the pattern: '^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$'. Example: example@example.com"
+    "email does not match the pattern: '^[w-.]+@([w-]+.)+[w-]{2,4}$'. Example: example@example.com"
   );
 
-export const loginValidation = () => [
-  loginValidator,
-  passwordValidator,
-  emailValidator,
-];
+export const loginOrEmailValidator = body("loginOrEmail")
+  .isString()
+  .withMessage("loginOrEmail must be a string")
+  .trim()
+  .notEmpty()
+  .withMessage("loginOrEmail is an empty string")
 
 export const registrationValidation = () => [
   loginValidator,

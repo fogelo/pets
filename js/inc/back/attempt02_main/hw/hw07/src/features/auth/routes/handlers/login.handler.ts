@@ -1,9 +1,16 @@
-import { Request, Response } from "express";
+import { Response } from "express";
 import { HttpStatus } from "../../../../core/types/http-statuses";
 import { usersService } from "../../../users/domain/users.service";
 import { jwtService } from "../../application/jwt.service";
+import { RequestWithBody } from "../../../../core/types/request-type";
 
-export const loginHandler = async (req: Request, res: Response) => {
+export const loginHandler = async (
+  req: RequestWithBody<{
+    loginOrEmail: string;
+    password: string;
+  }>,
+  res: Response
+) => {
   const user = await usersService.checkCredentials(
     req.body.loginOrEmail,
     req.body.password
