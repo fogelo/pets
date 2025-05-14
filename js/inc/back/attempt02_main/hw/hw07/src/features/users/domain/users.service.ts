@@ -7,6 +7,7 @@ import { QueryUserRequestDTO } from "../types/query.user.request-dto";
 import { UpdateUserDTO } from "../types/update.user.dto";
 import { User } from "../types/user";
 import { DbUser } from "../types/db-user";
+import bcrypt from "bcrypt";
 
 export const usersService = {
   async findMany(
@@ -27,7 +28,6 @@ export const usersService = {
         login: dto.login,
         email: dto.email,
         passwordHash: dto.passwordHash,
-        passwordSalt: dto.passwordSalt,
         createdAt: new Date(),
       },
       emailConfirmation: {
@@ -50,14 +50,29 @@ export const usersService = {
     loginOrEmail: string,
     password: string
   ): Promise<WithId<User> | null> {
-    return userRepository.findByLoginOrEmailAndPassword(loginOrEmail, password);
+    // 1) Достаём пользователя без учёта пароля
+    const user = await userRepository.findByLoginOrEmail(loginOrEmail);
+    if (!user) return null;
+
+    // 2) Сравниваем «сырой» пароль и хэш из БД
+    const matches = await bcrypt.compare(
+      password,
+      user.accountData.passwordHash
+    );
+    if (!matches) return null;
+
+    /* 
+  В случае bcrypt.hash(password, salt) финальный хеш уже содержит и саму соль, и параметры алгоритма. 
+  Поэтому достаточно сохранять в базе только результат hash, а поле salt можно и не хранить отдельно — оно там же внутри.
+  */
+
+    // 3) Всё ок — возвращаем найденного пользователя
+    return user;
   },
   async findByEmail(email: string): Promise<WithId<User> | null> {
     return userRepository.findByEmail(email);
   },
-  async findByLogin(
-    login: string
-  ): Promise<WithId<User> | null> {
+  async findByLogin(login: string): Promise<WithId<User> | null> {
     return userRepository.findByLogin(login);
   },
 };

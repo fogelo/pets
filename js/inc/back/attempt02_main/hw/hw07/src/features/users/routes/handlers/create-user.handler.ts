@@ -13,13 +13,12 @@ export const createUserHandler = async (
   res: express.Response
 ) => {
   try {
-    const { hash, salt } = await authService._generateHashAndSalt(req.body.password);
+    const { hash } = await authService._generateHashAndSalt(req.body.password);
 
     const userInputDTO: CreateUserInputDTO = {
       email: req.body.email,
       login: req.body.login,
       passwordHash: hash,
-      passwordSalt: salt,
     };
 
     const createdUserId = await usersService.create(userInputDTO);

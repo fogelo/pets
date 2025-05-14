@@ -37,15 +37,12 @@ export const registrationHandler = async (
     return;
   }
 
-  const { hash, salt } = await authService._generateHashAndSalt(
-    req.body.password
-  );
+  const { hash } = await authService._generateHashAndSalt(req.body.password);
 
   const user = await authService.createUser({
     login: req.body.login,
     email: req.body.email,
     passwordHash: hash,
-    passwordSalt: salt,
   });
 
   if (user) {

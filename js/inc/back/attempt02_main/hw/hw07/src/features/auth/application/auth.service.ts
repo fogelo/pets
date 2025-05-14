@@ -12,14 +12,12 @@ export const authService = {
     login,
     email,
     passwordHash,
-    passwordSalt,
   }: CreateUserInputDTO): Promise<string | null> {
     const user: User = {
       accountData: {
         login,
         email,
         passwordHash,
-        passwordSalt,
         createdAt: new Date(),
       },
       emailConfirmation: {

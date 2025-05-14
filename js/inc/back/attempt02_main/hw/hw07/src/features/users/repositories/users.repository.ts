@@ -56,19 +56,12 @@ export const userRepository = {
     const user = await usersCollection.findOne({ _id: new ObjectId(id) });
     return user;
   },
-  async findByLoginOrEmailAndPassword(
-    loginOrEmail: string,
-    password: string
-  ): Promise<WithId<User> | null> {
-    const user = await usersCollection.findOne({
-      $or: [{ login: loginOrEmail }, { email: loginOrEmail }],
-      password,
-    });
-    return user;
-  },
   async findByLoginOrEmail(loginOrEmail: string): Promise<WithId<User> | null> {
     const user = await usersCollection.findOne({
-      $or: [{ login: loginOrEmail }, { email: loginOrEmail }],
+      $or: [
+        { "accountData.login": loginOrEmail },
+        { "accountData.email": loginOrEmail },
+      ],
     });
     return user;
   },
