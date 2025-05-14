@@ -23,12 +23,14 @@ export const passwordValidator = body("password")
   .trim()
   .notEmpty()
   .withMessage("password is an empty string")
-  .isLength({ min: minLoginLength, max: maxLoginLength })
+  .isLength({ min: minPasswordLength, max: maxPasswordLength })
   .withMessage(
     `password must be min: ${minLoginLength} and max: ${maxLoginLength} chars`
   );
 
 export const emailValidator = body("email")
+  .exists({ checkFalsy: true })
+  .withMessage("email is required")
   .isString()
   .withMessage("email must be a string")
   .trim()
@@ -46,7 +48,16 @@ export const loginOrEmailValidator = body("loginOrEmail")
   .withMessage("loginOrEmail must be a string")
   .trim()
   .notEmpty()
-  .withMessage("loginOrEmail is an empty string")
+  .withMessage("loginOrEmail is an empty string");
+
+export const codeConfirmationValidator = body("code")
+  .exists({ checkFalsy: true })
+  .withMessage("code is required")
+  .isString()
+  .withMessage("code must be a string")
+  .trim()
+  .notEmpty()
+  .withMessage("code is an empty string");
 
 export const registrationValidation = () => [
   loginValidator,
