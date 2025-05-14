@@ -48,7 +48,7 @@ export const authService = {
     }
 
     if (user.emailConfirmation.isConfirmed) {
-      throw new EmailAlreadyConfirmedError();
+      throw new EmailAlreadyConfirmedError("code");
     }
 
     // проверяем код подтверждения и срок жизни

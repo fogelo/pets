@@ -1,8 +1,9 @@
-// src/errors/EmailAlreadyConfirmedError.ts
 export class EmailAlreadyConfirmedError extends Error {
-  public readonly field = "code";
-  constructor(message = "Email уже был подтверждён") {
+  public readonly field: string; // <- вот это объявление нужно
+
+  constructor(field: string, message = "Email уже был подтверждён") {
     super(message);
     this.name = "EmailAlreadyConfirmedError";
+    this.field = field;
   }
 }
