@@ -1,21 +1,21 @@
 import express from "express";
-import { UserQueryInput } from "../input/user-query.input";
-import { usersService } from "../../application/users.service";
-import { setDefaultSortAndPaginationIfNotExist } from "../../../../core/helpers/set-default-sort-and-pagination";
-import { mapToUserListPaginatedOutput } from "../mappers/map-to-user-list-paginated-output";
-import { HttpStatus } from "../../../../core/types/http-statuses";
 import { errorsHandler } from "../../../../core/errors/errors.handler";
+import { setDefaultSortAndPaginationIfNotExist } from "../../../../core/helpers/set-default-sort-and-pagination";
+import { HttpStatus } from "../../../../core/types/http-statuses";
+import { usersService } from "../../domain/users.service";
+import { QueryUserRequestDTO } from "../../types/query.user.request-dto";
+import { mapToUserListPaginatedOutput } from "../mappers/map-to-user-list-paginated-output";
 
 export const getUserListHandler = async (
-  req: express.Request<{}, {}, {}, UserQueryInput>,
+  req: express.Request<{}, {}, {}, QueryUserRequestDTO>,
   res: express.Response
 ) => {
   try {
-    const queryInput = setDefaultSortAndPaginationIfNotExist(req.query);
-    const { items, totalCount } = await usersService.findMany(queryInput);
+    const queryDTO = setDefaultSortAndPaginationIfNotExist(req.query);
+    const { items, totalCount } = await usersService.findMany(queryDTO);
     const userListOutput = mapToUserListPaginatedOutput(items, {
-      pageNumber: queryInput.pageNumber,
-      pageSize: queryInput.pageSize,
+      pageNumber: queryDTO.pageNumber,
+      pageSize: queryDTO.pageSize,
       totalCount,
     });
     res.status(HttpStatus.Ok).json(userListOutput);

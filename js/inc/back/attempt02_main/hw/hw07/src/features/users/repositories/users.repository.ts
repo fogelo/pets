@@ -1,13 +1,13 @@
 import { ObjectId, WithId } from "mongodb";
-import { User } from "../domain/user";
 import { usersCollection } from "../../../db/db";
 import { RepositoryNotFoundError } from "../../../core/errors/repository-not-found.error";
-import { UserQueryInput } from "../routes/input/user-query.input";
-import { UserAttributes } from "../application/dtos/user.attributes";
+import { User } from "../types/user";
+import { QueryUserRequestDTO } from "../types/query.user.request-dto";
+import { UpdateUserDTO } from "../types/update.user.dto";
 
 export const userRepository = {
   async findMany(
-    queryDto: UserQueryInput
+    queryDto: QueryUserRequestDTO
   ): Promise<{ items: WithId<User>[]; totalCount: number }> {
     const {
       pageNumber,
@@ -20,7 +20,7 @@ export const userRepository = {
 
     const skip = (pageNumber - 1) * pageSize;
     const filter: any = {};
-    
+
     // Собираем условия поиска
     const orConditions = [];
     if (searchLoginTerm) {
@@ -66,14 +66,43 @@ export const userRepository = {
     });
     return user;
   },
+  async findByLoginOrEmail(loginOrEmail: string): Promise<WithId<User> | null> {
+    const user = await usersCollection.findOne({
+      $or: [{ login: loginOrEmail }, { email: loginOrEmail }],
+    });
+    return user;
+  },
+  async findByCode(code: string): Promise<WithId<User> | null> {
+    const user = await usersCollection.findOne({
+      "emailConfirmation.confirmationCode": code,
+    });
+    return user;
+  },
+  async findByEmail(email: string): Promise<WithId<User> | null> {
+    const user = await usersCollection.findOne({
+      "accountData.email": email,
+    });
+    return user;
+  },
   async create(newUser: User): Promise<string> {
     const insertResult = await usersCollection.insertOne(newUser);
     return insertResult.insertedId.toString();
   },
-  async update(id: string, dto: UserAttributes): Promise<void> {
+  async update(id: string, dto: UpdateUserDTO): Promise<void> {
     const updateResult = await usersCollection.updateOne(
       { _id: new ObjectId(id) },
       { $set: dto }
+    );
+    if (updateResult.matchedCount < 1) {
+      throw new RepositoryNotFoundError("User not exist");
+    }
+
+    return;
+  },
+  async updateConfirmation(_id: ObjectId): Promise<void> {
+    const updateResult = await usersCollection.updateOne(
+      { _id },
+      { $set: { "emailConfirmation.isConfirmed": true } }
     );
     if (updateResult.matchedCount < 1) {
       throw new RepositoryNotFoundError("User not exist");

@@ -1,13 +1,14 @@
 import { NextFunction, Request, Response } from "express";
-import { usersService } from "../users/application/users.service";
 import { jwtService } from "./application/jwt.service";
-import { mapToUserOutput } from "../users/routes/mappers/map-to-user-output";
-import { UserOutput } from "../users/routes/output/user.output";
+import { mapToUserResponse } from "../users/routes/mappers/map-to-user-output";
+import { UserResponse } from "../users/types/user.response";
+import { usersService } from "../users/domain/users.service";
+import { HttpStatus } from "../../core/types/http-statuses";
 
 declare global {
   namespace Express {
     interface Request {
-      user?: UserOutput;
+      user?: UserResponse;
     }
   }
 }
@@ -19,7 +20,7 @@ export const authMiddleware = async (
 ): Promise<void> => {
   const authHeader = req.headers.authorization;
   if (!authHeader) {
-    res.sendStatus(401);
+    res.sendStatus(HttpStatus.Unauthorized);
     return;
   }
 
@@ -28,12 +29,12 @@ export const authMiddleware = async (
   if (userId) {
     const user = await usersService.findByIdOrFail(userId.toString());
     if (user) {
-      req.user = mapToUserOutput(user);
+      req.user = mapToUserResponse(user);
       next();
       return;
     }
   }
 
-  res.sendStatus(401);
+  res.sendStatus(HttpStatus.Unauthorized);
   return;
 };

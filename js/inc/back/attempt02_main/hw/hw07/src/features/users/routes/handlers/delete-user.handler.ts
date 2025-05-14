@@ -1,7 +1,7 @@
 import express from "express";
-import { usersService } from "../../application/users.service";
 import { HttpStatus } from "../../../../core/types/http-statuses";
 import { errorsHandler } from "../../../../core/errors/errors.handler";
+import { usersService } from "../../domain/users.service";
 
 export const deleteUserHandler = async (
   req: express.Request<{ id: string }>,

@@ -5,7 +5,7 @@ import { getUserListHandler } from "./handlers/get-user-list.handler";
 import { userValidation } from "./user.input-dto.validation-middlewares";
 import { inputValidationResultMiddleware } from "../../../core/middlewares/input-validtion-result.middleware";
 import { paginationAndSortingValidation } from "../../../core/middlewares/query-pagination-sorting.validation-middleware";
-import { UserSortField } from "./input/user-sort-field";
+import { UserSortField } from "../types/user-sort-field";
 import { idValidation } from "../../../core/middlewares/params-id.validation-middleware";
 import { superAdminGuardMiddleware } from "../../../core/middlewares/super-admin.guard-middleware";
 

@@ -1,13 +1,12 @@
 import { WithId } from "mongodb";
-import { User } from "../../domain/user";
-import { UserOutput } from "../output/user.output";
+import { User } from "../../types/user";
+import { UserResponse } from "../../types/user.response";
 
-export const mapToUserOutput = (user: WithId<User>): UserOutput => {
+export const mapToUserResponse = (user: WithId<User>): UserResponse => {
   return {
     id: user._id.toString(),
-    login: user.login,
-    email: user.email,
-    createdAt: user.createdAt,
-    // password: user.password
+    login: user.accountData.login,
+    email: user.accountData.email,
+    createdAt: user.accountData.createdAt,
   };
 };

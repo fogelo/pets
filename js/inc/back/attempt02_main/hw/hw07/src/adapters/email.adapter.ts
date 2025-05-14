@@ -1,4 +1,5 @@
 import nodemailer from "nodemailer";
+import { User } from "../features/users/types/user";
 
 export const emailAdapter = {
   async sendEmail(email: string, subject: string, text: string) {
@@ -18,6 +19,33 @@ export const emailAdapter = {
       subject,
       text: `${text}`,
       html: `<b>${text}</b>`, // HTML body
+    });
+    return info;
+  },
+  async sendEmailConfirmationMessage(email: string, code: string) {
+    // Создаём транспорт для Yandex SMTP
+    const transporter = nodemailer.createTransport({
+      host: "smtp.yandex.com", // адрес SMTP-сервера Yandex
+      port: 465, // порт с SSL/TLS
+      secure: true, // true для порта 465
+      auth: {
+        user: process.env.YANDEX_USER || "fogeloinc@yandex.ru", // ваш логин (полный email)
+        pass: process.env.YANDEX_PASS || "sikmahnbsudmrjcr", // пароль или app-password от Yandex
+      },
+    });
+    const html = `
+        <h1>Спасибо за регистрацию</h1>
+        <p>Чтобы завершить регистрацию,пожалуйста,перейдите по ссылке:
+            <a href=http://antors.ru/registration-confirmation?code=${code}>Завершить регистрацию</a>
+        </p>`;
+    console.log(html);
+
+    const info = await transporter.sendMail({
+      from: `"MyApp" <${process.env.YANDEX_USER || "fogeloinc@yandex.ru"}>`,
+      to: email,
+      subject: "Подтвердите регистрацию",
+      text: `${"Подтвердите регистрацию"}`,
+      html,
     });
     return info;
   },

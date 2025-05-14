@@ -1,7 +1,7 @@
 import { WithId } from "mongodb";
 import { Comment } from "../../domain/comment";
 import { CommentOutput } from "../output/comment.output";
-import { usersService } from "../../../users/application/users.service";
+import { usersService } from "../../../users/domain/users.service";
 
 export const mapToCommentOutput = async (
   comment: WithId<Comment>
@@ -12,7 +12,7 @@ export const mapToCommentOutput = async (
     content: comment.content,
     commentatorInfo: {
       userId: user?._id.toString() || null,
-      userLogin: user?.login || null,
+      userLogin: user?.accountData.login || null,
     },
     createdAt: comment.createdAt,
   };

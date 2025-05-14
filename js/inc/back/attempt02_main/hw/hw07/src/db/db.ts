@@ -2,8 +2,8 @@ import { Collection, Db, MongoClient } from "mongodb";
 import { Blog } from "../features/blogs/domain/blog";
 import { SETTINGS } from "../core/settings/settings";
 import { Post } from "../features/posts/domain/post";
-import { User } from "../features/users/domain/user";
 import { Comment } from "../features/comments/domain/comment";
+import { User } from "../features/users/types/user";
 
 const USER_COLLECTION_NAME = "users";
 const BLOG_COLLECTION_NAME = "blogs";

@@ -28,7 +28,7 @@ const passwordValidator = body("password")
     `password must be min: ${minLoginLength} and max: ${maxLoginLength} chars`
   );
 
-const emailValidator = body("email")
+export const emailValidator = body("email")
   .isString()
   .withMessage("email must be a string")
   .trim()
@@ -36,12 +36,18 @@ const emailValidator = body("email")
   .withMessage(
     `email must be min: ${minLoginLength} and max: ${maxLoginLength} chars`
   )
-  .matches("^[w-.]+@([w-]+.)+[w-]{2,4}$")
+  .matches(/^[\w.-]+@([\w-]+\.)+[\w-]{2,4}$/)
   .withMessage(
-    "email does not match the pattern: '^[w-.]+@([w-]+.)+[w-]{2,4}$'. Example: example@example.com"
+    "email does not match the pattern: '^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$'. Example: example@example.com"
   );
 
 export const loginValidation = () => [
+  loginValidator,
+  passwordValidator,
+  emailValidator,
+];
+
+export const registrationValidation = () => [
   loginValidator,
   passwordValidator,
   emailValidator,

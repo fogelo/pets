@@ -4,7 +4,7 @@ import { blogsRouter } from "./features/blogs/routes/blogs.route";
 import { postsRouter } from "./features/posts/routes/posts.route";
 import { usersRouter } from "./features/users/routes/users.route";
 import { testingRouter } from "./features/testing/routes/testing.route";
-import { authRouter } from "./features/auth/routes/login.route";
+import { authRouter } from "./features/auth/routes/auth.route";
 import { commentsRouter } from "./features/comments/routes/comments.route";
 import { emailRouter } from "./features/email/routes/email.route";
 
