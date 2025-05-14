@@ -38,7 +38,6 @@ export const emailAdapter = {
         <p>Чтобы завершить регистрацию,пожалуйста,перейдите по ссылке:
             <a href=http://antors.ru/registration-confirmation?code=${code}>Завершить регистрацию</a>
         </p>`;
-    console.log(html);
 
     const info = await transporter.sendMail({
       from: `"MyApp" <${process.env.YANDEX_USER || "fogeloinc@yandex.ru"}>`,
