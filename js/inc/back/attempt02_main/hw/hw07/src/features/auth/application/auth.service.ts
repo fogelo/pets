@@ -5,6 +5,7 @@ import { userRepository } from "../../users/repositories/users.repository";
 import { User } from "../../users/types/user";
 import { CreateUserInputDTO } from "../../users/types/create.user.input-dto";
 import { emailAdapter } from "../../../adapters/email.adapter";
+import { EmailAlreadyConfirmedError } from "../errors/email-already-confirmed.error";
 
 export const authService = {
   async createUser({
@@ -44,6 +45,10 @@ export const authService = {
     const user = await userRepository.findByCode(code);
     if (!user) {
       return false;
+    }
+
+    if (user.emailConfirmation.isConfirmed) {
+      throw new EmailAlreadyConfirmedError();
     }
 
     // проверяем код подтверждения и срок жизни

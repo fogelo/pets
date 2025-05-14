@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import { authService } from "../../application/auth.service";
 import { HttpStatus } from "../../../../core/types/http-statuses";
+import { usersService } from "../../../users/domain/users.service";
+import { errorsHandler } from "../../../../core/errors/errors.handler";
 
 // DTO для тела запроса
 interface ConfirmEmailDto {
@@ -17,12 +19,12 @@ export async function confirmEmailHandler(
     const result = await authService.confirmEmail(code);
 
     if (result) {
-      res.sendStatus(HttpStatus.Created);
+      res.sendStatus(HttpStatus.NoContent);
     } else {
       res.sendStatus(HttpStatus.BadRequest);
     }
   } catch (err) {
+    errorsHandler(err, res);
     console.error("Ошибка подтверждения email:", err);
-    res.sendStatus(HttpStatus.InternalServerError);
   }
 }
