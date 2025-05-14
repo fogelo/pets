@@ -21,7 +21,10 @@ export async function confirmEmailHandler(
     if (result) {
       res.sendStatus(HttpStatus.NoContent);
     } else {
-      res.sendStatus(HttpStatus.BadRequest);
+      res.status(HttpStatus.BadRequest).json({
+        errorsMessages: [{ message: "Invalid or expired code", field: "code" }],
+      });
+      return;
     }
   } catch (err) {
     errorsHandler(err, res);

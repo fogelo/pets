@@ -14,7 +14,11 @@ export const registrationEmailResendingHandler = async (
   const user = await userRepository.findByEmail(email);
 
   if (!user) {
-    res.sendStatus(HttpStatus.NotFound);
+    res.status(HttpStatus.BadRequest).json({
+      errorsMessages: [
+        { message: "User with this email doesn’t exist", field: "email" },
+      ],
+    });
     return;
   }
 
@@ -29,7 +33,7 @@ export const registrationEmailResendingHandler = async (
     );
     res
       .status(HttpStatus.NoContent)
-      .json("Ссылка на подтверждение отправлена,проверьте почту");
+      .json("Ссылка на подтверждение отправлена, проверьте почту");
   } catch (err) {
     errorsHandler(err, res);
   }
