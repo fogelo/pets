@@ -27,7 +27,10 @@ authRouter
     inputValidationResultMiddleware,
     registrationHandler
   )
-  .post("/registration-confirmation", confirmEmailHandler)
+  .post(
+    "/registration-confirmation",
+    confirmEmailHandler
+  )
   .post(
     "/registration-email-resending",
     emailValidator,

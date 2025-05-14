@@ -39,7 +39,7 @@ export function errorsHandler(error: unknown, res: Response): void {
   }
 
   if (error instanceof EmailAlreadyConfirmedError) {
-    const httpStatus = HttpStatus.UnprocessableEntity;
+    const httpStatus = HttpStatus.BadRequest;
 
     res.status(httpStatus).send(
       createErrorMessages([

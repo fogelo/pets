@@ -25,6 +25,5 @@ export async function confirmEmailHandler(
     }
   } catch (err) {
     errorsHandler(err, res);
-    console.error("Ошибка подтверждения email:", err);
   }
 }
