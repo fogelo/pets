@@ -25,12 +25,14 @@ export const emailAdapter = {
   async sendEmailConfirmationMessage(email: string, code: string) {
     // Создаём транспорт для Yandex SMTP
     const transporter = nodemailer.createTransport({
-      host: "smtp.yandex.com", // адрес SMTP-сервера Yandex
+      host: "smtp.mail.ru", // адрес SMTP-сервера Yandex
       port: 465, // порт с SSL/TLS
       secure: true, // true для порта 465
       auth: {
-        user: process.env.YANDEX_USER || "fogeloinc@yandex.ru", // ваш логин (полный email)
-        pass: process.env.YANDEX_PASS || "sikmahnbsudmrjcr", // пароль или app-password от Yandex
+        // user: process.env.YANDEX_USER || "fogeloinc@yandex.ru", // ваш логин (полный email)
+        // pass: process.env.YANDEX_PASS || "sikmahnbsudmrjcr", // пароль или app-password от Yandex
+        user: process.env.YANDEX_USER || "fogeloinc@mail.ru", // ваш логин (полный email)
+        pass: process.env.YANDEX_PASS || "X1Yymwx44anKY4QLkt3R", // пароль или app-password от Yandex
       },
     });
     const html = `
@@ -40,7 +42,8 @@ export const emailAdapter = {
         </p>`;
 
     const info = await transporter.sendMail({
-      from: `"MyApp" <${process.env.YANDEX_USER || "fogeloinc@yandex.ru"}>`,
+    //   from: `"MyApp" <${process.env.YANDEX_USER || "fogeloinc@yandex.ru"}>`,
+      from: `"MyApp" <${process.env.YANDEX_USER || "fogeloinc@mail.ru"}>`,
       to: email,
       subject: "Подтвердите регистрацию",
       text: `${"Подтвердите регистрацию"}`,

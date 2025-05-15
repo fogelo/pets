@@ -34,6 +34,7 @@ export const authService = {
         user.emailConfirmation.confirmationCode
       );
     } catch (err) {
+      console.error(err);
       return null;
     }
     return createdUserId;

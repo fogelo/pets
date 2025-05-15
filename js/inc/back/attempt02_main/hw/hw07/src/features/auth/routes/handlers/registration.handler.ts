@@ -50,7 +50,7 @@ export const registrationHandler = async (
     if (user) {
       res.status(HttpStatus.NoContent).json(user);
     } else {
-      res.sendStatus(HttpStatus.InternalServerError);
+      res.sendStatus(HttpStatus.BadRequest);
     }
     return;
   } catch (err) {
