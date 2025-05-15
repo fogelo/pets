@@ -29,7 +29,7 @@ export const authService = {
     const createdUserId = await userRepository.create(user);
 
     try {
-      emailAdapter.sendEmailConfirmationMessage(
+      await emailAdapter.sendEmailConfirmationMessage(
         user.accountData.email,
         user.emailConfirmation.confirmationCode
       );
@@ -49,14 +49,13 @@ export const authService = {
     if (user.emailConfirmation.isConfirmed) {
       throw new EmailAlreadyConfirmedError("code");
     }
-
     // проверяем код подтверждения и срок жизни
     if (
       user.emailConfirmation.confirmationCode === code &&
       user.emailConfirmation.expirationDate > new Date()
     ) {
       // помечаем пользователя как подтверждённого
-      await userRepository.updateConfirmation(user._id);
+      await userRepository.updateIsConfirmed(user._id);
       return true;
     }
 

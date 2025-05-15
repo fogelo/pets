@@ -5,6 +5,7 @@ import { RequestWithBody } from "../../../../core/types/request-type";
 import { userRepository } from "../../../users/repositories/users.repository";
 import { EmailAlreadyConfirmedError } from "../../errors/email-already-confirmed.error";
 import { errorsHandler } from "../../../../core/errors/errors.handler";
+import { v4 as uuidv4 } from "uuid";
 
 export const registrationEmailResendingHandler = async (
   req: RequestWithBody<{ email: string }>,
@@ -27,9 +28,12 @@ export const registrationEmailResendingHandler = async (
       throw new EmailAlreadyConfirmedError("email");
     }
 
-    await emailAdapter.sendEmailConfirmationMessage(
+    const confirmationCode = uuidv4();
+    await userRepository.updateConfirmationCode(user._id, confirmationCode);
+
+    emailAdapter.sendEmailConfirmationMessage(
       user.accountData.email,
-      user.emailConfirmation.confirmationCode
+      confirmationCode
     );
     res
       .status(HttpStatus.NoContent)

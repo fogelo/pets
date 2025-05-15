@@ -107,7 +107,7 @@ export const userRepository = {
 
     return;
   },
-  async updateConfirmation(_id: ObjectId): Promise<void> {
+  async updateIsConfirmed(_id: ObjectId): Promise<void> {
     const updateResult = await usersCollection.updateOne(
       { _id },
       { $set: { "emailConfirmation.isConfirmed": true } }
@@ -115,7 +115,16 @@ export const userRepository = {
     if (updateResult.matchedCount < 1) {
       throw new RepositoryNotFoundError("User not exist");
     }
-
+    return;
+  },
+  async updateConfirmationCode(_id: ObjectId, code: string): Promise<void> {
+    const updateResult = await usersCollection.updateOne(
+      { _id },
+      { $set: { "emailConfirmation.confirmationCode": code } }
+    );
+    if (updateResult.matchedCount < 1) {
+      throw new RepositoryNotFoundError("User not exist");
+    }
     return;
   },
   async delete(id: string): Promise<void> {
