@@ -8,14 +8,14 @@ import { RevokedToken } from "../types/revoked-token";
 export const jwtService = {
   async createAccessToken(user: WithId<User>): Promise<string> {
     const token = jwt.sign({ userId: user._id }, SETTINGS.JWT_ACCESS_SECRET, {
-      expiresIn: "60s",
+      expiresIn: "10s",
     });
 
     return token;
   },
   async createRefreshToken(user: WithId<User>): Promise<string> {
     const token = jwt.sign({ userId: user._id }, SETTINGS.JWT_ACCESS_SECRET, {
-      expiresIn: "120s",
+      expiresIn: "20s",
     });
 
     return token;
