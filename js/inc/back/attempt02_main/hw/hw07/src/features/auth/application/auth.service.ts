@@ -29,7 +29,7 @@ export const authService = {
     const createdUserId = await userRepository.create(user);
 
     try {
-      await emailAdapter.sendEmailConfirmationMessage(
+      emailAdapter.sendEmailConfirmationMessage(
         user.accountData.email,
         user.emailConfirmation.confirmationCode
       );
