@@ -14,11 +14,12 @@ import { registrationHandler } from "./handlers/registration.handler";
 import { inputValidationResultMiddleware } from "../../../core/middlewares/input-validtion-result.middleware";
 import { logoutHandler } from "./handlers/logout.handler";
 import { refreshTokenHandler } from "./handlers/refresh.token.handler";
+import { meHandler } from "./handlers/me.handler";
 
 export const authRouter: Router = Router({});
 
 authRouter
-  .get("/me", authMiddleware)
+  .get("/me", authMiddleware, meHandler)
   .post(
     "/login",
     loginOrEmailValidator,
