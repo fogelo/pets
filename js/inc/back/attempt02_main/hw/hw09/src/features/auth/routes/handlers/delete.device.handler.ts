@@ -9,6 +9,11 @@ export const deleteDeviceHandler = async (
 ) => {
   try {
     const deviceId = req.params.id;
+    if (!deviceId) {
+      res.sendStatus(HttpStatus.NotFound);
+      return;
+    }
+
     const user = req.user;
     const device = await devicesService.findByDeviceId(deviceId);
 
