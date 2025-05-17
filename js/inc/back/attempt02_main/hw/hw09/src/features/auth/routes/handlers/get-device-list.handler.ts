@@ -22,8 +22,8 @@ export const getUserDeviceListHandler = async (
       res.sendStatus(HttpStatus.Unauthorized);
       return;
     }
-    
-    const devices = await devicesService.findMany(req.user?.id!);
+
+    const devices = await devicesService.findMany(decoded.userId);
 
     res.status(HttpStatus.Ok).json(devices.map(mapToDeviceResponse));
     return;

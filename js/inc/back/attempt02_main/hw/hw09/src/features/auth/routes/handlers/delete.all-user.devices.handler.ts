@@ -15,14 +15,14 @@ export const deleteAllUserDevicesHandler = async (
       res.sendStatus(HttpStatus.Unauthorized);
       return;
     }
-    
+
     const decoded = await jwtService.verifyRefreshToken(refreshToken);
     if (!decoded) {
       res.sendStatus(HttpStatus.Unauthorized);
       return;
     }
 
-    await devicesService.deleteAllUserDevices(req.user?.id!);
+    await devicesService.deleteAllUserDevices(decoded.userId);
     res.sendStatus(HttpStatus.NoContent);
     return;
   } catch (err: unknown) {
