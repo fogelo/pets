@@ -45,11 +45,5 @@ authRouter
     inputValidationResultMiddleware,
     registrationEmailResendingHandler
   )
-  .post(
-    "/registration-email-resending",
-    emailValidator,
-    inputValidationResultMiddleware,
-    registrationEmailResendingHandler
-  )
   .post("/refresh-token", refreshTokenHandler)
   .post("/logout", logoutHandler);

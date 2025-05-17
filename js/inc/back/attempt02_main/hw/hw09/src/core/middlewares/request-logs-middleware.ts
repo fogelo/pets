@@ -35,6 +35,18 @@ export const requestLogMiddleware = async (
       res.sendStatus(429);
       return;
     }
+    if (requestLog.url === AUTH_PATH + "/registration") {
+      res.sendStatus(429);
+      return;
+    }
+    if (requestLog.url === AUTH_PATH + "/registration-confirmation") {
+      res.sendStatus(429);
+      return;
+    }
+    if (requestLog.url === AUTH_PATH + "/registration-email-resending") {
+      res.sendStatus(429);
+      return;
+    }
   }
   next();
 };
