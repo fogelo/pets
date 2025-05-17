@@ -50,7 +50,10 @@ export const devicesService = {
   async deleteByDeviceId(deviceId: string): Promise<void> {
     return deviceRepository.deleteByDeviceId(deviceId);
   },
-  async deleteAllUserDevices(userId: string): Promise<void> {
-    return deviceRepository.deleteMany({ userId });
+  async deleteAllUserDevices(
+    userId: string,
+    currentDeviceId: string
+  ): Promise<void> {
+    return deviceRepository.deleteMany({ userId, currentDeviceId });
   },
 };

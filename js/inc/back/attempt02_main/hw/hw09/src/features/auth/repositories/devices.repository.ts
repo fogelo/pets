@@ -57,7 +57,10 @@ export const deviceRepository = {
     return;
   },
   async deleteMany(dto: any): Promise<void> {
-    const deleteResult = await devicesCollection.deleteMany(dto);
+    const deleteResult = await devicesCollection.deleteMany({
+      userId: dto.userId,
+      deviceId: { $ne: dto.currentDeviceId },
+    });
     if (deleteResult.deletedCount < 1) {
       throw new RepositoryNotFoundError("Device not exist");
     }

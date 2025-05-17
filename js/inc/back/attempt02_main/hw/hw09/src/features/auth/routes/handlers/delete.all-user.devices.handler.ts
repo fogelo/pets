@@ -22,7 +22,7 @@ export const deleteAllUserDevicesHandler = async (
       return;
     }
 
-    await devicesService.deleteAllUserDevices(decoded.userId);
+    await devicesService.deleteAllUserDevices(decoded.userId, decoded.deviceId);
     res.sendStatus(HttpStatus.NoContent);
     return;
   } catch (err: unknown) {
