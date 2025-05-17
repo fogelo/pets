@@ -39,6 +39,7 @@ export const deleteDeviceHandler = async (
     }
 
     await devicesService.deleteByDeviceId(deviceId);
+
     res.sendStatus(HttpStatus.NoContent);
     return;
   } catch (err: unknown) {

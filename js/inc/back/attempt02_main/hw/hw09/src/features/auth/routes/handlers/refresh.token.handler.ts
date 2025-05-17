@@ -29,9 +29,15 @@ export const refreshTokenHandler = async (req: Request, res: Response) => {
     }
 
     // 3) **Проверяем, что сессия ещё жива**
-    const session = await devicesService.findByDeviceId(decoded.deviceId);
-    if (!session) {
+    const device = await devicesService.findByDeviceId(decoded.deviceId);
+    if (!device) {
       // после удаления /security/devices/:deviceId этого deviceId больше нет
+      res.sendStatus(HttpStatus.Unauthorized);
+      return;
+    }
+
+    // Проверяем чтобы даты токенов совпадали (чтобы не позволить использовать рефреш токен, который был анулирован с другого устройства)
+    if (decoded.iat !== device.iat) {
       res.sendStatus(HttpStatus.Unauthorized);
       return;
     }
