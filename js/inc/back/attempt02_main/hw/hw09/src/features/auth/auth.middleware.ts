@@ -22,10 +22,6 @@ export const authMiddleware = async (
   // 1) Попытка достать accessToken
   const authHeader = req.headers.authorization;
   let accessToken = authHeader?.split(" ")[1] || null;
-  // if (!token) {
-  //   res.sendStatus(HttpStatus.Unauthorized);
-  //   return;
-  // }
 
   // 2) Если accessToken есть — проверяем его
   if (accessToken) {

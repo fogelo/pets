@@ -9,4 +9,4 @@ export const devicesRouter: Router = Router({});
 devicesRouter
   .get("", authMiddleware, getUserDeviceListHandler)
   .delete("", authMiddleware, deleteAllUserDevicesHandler)
-  .delete("/:id", authMiddleware, deleteDeviceHandler);
+  .delete("/:id", deleteDeviceHandler);

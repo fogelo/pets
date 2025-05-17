@@ -35,7 +35,8 @@ describe(`CRUD ${DEVICES_PATH}`, () => {
   });
 
   beforeEach(async () => {
-    await DbManager.getDevicesCollection().deleteMany({});
+    await request(app).delete(`${TESTING_PATH}/all-data`);
+    // await DbManager.getDevicesCollection().deleteMany({});
     // await DbManager.getCoursesCollection().insertMany(testDbCourseData);
   });
 
@@ -69,14 +70,30 @@ describe(`CRUD ${DEVICES_PATH}`, () => {
     }
   });
 
-  // // тесты корректных запросов
-  // test(`GET ${DEVICES_PATH} возвращает список`, async () => {
-  //   const response = await request(app)
-  //     .get(`${DEVICES_PATH}`)
-  //     .auth("admin", "qwerty")
-  //     .expect(200);
-  //   const courses = response.body;
-  //   // expect(courses).toEqual(testViewCourseData);
-  //   expect(1).toEqual(1);
-  // });
+  test(`DELETE ${DEVICES_PATH} возваршает ошибку 404`, async () => {
+    //регистрируем пользовате
+    await request(app)
+      .post(`${AUTH_PATH}/registration`)
+      .send(user)
+      .expect(HttpStatus.NoContent);
+
+    //логинизация
+    const res = await request(app)
+      .post(`${AUTH_PATH}/login`)
+      .set("User-Agent", "supertest")
+      .send({ loginOrEmail: user.login, password: user.password })
+      .expect(200);
+
+    const cookie = res
+      .get("Set-Cookie")
+      ?.find((c: string) => c.startsWith("refreshToken="));
+    const token = cookie?.split("=")[1];
+    refreshTokens.push(token!);
+
+    const notExistDeviceId = "63189b06003380064c4193be";
+    const response = await request(app)
+      .delete(`${DEVICES_PATH}/${notExistDeviceId}`)
+      .set("Cookie", `refreshToken=${token}`)
+      .expect(HttpStatus.NotFound);
+  });
 });
