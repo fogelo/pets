@@ -28,7 +28,7 @@ export const requestLogMiddleware = async (
 
   const totalCount = await requestLogsCollection.countDocuments(filter);
   if (totalCount > 5) {
-    console.warn("warning: too requests");
+    console.warn(`предупреждение слишком много запросов на: ${requestLog.url}`);
   }
   next();
 };
