@@ -26,7 +26,7 @@ export const jwtService = {
   ): Promise<string> {
     const token = jwt.sign(
       { userId: user._id, deviceId },
-      SETTINGS.JWT_ACCESS_SECRET,
+      SETTINGS.JWT_REFRESH_SECRET,
       {
         expiresIn: "20s",
       }
