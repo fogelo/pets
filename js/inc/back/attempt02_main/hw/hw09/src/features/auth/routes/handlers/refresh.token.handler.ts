@@ -10,6 +10,8 @@ export const refreshTokenHandler = async (req: Request, res: Response) => {
     res.sendStatus(HttpStatus.Unauthorized);
     return;
   }
+
+  // 1) Проверяем, не в чёрном списке ли токен
   const revokedRefreshToken = await jwtService.findRefreshTokenInBlackList(
     refreshToken
   );
@@ -18,10 +20,18 @@ export const refreshTokenHandler = async (req: Request, res: Response) => {
     return;
   }
 
+  // 2) Верифицируем токен
   const decoded = await jwtService.verifyRefreshToken(refreshToken);
   if (!decoded?.userId) {
     res.sendStatus(HttpStatus.Unauthorized);
     return;
+  }
+
+  // 3) **Проверяем, что сессия ещё жива**
+  const session = await devicesService.findByDeviceId(decoded.deviceId);
+  if (!session) {
+    // после удаления /security/devices/:deviceId этого deviceId больше нет
+    return res.sendStatus(HttpStatus.Unauthorized);
   }
 
   //добавляем старый токен в черный список
