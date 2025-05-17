@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { jwtService } from "../../application/jwt.service";
 import { HttpStatus } from "../../../../core/types/http-statuses";
+import { devicesService } from "../../application/devices.service";
 
 export const logoutHandler = async (req: Request, res: Response) => {
   const refreshToken = req.cookies.refreshToken;
@@ -9,8 +10,8 @@ export const logoutHandler = async (req: Request, res: Response) => {
     return;
   }
 
-  const userId = await jwtService.verifyRefreshToken(refreshToken);
-  if (!userId) {
+  const decoded = await jwtService.verifyRefreshToken(refreshToken);
+  if (!decoded?.userId) {
     res.sendStatus(HttpStatus.Unauthorized);
     return;
   }
@@ -24,6 +25,7 @@ export const logoutHandler = async (req: Request, res: Response) => {
     return;
   }
 
+  await devicesService.deleteByDeviceId(decoded.deviceId);
   //добавляем старый токен в черный список
   await jwtService.addRefreshTokenToBlackList(refreshToken);
 
