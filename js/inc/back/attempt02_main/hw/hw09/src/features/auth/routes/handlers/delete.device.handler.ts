@@ -27,14 +27,14 @@ export const deleteDeviceHandler = async (
     const user = await usersService.findByIdOrFail(decoded.userId);
     const device = await devicesService.findByDeviceId(deviceId);
 
-    if (device?.userId !== user?._id.toString()) {
-      // запрещаем удалять не свои девайсы
-      res.sendStatus(HttpStatus.Forbidden);
+    if (!device) {
+      res.sendStatus(HttpStatus.NotFound);
       return;
     }
 
-    if (!device) {
-      res.sendStatus(HttpStatus.NotFound);
+    if (device?.userId !== user?._id.toString()) {
+      // запрещаем удалять не свои девайсы
+      res.sendStatus(HttpStatus.Forbidden);
       return;
     }
 
