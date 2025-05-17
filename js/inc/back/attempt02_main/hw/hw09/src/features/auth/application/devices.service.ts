@@ -31,14 +31,17 @@ export const devicesService = {
     await deviceRepository.update(id, dto);
     return;
   },
-  async updateByDeviceId(inputDto: {
-    iat?: number;
-    exp?: number;
-    userId: string;
-    deviceId: string;
-  }): Promise<void> {
-    const { deviceId, ...restDto } = inputDto;
-    await deviceRepository.updateByDeviceId(deviceId, restDto);
+
+  async updateByDeviceId(
+    deviceId: string,
+    inputDto: {
+      iat?: number;
+      exp?: number;
+      userId?: string;
+      lastActiveDate: Date;
+    }
+  ): Promise<void> {
+    await deviceRepository.updateByDeviceId(deviceId, inputDto);
     return;
   },
   async delete(id: string): Promise<void> {

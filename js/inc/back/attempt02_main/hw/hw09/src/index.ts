@@ -1,17 +1,12 @@
+import { app } from "./app";
 import { SETTINGS } from "./core/settings/settings";
-import { runDB } from "./db/db";
-import { setApp } from "./set-app";
-import express from "express";
+import { DbManager } from "./db/db";
 
-const bootstrap = () => {
-  const app: express.Express = express();
-
-  setApp(app);
-  runDB(SETTINGS.MONGO_URL);
-
+export const bootstrap = () => {
+  DbManager.startDb();
+  // runDB(SETTINGS.MONGO_URL);
   app.listen(SETTINGS.PORT, () => {
     console.log(`✅ Сервер запущен на порту ${SETTINGS.PORT}`);
   });
 };
-
 bootstrap();

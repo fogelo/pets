@@ -14,7 +14,7 @@ export const jwtService = {
       { userId: user._id, deviceId },
       SETTINGS.JWT_ACCESS_SECRET,
       {
-        expiresIn: "3600s",
+        expiresIn: "10s",
       }
     );
 
@@ -28,7 +28,7 @@ export const jwtService = {
       { userId: user._id, deviceId },
       SETTINGS.JWT_ACCESS_SECRET,
       {
-        expiresIn: "7200s",
+        expiresIn: "20s",
       }
     );
 

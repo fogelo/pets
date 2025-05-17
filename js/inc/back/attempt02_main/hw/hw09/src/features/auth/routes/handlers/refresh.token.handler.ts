@@ -43,7 +43,10 @@ export const refreshTokenHandler = async (req: Request, res: Response) => {
     newRefreshToken
   );
   if (newRefresTokenDecoded) {
-    await devicesService.updateByDeviceId(newRefresTokenDecoded);
+    await devicesService.updateByDeviceId(newRefresTokenDecoded.deviceId, {
+      ...newRefresTokenDecoded,
+      lastActiveDate: new Date(),
+    });
   }
 
   // обновляем куку

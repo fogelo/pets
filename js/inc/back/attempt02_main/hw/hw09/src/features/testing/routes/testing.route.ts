@@ -2,6 +2,7 @@ import { Router, Request, Response } from "express";
 import {
   blogsCollection,
   commentsCollection,
+  devicesCollection,
   postsCollection,
   usersCollection,
 } from "../../../db/db";
@@ -16,6 +17,7 @@ testingRouter.delete("/all-data", async (req: Request, res: Response) => {
     blogsCollection.deleteMany(),
     postsCollection.deleteMany(),
     commentsCollection.deleteMany(),
+    devicesCollection.deleteMany(),
   ]);
   res.sendStatus(HttpStatus.NoContent);
   return;
