@@ -31,7 +31,8 @@ export const refreshTokenHandler = async (req: Request, res: Response) => {
   const session = await devicesService.findByDeviceId(decoded.deviceId);
   if (!session) {
     // после удаления /security/devices/:deviceId этого deviceId больше нет
-    return res.sendStatus(HttpStatus.Unauthorized);
+    res.sendStatus(HttpStatus.Unauthorized);
+    return 
   }
 
   //добавляем старый токен в черный список
