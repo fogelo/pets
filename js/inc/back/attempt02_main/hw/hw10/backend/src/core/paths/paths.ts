@@ -1,4 +1,4 @@
-export const MAIN_PATH = "/hometask_09/api";
+export const MAIN_PATH = "/hometask_10/api";
 export const TESTING_PATH = `${MAIN_PATH}/testing`;
 export const USERS_PATH = `${MAIN_PATH}/users`;
 export const BLOGS_PATH = `${MAIN_PATH}/blogs`;
