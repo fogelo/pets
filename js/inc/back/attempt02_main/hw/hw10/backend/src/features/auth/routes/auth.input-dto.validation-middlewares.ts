@@ -59,8 +59,6 @@ export const codeConfirmationValidator = body("code")
   .notEmpty()
   .withMessage("code is an empty string");
 
-
-
 export const recoveryCodeValidator = body("recoveryCode")
   .exists({ checkFalsy: true })
   .withMessage("recoveryCode is required")
@@ -69,6 +67,17 @@ export const recoveryCodeValidator = body("recoveryCode")
   .trim()
   .notEmpty()
   .withMessage("recoveryCode is an empty string");
+
+export const newPasswordValidator = body("newPassword")
+  .isString()
+  .withMessage("password must be a string")
+  .trim()
+  .notEmpty()
+  .withMessage("password is an empty string")
+  .isLength({ min: minPasswordLength, max: maxPasswordLength })
+  .withMessage(
+    `password must be min: ${minLoginLength} and max: ${maxLoginLength} chars`
+  );
 
 export const registrationValidation = () => [
   loginValidator,

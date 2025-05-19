@@ -4,6 +4,7 @@ import {
   codeConfirmationValidator,
   emailValidator,
   loginOrEmailValidator,
+  newPasswordValidator,
   passwordValidator,
   recoveryCodeValidator,
   registrationValidation,
@@ -59,7 +60,7 @@ authRouter
   .post(
     "/new-password",
     recoveryCodeValidator,
-    passwordValidator,
+    newPasswordValidator,
     inputValidationResultMiddleware,
     newPasswordHandler
   );
