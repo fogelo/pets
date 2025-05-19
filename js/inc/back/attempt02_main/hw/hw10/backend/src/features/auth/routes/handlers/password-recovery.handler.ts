@@ -15,18 +15,14 @@ export const passwordRecoveryHandler = async (
   const user = await userRepository.findByEmail(email);
 
   if (!user) {
-    res.status(HttpStatus.BadRequest).json({
-      errorsMessages: [
-        { message: "User with this email doesn’t exist", field: "email" },
-      ],
-    });
+    res.status(HttpStatus.NoContent);
     return;
   }
 
   try {
-    if (user.emailConfirmation.isConfirmed) {
-      throw new EmailAlreadyConfirmedError("email");
-    }
+    // if (user.emailConfirmation.isConfirmed) {
+    //   throw new EmailAlreadyConfirmedError("email");
+    // }
 
     const recoveryCode = uuidv4();
     await userRepository.updateConfirmationCode(user._id, recoveryCode);

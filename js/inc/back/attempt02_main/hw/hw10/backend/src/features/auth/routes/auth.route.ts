@@ -59,6 +59,7 @@ authRouter
   .post(
     "/new-password",
     recoveryCodeValidator,
+    passwordValidator,
     inputValidationResultMiddleware,
     newPasswordHandler
   );
