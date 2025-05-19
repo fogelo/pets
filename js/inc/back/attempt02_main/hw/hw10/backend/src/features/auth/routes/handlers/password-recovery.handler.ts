@@ -15,7 +15,7 @@ export const passwordRecoveryHandler = async (
   const user = await userRepository.findByEmail(email);
 
   if (!user) {
-    res.status(HttpStatus.NoContent);
+    res.sendStatus(HttpStatus.NoContent);
     return;
   }
 
