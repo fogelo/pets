@@ -42,7 +42,9 @@ export const postLikesRepository = {
     postId: string,
     count: number
   ): Promise<WithId<PostLike>[]> {
-    const filter: any = {};
+    const filter: any = {
+      likeStatus: "Like",
+    };
 
     if (postId) {
       filter.postId = postId;

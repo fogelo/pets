@@ -23,7 +23,12 @@ import { optionalAuthMiddleware } from "../../auth/optional.auth.middleware";
 export const postsRouter: Router = Router({});
 
 postsRouter
-  .get("", paginationAndSortingValidation(PostSortField), getPostListHandler)
+  .get(
+    "",
+    optionalAuthMiddleware,
+    paginationAndSortingValidation(PostSortField),
+    getPostListHandler
+  )
   .get(
     "/:id",
     optionalAuthMiddleware,

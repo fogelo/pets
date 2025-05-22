@@ -15,6 +15,7 @@ import { PostSortField } from "../../posts/routes/input/post-sort-field";
 import { createPostFromBlogValidation } from "../../posts/routes/post.input-dto.validation-middlewares";
 import { superAdminGuardMiddleware } from "../../../core/middlewares/super-admin.guard-middleware";
 import { query } from "express-validator";
+import { optionalAuthMiddleware } from "../../auth/optional.auth.middleware";
 
 export const blogsRouter: Router = Router({});
 
@@ -56,6 +57,7 @@ blogsRouter
   )
   .get(
     "/:id/posts",
+    optionalAuthMiddleware,
     idValidation,
     paginationAndSortingValidation(PostSortField),
     inputValidationResultMiddleware,
