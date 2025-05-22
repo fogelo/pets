@@ -4,7 +4,10 @@ import { deletePostHandler } from "./handlers/delete-post.handler";
 import { getPostListHandler } from "./handlers/get-post-list-handler";
 import { getPostHandler } from "./handlers/get-post.handler";
 import { updatePostHandler } from "./handlers/update-post.handler";
-import { likeStatusPostValidator, postValidation } from "./post.input-dto.validation-middlewares";
+import {
+  likeStatusPostValidator,
+  postValidation,
+} from "./post.input-dto.validation-middlewares";
 import { inputValidationResultMiddleware } from "../../../core/middlewares/input-validtion-result.middleware";
 import { superAdminGuardMiddleware } from "../../../core/middlewares/super-admin.guard-middleware";
 import { paginationAndSortingValidation } from "../../../core/middlewares/query-pagination-sorting.validation-middleware";
@@ -15,12 +18,19 @@ import { authMiddleware } from "../../auth/auth.middleware";
 import { getPostCommentListHandler } from "./handlers/get-post-comment-list.handler";
 import { commentBodyValidation } from "../../comments/comment.input-dto.validation-middlewares";
 import { updatePostLikeHandler } from "./handlers/update.post-like.handler";
+import { optionalAuthMiddleware } from "../../auth/optional.auth.middleware";
 
 export const postsRouter: Router = Router({});
 
 postsRouter
   .get("", paginationAndSortingValidation(PostSortField), getPostListHandler)
-  .get("/:id", idValidation, inputValidationResultMiddleware, getPostHandler)
+  .get(
+    "/:id",
+    optionalAuthMiddleware,
+    idValidation,
+    inputValidationResultMiddleware,
+    getPostHandler
+  )
   .post(
     "",
     superAdminGuardMiddleware,

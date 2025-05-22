@@ -11,7 +11,7 @@ export const getPostHandler = async (
   try {
     const id = req.params.id;
     const post = await postsService.findByIdOrFail(id);
-    const postOutput = await mapToPostOutput(post);
+    const postOutput = await mapToPostOutput(post, req.user?.id);
     res.status(HttpStatus.Ok).send(postOutput);
     return;
   } catch (err: unknown) {
