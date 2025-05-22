@@ -13,7 +13,8 @@ export const createPostHandler = async (
     const body = req.body;
     const createdPostId = await postsService.create(body);
     const createdPost = await postsService.findByIdOrFail(createdPostId);
-    const postOutput = mapToPostOutput(createdPost);
+    const postOutput = await mapToPostOutput(createdPost);
+
     res.status(HttpStatus.Created).json(postOutput);
     return;
   } catch (err) {
