@@ -1,8 +1,8 @@
-import { Body, Controller, Post } from '@nestjs/common';
-import { CreateUserInputDto } from './input-dto/users.input-dto';
+import { Body, Controller, Delete, Param, Post } from '@nestjs/common';
 import { UsersService } from '../application/users.service';
-import { UserViewDto } from './view-dto/users.view-dto';
 import { UsersQueryRepository } from '../infrastructure/query/users.query-repository';
+import { CreateUserInputDto } from './input-dto/create-user.input-dto';
+import { UserViewDto } from './view-dto/users.view-dto';
 
 @Controller('hometask_13/api/users')
 export class UsersController {
@@ -17,4 +17,13 @@ export class UsersController {
     const userId = await this.usersService.create(dto);
     return this.usersQueryRepository.getById(userId);
   }
+  @Delete(':id')
+  async deleteUser(@Param('id') userId: string): Promise<void> {
+    return this.usersService.delete(userId);
+  }
+  //   @Put()
+  //   async updateUser(@Body() dto: UpdateUserInputDto): Promise<UserViewDto> {
+  //     const userId = await this.usersService.create(dto);
+  //     return this.usersQueryRepository.getById(userId);
+  //   }
 }

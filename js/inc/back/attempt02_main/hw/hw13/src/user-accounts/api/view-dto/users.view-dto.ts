@@ -6,12 +6,12 @@ export class UserViewDto {
   email: string;
   createdAt: Date;
 
+  // фабричный метод
   static mapToView(user: UserDocument): UserViewDto {
     const dto = new UserViewDto();
-
+    dto.id = user._id.toString();
     dto.email = user.email;
     dto.login = user.login;
-    dto.id = user._id.toString();
     dto.createdAt = user.createdAt;
     return dto;
   }

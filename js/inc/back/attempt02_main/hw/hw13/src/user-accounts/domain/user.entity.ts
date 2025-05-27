@@ -2,7 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { CreateUserDomainDto } from './dto/create-user.domain.dto';
 import { HydratedDocument, Model } from 'mongoose';
 
-@Schema()
+@Schema({ timestamps: true })
 export class User {
   /**
    * логин пользователя (должен быть уникальным)
@@ -17,6 +17,7 @@ export class User {
    * @type {string}
    * @required
    */
+  @Prop({ type: String, required: true, unique: true })
   email: string;
 
   /**
@@ -30,8 +31,14 @@ export class User {
   /**
    * @type {Date}
    */
+  @Prop()
   createdAt: Date;
+
+  @Prop()
   updatedAt: Date;
+
+  @Prop({ type: Date, nullable: true })
+  deletedAt: Date | null;
 
   /**
    * фабричный метод
@@ -43,6 +50,13 @@ export class User {
     user.passwordHash = dto.passwordHash;
 
     return user as UserDocument;
+  }
+
+  makeDeleted() {
+    if (this.deletedAt !== null) {
+      throw new Error('Entity already deleted');
+    }
+    this.deletedAt = new Date();
   }
 }
 
