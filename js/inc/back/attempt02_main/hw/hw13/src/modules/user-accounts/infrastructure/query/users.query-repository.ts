@@ -25,7 +25,7 @@ export class UsersQueryRepository {
     if (query.searchEmailTerm) {
       filter.$or = filter.$or || [];
       filter.$or.push({
-        login: { $regex: query.searchEmailTerm, $options: 'i' },
+        email: { $regex: query.searchEmailTerm, $options: 'i' },
       });
     }
 

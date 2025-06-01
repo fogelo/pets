@@ -44,6 +44,7 @@ export class PostsController {
     return this.postsQueryRepository.getById(postId);
   }
   @Put('posts/:id')
+  @HttpCode(HttpStatus.NO_CONTENT)
   async updatePost(
     @Param('id') id: Types.ObjectId,
     @Body() body: UpdatePostInputDto,
