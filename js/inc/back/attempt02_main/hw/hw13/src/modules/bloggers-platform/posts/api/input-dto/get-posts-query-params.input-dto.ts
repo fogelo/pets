@@ -5,5 +5,5 @@ import { PostsSortBy } from './posts-sort-by';
 export class GetPostsQueryParams extends BaseQueryParams {
   @IsOptional()
   @IsEnum(PostsSortBy)
-  sortBy: PostsSortBy = PostsSortBy.CreatedAt;
+  sortBy = PostsSortBy.CreatedAt;
 }

@@ -9,5 +9,5 @@ export class GetBlogsQueryParams extends BaseQueryParams {
 
   @IsOptional()
   @IsEnum(BlogsSortBy)
-  sortBy: BlogsSortBy = BlogsSortBy.CreatedAt;
+  sortBy = BlogsSortBy.CreatedAt;
 }
