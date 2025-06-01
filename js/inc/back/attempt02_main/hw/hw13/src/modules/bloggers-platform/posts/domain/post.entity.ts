@@ -2,6 +2,7 @@ import { NotFoundException } from '@nestjs/common';
 import { CreatePostDomainDto } from './dto/create-post.domain-dto';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument, Model } from 'mongoose';
+import { UpdatePostDomainDto } from './dto/update-post.domain-dto';
 
 @Schema({ timestamps: true, collection: 'posts' })
 export class Post {
@@ -42,6 +43,12 @@ export class Post {
       throw new NotFoundException('post not found');
     }
     this.deletedAt = new Date();
+  }
+  update(dto: UpdatePostDomainDto) {
+    this.title = dto.title;
+    this.content = dto.content;
+    this.shortDescription = dto.shortDescription;
+    this.blogId = dto.blogId;
   }
 }
 export const PostSchema = SchemaFactory.createForClass(Post);

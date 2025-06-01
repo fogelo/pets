@@ -6,6 +6,9 @@ import {
   BlogModelType,
 } from 'src/modules/bloggers-platform/blogs/domain/blog.entity';
 import { PostViewDto } from '../../api/view-dto/posts.view-dto';
+import { GetPostsQueryParams } from '../../api/input-dto/get-posts-query-params.input-dto';
+import { FilterQuery } from 'mongoose';
+import { PaginatedViewDto } from 'src/core/dto/base.paginated.view-dto';
 
 export class PostsQueryRepository {
   constructor(
@@ -27,5 +30,39 @@ export class PostsQueryRepository {
     }
 
     return PostViewDto.mapToView(post, blog);
+  }
+  async getAll(
+    query: GetPostsQueryParams,
+  ): Promise<PaginatedViewDto<PostViewDto[]>> {
+    const filter: FilterQuery<Post> = {
+      deletedAt: null,
+    };
+
+    const posts = await this.PostModel.find(filter)
+      .sort({ [query.sortBy]: query.sortDirection })
+      .skip(query.calculateSkip())
+      .limit(query.pageSize)
+      .exec();
+
+    const totalCount = await this.PostModel.countDocuments(filter);
+
+    const postViewDtos: PostViewDto[] = [];
+    for (const post of posts) {
+      const blog = await this.BlogModel.findOne({
+        _id: post.blogId,
+        deletedAt: null,
+      });
+      if (blog) {
+        postViewDtos.push(PostViewDto.mapToView(post, blog));
+      }
+    }
+
+    return PaginatedViewDto.mapToView<PostViewDto[]>({
+      items: postViewDtos,
+      page: query.pageNumber,
+      pagesCount: Math.ceil(totalCount / query.pageSize),
+      pageSize: query.pageSize,
+      totalCount,
+    });
   }
 }
