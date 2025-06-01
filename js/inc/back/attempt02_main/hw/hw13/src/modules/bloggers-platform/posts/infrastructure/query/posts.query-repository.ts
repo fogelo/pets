@@ -69,6 +69,14 @@ export class PostsQueryRepository {
     blogId: string,
     query: GetPostsQueryParams,
   ): Promise<PaginatedViewDto<PostViewDto[]>> {
+    const blog = await this.BlogModel.findOne({
+      _id: blogId,
+      deletedAt: null,
+    });
+    if (!blog) {
+      throw new NotFoundException('blog not found');
+    }
+
     const filter: FilterQuery<Post> = {
       blogId,
       deletedAt: null,
