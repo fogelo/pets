@@ -4,6 +4,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { BloggersPlatformModule } from './modules/bloggers-platform/bloggers-platform.module';
 import { UserAccountsModule } from './modules/user-accounts/user-accounts.module';
+import { TestingModule } from './modules/testing/testing.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { UserAccountsModule } from './modules/user-accounts/user-accounts.module
         // useUnifiedTopology: true,
       },
     ),
+    TestingModule,
     UserAccountsModule, //все модули должны быть заимпортированы в корневой модуль, либо напрямую, либо по цепочке (через другие модули)
     BloggersPlatformModule,
   ],
