@@ -26,10 +26,25 @@ export class BlogsController {
     private blogsService: BlogsService,
   ) {}
   @Get()
-  getBlogList(
-    @Query() query: GetBlogsQueryParams,
-  ): Promise<PaginatedViewDto<BlogViewDto[]>> {
-    return this.blogsQueryRepository.getAll(query);
+  getBlogList(@Query() query: any): Promise<PaginatedViewDto<BlogViewDto[]>> {
+    // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
+    const validatedQuery: GetBlogsQueryParams | any = {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+      searchNameTerm: query.searchNameTerm || null,
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+      sortBy: query.sortBy || 'createdAt',
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+      sortDirection: query.sortDirection || 'desc',
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
+      pageNumber: parseInt(query.pageNumber, 10) || 1,
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
+      pageSize: parseInt(query.pageSize, 10) || 10,
+      calculateSkip() {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        return (query.pageNumber - 1) * query.pageSize;
+      },
+    };
+    return this.blogsQueryRepository.getAll(validatedQuery);
   }
   @Get(':id')
   getBlogById(@Param('id') blogId: string) {
