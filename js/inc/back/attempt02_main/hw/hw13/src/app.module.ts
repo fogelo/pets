@@ -2,16 +2,8 @@ import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { BlogsController } from './blogs/api/blogs.conroller';
-import { BlogsService } from './blogs/application/blogs.service';
-import { Blog, BlogSchema } from './blogs/domain/blog.entity';
-import { BlogsQueryRepository } from './blogs/infrastructure/blogs.query-repository';
-import { BlogsRepository } from './blogs/infrastructure/blogs.repository';
-import { UsersController } from './user-accounts/api/users.controller';
-import { UsersService } from './user-accounts/application/users.service';
-import { User, UserSchema } from './user-accounts/domain/user.entity';
-import { UsersQueryRepository } from './user-accounts/infrastructure/query/users.query-repository';
-import { UsersRepository } from './user-accounts/infrastructure/users.repository';
+import { BloggersPlatformModule } from './modules/bloggers-platform/bloggers-platform.module';
+import { UserAccountsModule } from './modules/user-accounts/user-accounts.module';
 
 @Module({
   imports: [
@@ -22,18 +14,10 @@ import { UsersRepository } from './user-accounts/infrastructure/users.repository
         // useUnifiedTopology: true,
       },
     ),
-    MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
-    MongooseModule.forFeature([{ name: Blog.name, schema: BlogSchema }]),
+    UserAccountsModule, //все модули должны быть заимпортированы в корневой модуль, либо напрямую, либо по цепочке (через другие модули)
+    BloggersPlatformModule,
   ],
-  controllers: [AppController, UsersController, BlogsController],
-  providers: [
-    AppService,
-    UsersQueryRepository,
-    UsersService,
-    UsersRepository,
-    BlogsQueryRepository,
-    BlogsService,
-    BlogsRepository,
-  ],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}
