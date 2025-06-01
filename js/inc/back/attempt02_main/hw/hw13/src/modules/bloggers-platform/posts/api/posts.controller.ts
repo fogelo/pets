@@ -10,7 +10,10 @@ import {
   Put,
   Query,
 } from '@nestjs/common';
-import { CreatePostInputDto } from './input-dto/create-post.input-dto';
+import {
+  CreatePostInputDto,
+  CreatePostWithoutBlogIdDto,
+} from './input-dto/create-post.input-dto';
 import { PostsService } from '../application/posts.service';
 import { PostsQueryRepository } from '../infrastructure/query/posts.query-repository';
 import { PostViewDto } from './view-dto/posts.view-dto';
@@ -60,5 +63,13 @@ export class PostsController {
     @Query() query: GetPostsQueryParams,
   ): Promise<PaginatedViewDto<PostViewDto[]>> {
     return this.postsQueryRepository.getPostsByBlogId(blogId, query);
+  }
+  @Post('blogs/:blogId/posts')
+  async createPostWithBlogIdInParam(
+    @Param('blogId') blogId: string,
+    @Body() dto: CreatePostWithoutBlogIdDto,
+  ): Promise<PostViewDto> {
+    const postId = await this.postsService.create({ ...dto, blogId });
+    return this.postsQueryRepository.getById(postId);
   }
 }
