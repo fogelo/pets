@@ -65,4 +65,40 @@ export class PostsQueryRepository {
       totalCount,
     });
   }
+  async getPostsByBlogId(
+    blogId: string,
+    query: GetPostsQueryParams,
+  ): Promise<PaginatedViewDto<PostViewDto[]>> {
+    const filter: FilterQuery<Post> = {
+      blogId,
+      deletedAt: null,
+    };
+
+    const posts = await this.PostModel.find(filter)
+      .sort({ [query.sortBy]: query.sortDirection })
+      .skip(query.calculateSkip())
+      .limit(query.pageSize)
+      .exec();
+
+    const totalCount = await this.PostModel.countDocuments(filter);
+
+    const postViewDtos: PostViewDto[] = [];
+    for (const post of posts) {
+      const blog = await this.BlogModel.findOne({
+        _id: post.blogId,
+        deletedAt: null,
+      });
+      if (blog) {
+        postViewDtos.push(PostViewDto.mapToView(post, blog));
+      }
+    }
+
+    return PaginatedViewDto.mapToView<PostViewDto[]>({
+      items: postViewDtos,
+      page: query.pageNumber,
+      pagesCount: Math.ceil(totalCount / query.pageSize),
+      pageSize: query.pageSize,
+      totalCount,
+    });
+  }
 }

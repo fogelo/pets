@@ -19,28 +19,28 @@ import { Types } from 'mongoose';
 import { GetPostsQueryParams } from './input-dto/get-posts-query-params.input-dto';
 import { PaginatedViewDto } from 'src/core/dto/base.paginated.view-dto';
 
-@Controller('posts')
+@Controller()
 export class PostsController {
   constructor(
     private postsService: PostsService,
     private postsQueryRepository: PostsQueryRepository,
   ) {}
-  @Get(':id')
+  @Get('posts/:id')
   async getById(@Param('id') id: string): Promise<PostViewDto> {
     return this.postsQueryRepository.getById(id);
   }
-  @Get()
+  @Get('posts')
   async getAll(
     @Query() query: GetPostsQueryParams,
   ): Promise<PaginatedViewDto<PostViewDto[]>> {
     return this.postsQueryRepository.getAll(query);
   }
-  @Post()
+  @Post('posts')
   async createPost(@Body() dto: CreatePostInputDto): Promise<PostViewDto> {
     const postId = await this.postsService.create(dto);
     return this.postsQueryRepository.getById(postId);
   }
-  @Put(':id')
+  @Put('posts/:id')
   async updatePost(
     @Param('id') id: Types.ObjectId,
     @Body() body: UpdatePostInputDto,
@@ -48,10 +48,17 @@ export class PostsController {
     await this.postsService.update(id, body);
     return;
   }
-  @Delete(':id')
+  @Delete('posts/:id')
   @HttpCode(HttpStatus.NO_CONTENT)
   async deletePost(@Param('id') id: Types.ObjectId) {
     await this.postsService.delete(id);
     return;
+  }
+  @Get('blogs/:blogId/posts')
+  async getPostsByBlogId(
+    @Param('blogId') blogId: string,
+    @Query() query: GetPostsQueryParams,
+  ): Promise<PaginatedViewDto<PostViewDto[]>> {
+    return this.postsQueryRepository.getPostsByBlogId(blogId, query);
   }
 }
