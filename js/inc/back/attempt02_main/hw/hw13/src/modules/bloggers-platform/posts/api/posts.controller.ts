@@ -21,6 +21,7 @@ import { UpdatePostInputDto } from './input-dto/update-post.input-dto';
 import { Types } from 'mongoose';
 import { GetPostsQueryParams } from './input-dto/get-posts-query-params.input-dto';
 import { PaginatedViewDto } from 'src/core/dto/base.paginated.view-dto';
+import { PostsSortBy } from './input-dto/posts-sort-by';
 
 @Controller()
 export class PostsController {
@@ -37,7 +38,21 @@ export class PostsController {
     @Query() query: GetPostsQueryParams,
   ): Promise<PaginatedViewDto<PostViewDto[]>> {
     // return this.postsQueryRepository.getAll(query);
-    return this.postsQueryRepository.getAllPosts(query);
+    // 1) Забираем значения с дефолтом, если query.* == undefined
+    const pageNumber = query.pageNumber ?? 1;
+    const pageSize = query.pageSize ?? 10;
+    const sortDirection = query.sortDirection ?? 'desc';
+    const sortBy = query.sortBy ?? PostsSortBy.CreatedAt;
+
+    return this.postsQueryRepository.getAllPosts({
+      pageNumber,
+      pageSize,
+      sortBy,
+      sortDirection,
+      calculateSkip() {
+        return (pageNumber - 1) * pageSize;
+      },
+    });
   }
   @Post('posts')
   async createPost(@Body() dto: CreatePostInputDto): Promise<PostViewDto> {
