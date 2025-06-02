@@ -9,18 +9,18 @@ export enum SortDirection {
 //базовый класс для query параметров с пагинацией
 //значения по-умолчанию применятся автоматически при настройке глобального ValidationPipe в main.ts
 export class BaseQueryParams {
-  @IsOptional()
-  @IsNumber()
-  @Type(() => Number)
+  //   @IsOptional()
+  //   @IsNumber()
+  //   @Type(() => Number)
   pageNumber: number = 1;
 
-  @IsOptional()
-  @IsNumber()
-  @Type(() => Number)
+  //   @IsOptional()
+  //   @IsNumber()
+  //   @Type(() => Number)
   pageSize: number = 10;
 
-  @IsOptional()
-  @IsEnum(SortDirection)
+  //   @IsOptional()
+  //   @IsEnum(SortDirection)
   sortDirection: SortDirection = SortDirection.Desc;
 
   calculateSkip() {
