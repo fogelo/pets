@@ -36,7 +36,8 @@ export class PostsController {
   async getAll(
     @Query() query: GetPostsQueryParams,
   ): Promise<PaginatedViewDto<PostViewDto[]>> {
-    return this.postsQueryRepository.getAll(query);
+    // return this.postsQueryRepository.getAll(query);
+    return this.postsQueryRepository.getAllPosts(query);
   }
   @Post('posts')
   async createPost(@Body() dto: CreatePostInputDto): Promise<PostViewDto> {
