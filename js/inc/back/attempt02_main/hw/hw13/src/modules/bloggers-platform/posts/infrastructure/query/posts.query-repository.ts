@@ -140,10 +140,6 @@ export class PostsQueryRepository {
       { $unwind: '$blogData' },
     ];
 
-    const posts = await this.PostModel.aggregate<
-      PostDocument & { blogData: BlogDocument }
-    >(pipeline).exec();
-
     // добавление в pipline сортировки
     const direction = query.sortDirection === SortDirection.Asc ? 1 : -1;
     if (query.sortBy === PostsSortBy.BlogName) {
@@ -155,6 +151,9 @@ export class PostsQueryRepository {
     // добавление в pipeline пагинации
     pipeline.push({ $skip: query.calculateSkip() }, { $limit: query.pageSize });
 
+    const posts = await this.PostModel.aggregate<
+      PostDocument & { blogData: BlogDocument }
+    >(pipeline).exec();
     const totalCount = await this.PostModel.countDocuments(filter);
 
     const postViewDtos: PostViewDto[] = posts.map((post) =>
