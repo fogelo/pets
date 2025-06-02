@@ -19,8 +19,8 @@ export class BaseQueryParams {
   @Type(() => Number)
   pageSize: number = 10;
 
-  //   @IsOptional()
-  //   @IsEnum(SortDirection)
+  @IsOptional()
+  @IsEnum(SortDirection)
   sortDirection: SortDirection = SortDirection.Desc;
 
   calculateSkip() {

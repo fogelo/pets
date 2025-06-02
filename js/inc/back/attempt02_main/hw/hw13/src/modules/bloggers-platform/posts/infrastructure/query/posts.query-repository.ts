@@ -112,7 +112,9 @@ export class PostsQueryRepository {
       totalCount,
     });
   }
-  async getAllPosts(query: GetPostsQueryParams): Promise<any> {
+  async getAllPosts(
+    query: GetPostsQueryParams,
+  ): Promise<PaginatedViewDto<PostViewDto[]>> {
     const filter: FilterQuery<Post> = {
       deletedAt: null,
     };
@@ -150,7 +152,7 @@ export class PostsQueryRepository {
       pipeline.push({ $sort: { [query.sortBy]: direction } });
     }
 
-    // добавление в pipline пагинации
+    // добавление в pipeline пагинации
     pipeline.push({ $skip: query.calculateSkip() }, { $limit: query.pageSize });
 
     const totalCount = await this.PostModel.countDocuments(filter);
@@ -166,6 +168,5 @@ export class PostsQueryRepository {
       pageSize: query.pageSize,
       totalCount,
     });
-    return posts;
   }
 }
