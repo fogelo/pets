@@ -29,10 +29,10 @@ export const authService = {
     const createdUserId = await userRepository.create(user);
 
     try {
-      // await emailAdapter.sendEmailConfirmationMessage(
-      //   user.accountData.email,
-      //   user.emailConfirmation.confirmationCode
-      // );
+      await emailAdapter.sendEmailConfirmationMessage(
+        user.accountData.email,
+        user.emailConfirmation.confirmationCode
+      );
     } catch (err) {
       console.error(err);
       return null;
