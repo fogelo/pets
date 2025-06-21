@@ -18,7 +18,7 @@ import { GetUsersQueryParams } from './input-dto/get-users-query-params.input-dt
 import { PaginatedViewDto } from 'src/core/dto/base.paginated.view-dto';
 import { AuthGuard } from '../guards/auth.guard';
 
-@UseGuards(AuthGuard)
+// @UseGuards(AuthGuard)
 @Controller('users')
 export class UsersController {
   constructor(
