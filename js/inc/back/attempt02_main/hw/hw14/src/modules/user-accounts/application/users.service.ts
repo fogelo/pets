@@ -63,17 +63,52 @@ export class UsersService {
     await this.usersRepository.save(user);
   }
   async registerUser(dto: CreateUserDto): Promise<any> {
-    const createdUserId = await this.createUser(dto);
+    // Проверяем, существует ли пользователь с таким login
+    const existingUserByLogin = await this.usersRepository.findByLogin(
+      dto.login,
+    );
+    if (existingUserByLogin) {
+      throw new BadRequestException([
+        {
+          message: 'User with this login already exists',
+          field: 'login',
+        },
+      ]);
+    }
+
+    // Проверяем, существует ли пользователь с таким email
+    const existingUserByEmail = await this.usersRepository.findByEmail(
+      dto.email,
+    );
+    if (existingUserByEmail) {
+      throw new BadRequestException([
+        {
+          message: 'User with this email already exists',
+          field: 'email',
+        },
+      ]);
+    }
+
+    const passwordHash = await bcrypt.hash(dto.password, 10);
     const confirmationCode = uuidv4();
 
-    const user = await this.usersRepository.findOrNotFoundFail(createdUserId);
+    const user = this.UserModel.createInstance({
+      email: dto.email,
+      login: dto.login,
+      passwordHash: passwordHash,
+    });
+
+    // Для регистрации email не подтвержден изначально
+    user.isEmailConfirmed = false;
     user.setConfirmationCode(confirmationCode);
+
     await this.usersRepository.save(user);
 
     await this.emailService.sendEmailConfirmationMessage(
       dto.email,
       confirmationCode,
     );
+
     return user.toObject();
   }
   async confirmEmail(code: string): Promise<void> {
