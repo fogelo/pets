@@ -12,10 +12,10 @@ export class AuthService {
     private cryptoService: CryptoService,
   ) {}
   async validateUser(
-    login: string,
+    loginOrEmail: string,
     password: string,
   ): Promise<UserContextDto | null> {
-    const user = await this.usersRepository.findByLogin(login);
+    const user = await this.usersRepository.findByLoginOrEmail(loginOrEmail);
     if (!user) {
       return null;
     }

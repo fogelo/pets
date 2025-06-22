@@ -11,6 +11,7 @@ import {
 } from '@nestjs/common';
 import { Request as ExpressRequest } from 'express';
 import { CreateUserInputDto } from './input-dto/create-user.input-dto';
+import { LoginInputDto } from './input-dto/login.input-dto';
 import { PasswordRecoveryInputDto } from './input-dto/password-recovery.input-dto';
 import { NewPasswordInputDto } from './input-dto/new-password.input-dto';
 import { UsersService } from '../application/users.service';
@@ -51,7 +52,10 @@ export class AuthController {
   @Post('/login')
   @UseGuards(LocalAuthGuard)
   @HttpCode(HttpStatus.OK)
-  login(@Request() req: RequestWithUser): { accessToken: string } {
+  login(
+    @Body() dto: LoginInputDto, //нужен здесь только для валидации входящих параметров
+    @Request() req: RequestWithUser,
+  ): { accessToken: string } {
     return this.authService.login(req.user.id);
   }
 
