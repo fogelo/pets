@@ -88,7 +88,7 @@ export class User {
     }
     this.deletedAt = new Date();
   }
-  setConfirmationCode(confirmationCode: string) {
+  setConfirmationCode(confirmationCode: string | null) {
     this.confirmationCode = confirmationCode;
   }
 

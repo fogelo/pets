@@ -5,7 +5,10 @@ import { MailerService } from '@nestjs-modules/mailer';
 export class EmailService {
   constructor(private readonly mailerService: MailerService) {}
 
-  sendEmailConfirmationMessage(email: string, code: string) {
+  async sendEmailConfirmationMessage(
+    email: string,
+    code: string,
+  ): Promise<void> {
     const confirmationUrl = `${process.env.FRONTEND_URL || 'http://antors.ru'}/confirm-registration?code=${code}`;
 
     const html = `
@@ -15,7 +18,7 @@ export class EmailService {
       </p>
     `;
 
-    return this.mailerService.sendMail({
+    await this.mailerService.sendMail({
       to: email,
       subject: 'Подтвердите регистрацию',
       text: 'Подтвердите регистрацию',

@@ -62,7 +62,7 @@ export class UsersService {
     user.makeDeleted();
     await this.usersRepository.save(user);
   }
-  async registerUser(dto: CreateUserDto): Promise<any> {
+  async registerUser(dto: CreateUserDto): Promise<void> {
     // Проверяем, существует ли пользователь с таким login
     const existingUserByLogin = await this.usersRepository.findByLogin(
       dto.login,
@@ -105,7 +105,6 @@ export class UsersService {
       dto.email,
       confirmationCode,
     );
-    return user.toObject();
   }
   async confirmEmail(code: string): Promise<void> {
     const user = await this.usersRepository.findByConfirmationCode(code);
@@ -129,7 +128,7 @@ export class UsersService {
     }
 
     user.isEmailConfirmed = true;
-    user.confirmationCode = null;
+    user.setConfirmationCode(null);
     await this.usersRepository.save(user);
   }
 
