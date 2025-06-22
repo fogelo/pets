@@ -51,8 +51,11 @@ export class UsersService {
       passwordHash: passwordHash,
     });
 
+    const confirmationCode = uuidv4();
+    user.setConfirmationCode(confirmationCode);
+
     // Пользователи, созданные через административный эндпоинт, автоматически имеют подтвержденный email
-    user.isEmailConfirmed = true;
+    // user.isEmailConfirmed = true;
 
     await this.usersRepository.save(user);
     return user._id.toString();
@@ -90,7 +93,6 @@ export class UsersService {
     }
 
     const passwordHash = await bcrypt.hash(dto.password, 10);
-    const confirmationCode = uuidv4();
 
     const user = this.UserModel.createInstance({
       email: dto.email,
@@ -98,8 +100,7 @@ export class UsersService {
       passwordHash: passwordHash,
     });
 
-    // Для регистрации email не подтвержден изначально
-    user.isEmailConfirmed = false;
+    const confirmationCode = uuidv4();
     user.setConfirmationCode(confirmationCode);
 
     await this.usersRepository.save(user);
@@ -108,7 +109,6 @@ export class UsersService {
       dto.email,
       confirmationCode,
     );
-
     return user.toObject();
   }
   async confirmEmail(code: string): Promise<void> {
@@ -152,11 +152,13 @@ export class UsersService {
     user.setConfirmationCode(newConfirmationCode);
     await this.usersRepository.save(user);
 
+    console.log('отправил код', newConfirmationCode);
+
     // Отправляем email с новым кодом
-    await this.emailService.sendEmailConfirmationMessage(
-      email,
-      newConfirmationCode,
-    );
+    // await this.emailService.sendEmailConfirmationMessage(
+    //   email,
+    //   newConfirmationCode,
+    // );
   }
 
   async initiatePasswordRecovery(email: string): Promise<void> {
