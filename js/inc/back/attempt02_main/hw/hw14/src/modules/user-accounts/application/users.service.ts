@@ -92,11 +92,21 @@ export class UsersService {
     const user = await this.usersRepository.findByEmail(email);
 
     if (!user) {
-      return;
+      throw new BadRequestException([
+        {
+          message: 'User with this email does not exist',
+          field: 'email',
+        },
+      ]);
     }
 
     if (user.isEmailConfirmed) {
-      return;
+      throw new BadRequestException([
+        {
+          message: 'Email is already confirmed',
+          field: 'email',
+        },
+      ]);
     }
 
     // Генерируем новый код подтверждения
