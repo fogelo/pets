@@ -51,9 +51,6 @@ export class UsersService {
       passwordHash: passwordHash,
     });
 
-    const confirmationCode = uuidv4();
-    user.setConfirmationCode(confirmationCode);
-
     // Пользователи, созданные через административный эндпоинт, автоматически имеют подтвержденный email
     user.isEmailConfirmed = true;
 
@@ -102,15 +99,9 @@ export class UsersService {
 
     const confirmationCode = uuidv4();
     user.setConfirmationCode(confirmationCode);
-
-    user.isEmailConfirmed = true;
-
     await this.usersRepository.save(user);
 
-    await this.emailService.sendEmailConfirmationMessage(
-      dto.email,
-      confirmationCode,
-    );
+    this.emailService.sendEmailConfirmationMessage(dto.email, confirmationCode);
     return user.toObject();
   }
   async confirmEmail(code: string): Promise<void> {
@@ -157,10 +148,7 @@ export class UsersService {
     console.log('отправил код', newConfirmationCode);
 
     // Отправляем email с новым кодом
-    await this.emailService.sendEmailConfirmationMessage(
-      email,
-      newConfirmationCode,
-    );
+    this.emailService.sendEmailConfirmationMessage(email, newConfirmationCode);
   }
 
   async initiatePasswordRecovery(email: string): Promise<void> {
