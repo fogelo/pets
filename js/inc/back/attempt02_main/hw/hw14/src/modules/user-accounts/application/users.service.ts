@@ -51,6 +51,9 @@ export class UsersService {
       passwordHash: passwordHash,
     });
 
+    // Пользователи, созданные через административный эндпоинт, автоматически имеют подтвержденный email
+    user.isEmailConfirmed = true;
+
     await this.usersRepository.save(user);
     return user._id.toString();
   }
