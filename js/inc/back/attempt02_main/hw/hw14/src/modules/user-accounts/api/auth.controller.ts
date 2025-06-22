@@ -30,7 +30,7 @@ export class AuthController {
     private authService: AuthService,
   ) {}
   @Post('/registration')
-  @HttpCode(HttpStatus.OK)
+  @HttpCode(HttpStatus.NO_CONTENT)
   registration(@Body() dto: CreateUserInputDto): Promise<void> {
     return this.usersService.registerUser(dto);
   }

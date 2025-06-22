@@ -1,6 +1,6 @@
 import { Strategy } from 'passport-local';
 import { PassportStrategy } from '@nestjs/passport';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { AuthService } from '../../application/auth.service';
 import { UserContextDto } from '../dto/user-context.dto';
 
@@ -18,7 +18,7 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
     const user = await this.authService.validateUser(loginOrEmail, password);
 
     if (!user) {
-      throw new NotFoundException('user not found');
+      throw new UnauthorizedException('Invalid credentials');
     }
     return user;
   }
