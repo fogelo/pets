@@ -23,7 +23,7 @@ interface RequestWithUser extends ExpressRequest {
   user: UserContextDto;
 }
 
-@Controller()
+@Controller('auth')
 export class AuthController {
   constructor(
     private usersService: UsersService,
