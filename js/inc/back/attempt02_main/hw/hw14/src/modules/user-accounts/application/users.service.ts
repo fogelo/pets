@@ -157,10 +157,10 @@ export class UsersService {
     console.log('отправил код', newConfirmationCode);
 
     // Отправляем email с новым кодом
-    // await this.emailService.sendEmailConfirmationMessage(
-    //   email,
-    //   newConfirmationCode,
-    // );
+    await this.emailService.sendEmailConfirmationMessage(
+      email,
+      newConfirmationCode,
+    );
   }
 
   async initiatePasswordRecovery(email: string): Promise<void> {
