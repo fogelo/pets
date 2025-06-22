@@ -90,7 +90,6 @@ export class User {
   }
   setConfirmationCode(confirmationCode: string) {
     this.confirmationCode = confirmationCode;
-    this.isEmailConfirmed = false;
   }
 
   setPasswordRecoveryCode(recoveryCode: string, expiresAt: Date) {
