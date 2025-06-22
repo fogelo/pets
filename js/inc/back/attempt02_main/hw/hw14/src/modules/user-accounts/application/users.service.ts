@@ -66,7 +66,8 @@ export class UsersService {
     const user = await this.usersRepository.findOrNotFoundFail(createdUserId);
     user.setConfirmationCode(confirmationCode);
     await this.usersRepository.save(user);
-    await this.emailService.sendEmailConfirmationMessage(
+
+    this.emailService.sendEmailConfirmationMessage(
       'fogelo@yandex.ru',
       confirmationCode,
     );
@@ -85,6 +86,36 @@ export class UsersService {
     user.isEmailConfirmed = true;
     user.confirmationCode = null;
     await this.usersRepository.save(user);
+  }
+
+  async resendRegistrationEmail(email: string): Promise<void> {
+    const user = await this.usersRepository.findByEmail(email);
+
+    if (!user) {
+      throw new BadRequestException([
+        {
+          message: 'User with this email does not exist',
+          field: 'email',
+        },
+      ]);
+    }
+
+    if (user.isEmailConfirmed) {
+      throw new BadRequestException([
+        {
+          message: 'Email is already confirmed',
+          field: 'email',
+        },
+      ]);
+    }
+
+    // Генерируем новый код подтверждения
+    const newConfirmationCode = uuidv4();
+    user.setConfirmationCode(newConfirmationCode);
+    await this.usersRepository.save(user);
+
+    // Отправляем email с новым кодом
+    this.emailService.sendEmailConfirmationMessage(email, newConfirmationCode);
   }
 
   async initiatePasswordRecovery(email: string): Promise<void> {

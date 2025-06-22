@@ -14,6 +14,7 @@ import { CreateUserInputDto } from './input-dto/create-user.input-dto';
 import { LoginInputDto } from './input-dto/login.input-dto';
 import { PasswordRecoveryInputDto } from './input-dto/password-recovery.input-dto';
 import { NewPasswordInputDto } from './input-dto/new-password.input-dto';
+import { RegistrationEmailResendingInputDto } from './input-dto/registration-email-resending.input-dto';
 import { UsersService } from '../application/users.service';
 import { AuthService } from '../application/auth.service';
 import { LocalAuthGuard } from '../guards/local/local-auth.guard';
@@ -47,6 +48,14 @@ export class AuthController {
   @HttpCode(HttpStatus.NO_CONTENT)
   async confirmEmailGet(@Query('code') code: string): Promise<void> {
     await this.usersService.confirmEmail(code);
+  }
+
+  @Post('/registration-email-resending')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async resendRegistrationEmail(
+    @Body() dto: RegistrationEmailResendingInputDto,
+  ): Promise<void> {
+    await this.usersService.resendRegistrationEmail(dto.email);
   }
 
   @Post('/login')
