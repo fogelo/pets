@@ -101,7 +101,10 @@ export class UsersService {
     user.setConfirmationCode(confirmationCode);
     await this.usersRepository.save(user);
 
-    this.emailService.sendEmailConfirmationMessage(dto.email, confirmationCode);
+    await this.emailService.sendEmailConfirmationMessage(
+      dto.email,
+      confirmationCode,
+    );
     return user.toObject();
   }
   async confirmEmail(code: string): Promise<void> {
@@ -114,6 +117,17 @@ export class UsersService {
         },
       ]);
     }
+
+    // Проверяем, что email еще не подтвержден
+    if (user.isEmailConfirmed) {
+      throw new BadRequestException([
+        {
+          message: 'Email is already confirmed',
+          field: 'code',
+        },
+      ]);
+    }
+
     user.isEmailConfirmed = true;
     user.confirmationCode = null;
     await this.usersRepository.save(user);
@@ -148,7 +162,10 @@ export class UsersService {
     console.log('отправил код', newConfirmationCode);
 
     // Отправляем email с новым кодом
-    this.emailService.sendEmailConfirmationMessage(email, newConfirmationCode);
+    await this.emailService.sendEmailConfirmationMessage(
+      email,
+      newConfirmationCode,
+    );
   }
 
   async initiatePasswordRecovery(email: string): Promise<void> {
