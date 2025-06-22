@@ -91,22 +91,9 @@ export class UsersService {
   async resendRegistrationEmail(email: string): Promise<void> {
     const user = await this.usersRepository.findByEmail(email);
 
-    if (!user) {
-      throw new BadRequestException([
-        {
-          message: 'User with this email does not exist',
-          field: 'email',
-        },
-      ]);
-    }
-
-    if (user.isEmailConfirmed) {
-      throw new BadRequestException([
-        {
-          message: 'Email is already confirmed',
-          field: 'email',
-        },
-      ]);
+    if (!user || user.isEmailConfirmed) {
+      // Не выбрасываем ошибку, чтобы не раскрывать, существует ли пользователь или подтвержден ли его email
+      return;
     }
 
     // Генерируем новый код подтверждения
