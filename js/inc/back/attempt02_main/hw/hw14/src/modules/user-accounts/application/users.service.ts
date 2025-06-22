@@ -55,7 +55,7 @@ export class UsersService {
     user.setConfirmationCode(confirmationCode);
 
     // Пользователи, созданные через административный эндпоинт, автоматически имеют подтвержденный email
-    // user.isEmailConfirmed = true;
+    user.isEmailConfirmed = true;
 
     await this.usersRepository.save(user);
     return user._id.toString();
@@ -102,6 +102,8 @@ export class UsersService {
 
     const confirmationCode = uuidv4();
     user.setConfirmationCode(confirmationCode);
+
+    user.isEmailConfirmed = true;
 
     await this.usersRepository.save(user);
 
