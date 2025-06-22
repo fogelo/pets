@@ -67,7 +67,10 @@ export class UsersService {
     user.setConfirmationCode(confirmationCode);
     await this.usersRepository.save(user);
 
-    this.emailService.sendEmailConfirmationMessage(dto.email, confirmationCode);
+    await this.emailService.sendEmailConfirmationMessage(
+      dto.email,
+      confirmationCode,
+    );
     return user.toObject();
   }
   async confirmEmail(code: string): Promise<void> {
@@ -112,7 +115,10 @@ export class UsersService {
     await this.usersRepository.save(user);
 
     // Отправляем email с новым кодом
-    this.emailService.sendEmailConfirmationMessage(email, newConfirmationCode);
+    await this.emailService.sendEmailConfirmationMessage(
+      email,
+      newConfirmationCode,
+    );
   }
 
   async initiatePasswordRecovery(email: string): Promise<void> {
