@@ -12,7 +12,7 @@ export class UsersRepository {
     return aaa;
   }
   findByLogin(login: string): Promise<UserDocument | null> {
-    return this.UserModel.findOne({ login });
+    return this.UserModel.findOne({ login, deletedAt: null });
   }
 
   findByLoginOrEmail(loginOrEmail: string): Promise<UserDocument | null> {
