@@ -21,9 +21,9 @@ export class AuthService {
     }
 
     // Проверяем, подтвержден ли email пользователя
-    if (!user.isEmailConfirmed) {
-      return null;
-    }
+    // if (!user.isEmailConfirmed) {
+    //   return null;
+    // }
 
     const isPasswordValid = await this.cryptoService.comparePasswords({
       password,
