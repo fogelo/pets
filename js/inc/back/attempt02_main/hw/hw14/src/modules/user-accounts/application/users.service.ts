@@ -66,10 +66,10 @@ export class UsersService {
     const user = await this.usersRepository.findOrNotFoundFail(createdUserId);
     user.setConfirmationCode(confirmationCode);
     await this.usersRepository.save(user);
-    // await this.emailService.sendEmailConfirmationMessage(
-    //   'fogelo@yandex.ru',
-    //   confirmationCode,
-    // );
+    await this.emailService.sendEmailConfirmationMessage(
+      'fogelo@yandex.ru',
+      confirmationCode,
+    );
     return user.toObject();
   }
   async confirmEmail(code: string): Promise<void> {
