@@ -67,10 +67,7 @@ export class UsersService {
     user.setConfirmationCode(confirmationCode);
     await this.usersRepository.save(user);
 
-    this.emailService.sendEmailConfirmationMessage(
-      'fogelo@yandex.ru',
-      confirmationCode,
-    );
+    this.emailService.sendEmailConfirmationMessage(dto.email, confirmationCode);
     return user.toObject();
   }
   async confirmEmail(code: string): Promise<void> {
