@@ -6,7 +6,7 @@ export class EmailService {
   constructor(private readonly mailerService: MailerService) {}
 
   sendEmailConfirmationMessage(email: string, code: string) {
-    const confirmationUrl = `${process.env.FRONTEND_URL || 'http://antors.ru'}/registration-confirmation?code=${code}`;
+    const confirmationUrl = `${process.env.FRONTEND_URL || 'http://antors.ru'}/confirm-registration?code=${code}`;
 
     const html = `
       <h1>Спасибо за регистрацию</h1>
