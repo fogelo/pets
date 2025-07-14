@@ -1,0 +1,20 @@
+.profile-card {
+    border: 1px solid var(--light-color);
+    padding: 32px 34px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+}
+
+
+.avatar-name {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.skill-tag {
+    padding: 4px 8px;
+    border-radius: 8px;
+    display: inline;
+    border: 1px solid var(--light-color);
+    margin-right: 4px;
+}

@@ -1,1 +1,20 @@
 /* You can add global styles to this file, and also import other style files */
+
+@import 'fonts';
+
+:root {
+    --dark-color: #161616;
+    --light-color: #ffffff;
+    --primary-color: #AE7AFF;
+}
+
+body {
+    background-color: var(--dark-color);
+    color: var(--light-color);
+    font-family: 'JetBrains Mono', monospace;
+}
+
+.btn {
+    background-color: var(--primary-color);
+    padding: 10px 20px;
+}
