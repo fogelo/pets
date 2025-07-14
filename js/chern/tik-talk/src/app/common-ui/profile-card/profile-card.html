@@ -1,22 +1,24 @@
+@if(profile){
 <div class="profile-card">
   <div class="avatar-name">
-    <img src="/assets/imgs/Img.png" alt="avatar" />
+    <img [src]="profile.avatarUrl | imgUrl" alt="avatar" />
     <div class="profile-card__name">
-      <div>Райан Гослинг</div>
-      <div>ryan.gosling</div>
+      <div>{{ profile.firstName }} {{ profile.lastName }}</div>
+      <div>{{ profile.username }}</div>
     </div>
   </div>
   <div class="profile-card__description">
-    Список навыков, который мы обсудили выше, — основа резюме,
-    но не единственная его часть. Также можно рассказать о себе в классическом
-    смысле — этот раздел можно добавить в сопроводительное письмо.
+    Список навыков, который мы обсудили выше, — основа резюме, но не
+    единственная его часть. Также можно рассказать о себе в классическом смысле
+    — этот раздел можно добавить в сопроводительное письм1о.
   </div>
   <div class="profile-card__tags">
-    <div class="skill-tag">Angular</div>
-    <div class="skill-tag">Angular</div>
-    <div class="skill-tag">Angular</div>
+    @for(skill of profile.stack; track skill){
+    <div class="skill-tag">{{ skill }}</div>
+    }
   </div>
   <div class="profile-cards__action-btns">
     <button class="btn">Подписаться</button>
   </div>
 </div>
+}

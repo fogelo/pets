@@ -12,13 +12,13 @@ import { Profile } from './data/interfaces/profile.interface';
   styleUrl: './app.scss', //подключение стилей
 })
 export class App {
-  protected title = 'tik-talk';
-  profileService = inject(ProfileService);
-  profiles = signal<Profile[]>([]); // Используем signals
+  protected title = 'tik-talk'; 
+  profileService = inject(ProfileService); // Используем inject для получения сервиса
+  profiles = signal<Profile[]>([]); // Используем signals для хранения данных
   constructor() {
     this.profileService.getTestAccounts().subscribe({
       next: (data) => {
-        this.profiles.set(data); // Signals автоматически обновляют UI
+        this.profiles.set(data); // Signals автоматически обновляют UI при изменении данных
       },
     });
   }
