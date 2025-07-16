@@ -1,7 +1,7 @@
 @if(profile){
 <div class="profile-card">
   <div class="avatar-name">
-    <img [src]="profile.avatarUrl | imgUrl" alt="avatar" />
+    <img [src]="profile.avatarUrl | imgUrl" alt="avatar" width="100" height="100" />
     <div class="profile-card__name">
       <div>{{ profile.firstName }} {{ profile.lastName }}</div>
       <div>{{ profile.username }}</div>

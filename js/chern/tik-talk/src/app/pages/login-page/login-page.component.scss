@@ -1,0 +1,24 @@
+.login-form {
+    display: flex;
+    flex-direction: column;
+    width: 500px;
+    height: 100vh;
+    margin: 0 auto;
+    justify-content: center;
+    gap: 10px;
+}
+
+.tt-label {
+    display: block;
+}
+
+.tt-input {
+    height: 50px;
+    padding: 5px;
+    display: block;
+    width: 100%;
+}
+
+.tt-btn {
+    
+}
