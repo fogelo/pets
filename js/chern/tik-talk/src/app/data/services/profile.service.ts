@@ -10,7 +10,10 @@ export class ProfileService {
   baseUrl = 'https://icherniakov.ru/yt-course/';
   constructor() {}
   getTestAccounts() {
-    return this.http.get<Profile[]>(`${this.baseUrl}account/test_accounts`);
     // Возвращает Observable - поток данных
+    return this.http.get<Profile[]>(`${this.baseUrl}account/test_accounts`);
+  }
+  getMe() {
+    return this.http.get<Profile>(`${this.baseUrl}account/me`);
   }
 }

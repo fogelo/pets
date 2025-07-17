@@ -11,7 +11,11 @@
       class="tt-input"
       placeholder="Введите логин"
       formControlName="username"
+      [class.error]="form.get('username')?.invalid && form.get('username')?.touched"
     />
+    @if (form.get('username')?.invalid && form.get('username')?.touched) {
+      <span class="error-message">Поле обязательно для заполнения</span>
+    }
   </label>
   <label class="tt-label">
     Пароль
@@ -20,7 +24,11 @@
       class="tt-input"
       placeholder="Введите пароль"
       formControlName="password"
+      [class.error]="form.get('password')?.invalid && form.get('password')?.touched"
     />
+    @if (form.get('password')?.invalid && form.get('password')?.touched) {
+      <span class="error-message">Поле обязательно для заполнения</span>
+    }
   </label>
-  <button class="btn">Войти</button>
+  <button type="submit" class="btn">Войти</button>
 </form>
