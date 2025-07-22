@@ -1,1 +1,35 @@
-<p>sidebar works!</p>
+<nav>
+  <ul>
+    <li *ngFor="let menuItem of menuItems">
+      <button>
+        <svg [icon]="menuItem.icon"></svg>
+        <span> {{ menuItem.label }} </span>
+      </button>
+    </li>
+  </ul>
+</nav>
+
+<p>Подписчики</p>
+
+@for (profile of subscribers$|async; track profile.id) {
+<app-subscriber-card [profile]="profile"></app-subscriber-card>
+}
+
+<div>
+  <a [routerLink]="['subscribers']">Все подписчики</a>
+</div>
+
+<footer>
+  <!-- Signal подход -->
+  @if(me(); as me){
+    <span>{{ me.lastName }} (Signal)</span>
+    <a routerLink="settings">настройки</a>
+  }
+  
+  <!-- RxJS подход для сравнения -->
+  @if(me2$ | async; as me2){
+    <div>
+      <span>{{ me2.lastName }} (RxJS)</span>
+    </div>
+  }
+</footer>

@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 /* 
 - креды
 	- ant_or
-	- 9hUjP8bvJZ
+	- l7IPOQ2zHf
 */
 @Injectable({
   providedIn: 'root',
@@ -42,7 +42,7 @@ export class AuthService {
       `${this.baseUrl}auth/token`,
       formData
     );
-    return observable.pipe(tap(this.saveTokens));
+    return observable.pipe(tap((response) => this.saveTokens(response)));
   }
 
   refreshAuthToken() {
@@ -51,7 +51,7 @@ export class AuthService {
         refresh_token: this.refreshToken,
       })
       .pipe(
-        tap(this.saveTokens),
+        tap((response) => this.saveTokens(response)),
         catchError((error) => {
           this.logout();
           return throwError(() => error);
