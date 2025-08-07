@@ -1,12 +1,8 @@
 import React, { useEffect, useReducer, useState } from "react";
 
 /* 
-* useEffect — это хук в React, который позволяет выполнять побочные 
-* эффекты в функциональных компонентах. Он заменяет методы жизненного 
-* цикла классовых компонентов, такие как componentDidMount, 
-* componentDidUpdate и componentWillUnmount.
-
-* функция, переданная в useEffect выполняется после рендера
+* reducer - функция которая принимает, state и action. Внутри этой функции содержится условния логика 
+* с помощью switch case и происходит преобразование state и возвращается преобразованный state.
 */
 
 type Action = { type: "increment" } | { type: "decrement" };
