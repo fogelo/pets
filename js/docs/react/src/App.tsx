@@ -1,8 +1,8 @@
 import { Routes, Route } from "react-router";
 import "./App.css";
 import { ThemeProvider } from "./context/ThemeContext";
-import CustomHooks from "./pages/CustomHooks";
 import ReactHooks from "./pages/ReactHooks";
+import CustomHooks from "./pages/CustomHooks/CustomHooks";
 
 //--------------
 function App() {
