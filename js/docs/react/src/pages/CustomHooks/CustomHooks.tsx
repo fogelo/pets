@@ -1,20 +1,15 @@
-import useData from "./hooks/useData";
+import { Link, Outlet } from "react-router";
 
 const CustomHooks: React.FC = () => {
-  const { data, error, loading } = useData();
-  console.log(data, error, loading);
-
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
-
   return (
     <div>
-      <h2>Posts</h2>
-      {data?.map((post) => (
-        <ul key={post.id}>
-          <li>{post.title}</li>
-        </ul>
-      ))}
+      <nav>
+        <Link to="/custom-hooks/posts">Posts</Link>
+        <Link to="/custom-hooks/some">Some</Link>
+      </nav>
+      <div className="content">
+        <Outlet />
+      </div>
     </div>
   );
 };

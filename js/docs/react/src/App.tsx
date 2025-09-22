@@ -1,21 +1,25 @@
-import { Routes, Route } from "react-router";
+import { Routes, Route, Link, Outlet } from "react-router";
 import "./App.css";
-import { ThemeProvider } from "./context/ThemeContext";
 import ReactHooks from "./pages/ReactHooks";
 import CustomHooks from "./pages/CustomHooks/CustomHooks";
+import { ThemeProvider } from "./context/ThemeContext";
 
 //--------------
 function App() {
   return (
     <ThemeProvider>
-      <Routes>
-        {/* react хуки */}
-        <Route path="/react-hooks" element={<ReactHooks />} />
-        {/* кастомные хуки */}
-        <Route path="/custom-hooks" element={<CustomHooks />} />
-      </Routes>
+      <header>
+        <nav>
+          <Link to="/react-hooks">React Hooks</Link>
+          <Link to="/custom-hooks">Custom Hooks</Link>
+        </nav>
+      </header>
+      <main>
+        <Outlet />
+      </main>
     </ThemeProvider>
   );
 }
 
 export default App;
+

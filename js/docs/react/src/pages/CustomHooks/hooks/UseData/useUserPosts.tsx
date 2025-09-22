@@ -6,8 +6,8 @@ type Post = {
   title: string;
   body: string;
 };
-// Хук для получения с сервера
-const useData = () => {
+// Хук для получения
+const useUserPosts = ({ userId }: { userId: number }) => {
   const [data, setData] = useState<Post[] | null>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -19,7 +19,7 @@ const useData = () => {
         setError(null);
 
         const response = await fetch(
-          "https://jsonplaceholder.typicode.com/posts?userId=1"
+          `https://jsonplaceholder.typicode.com/posts?userId=${userId}`
         );
 
         if (!response.ok) {
@@ -37,12 +37,12 @@ const useData = () => {
         setLoading(false);
       }
     })();
-  }, []);
+  }, [userId]);
 
   return { data, error, loading };
 };
 
-export default useData;
+export default useUserPosts;
 
 /* 
 - Использование нескольких setState само по себе не означает, что каждый вызов сеттера (setData, setError и т.д.) немедленно вызовет ререндер. React умеет "батчить" (группировать) обновления состояния, особенно в React 18. Однако, когда обновления состояния разделены асинхронными операциями (как await), они обычно вызывают отдельные ререндеры.

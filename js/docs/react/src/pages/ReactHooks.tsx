@@ -1,12 +1,15 @@
+import { ThemeProvider } from "../context/ThemeContext";
 import ThemedComponent from "../hooks/UseContext";
 
 const ReactHooks: React.FC = () => {
   return (
-    <div>
-      {/* <UseState /> */}
-      {/* <UseEffect /> */}
-      <ThemedComponent />
-    </div>
+    <ThemeProvider>
+      <div>
+        {/* <UseState /> */}
+        {/* <UseEffect /> */}
+        <ThemedComponent />
+      </div>
+    </ThemeProvider>
   );
 };
 
