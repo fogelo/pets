@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: k8s-web-hello # название деплоймета
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: k8s-web-hello # селектор для поиска подов этого деплоймента
+  template: # описание шаблона для под в рамках этого деплоймента
+    metadata:
+      labels:
+        app: k8s-web-hello
+    spec: # информация о контейнерах, которые будут запущены в рамках каждого пода
+      containers:
+        - name: k8s-web-hello
+          image: fogelo/k8s-web-hello-ru
+          resources: # можно ограничить ресурсы для каждого пода
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+            limits:
+              memory: "128Mi"
+              cpu: "500m" # 500m - половина ядра одного процессора
+          ports:
+            - containerPort: 3000 # порт, на котором будет работать наше приложение внутри контейнера
+
+# если перед ключом "-", то это не словарь, а список
+
+# ⏺ В JSON ваш YAML выглядел бы так:
+#   {
+#     "apiVersion": "apps/v1",
+#     "kind": "Deployment",
+#     "metadata": {
+#       "name": "k8s-web-hello"
+#     },
+#     "spec": {
+#       "selector": {
+#         "matchLabels": {
+#           "app": "k8s-web-hello"
+#         }
+#       },
+#       "template": {
+#         "metadata": {
+#           "labels": {
+#             "app": "k8s-web-hello"
+#           }
+#         },
+#         "spec": {
+#           "containers": [
+#             {
+#               "name": "k8s-web-hello",
+#               "image": "<Image>",
+#               "resources": {
+#                 "limits": {
+#                   "memory": "128Mi",
+#                   "cpu": "500m"
+#                 }
+#               },
+#               "ports": [
+#                 {
+#                   "containerPort": "<Port>"
+#                 }
+#               ]
+#             }
+#           ]
+#         }
+#       }
+#     }
+#   }
